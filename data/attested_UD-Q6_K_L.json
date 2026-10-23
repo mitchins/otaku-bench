@@ -1,0 +1,58 @@
+{
+ "version": "4.0",
+ "models": [
+  {
+   "rank": 1,
+   "model": "Qwen3.8-27B",
+   "family": "Qwen",
+   "total_params_b": 27,
+   "active_params_b": null,
+   "quant_repo": "unsloth/Qwen3.8-27B-GGUF",
+   "preferred_quant": "UD-Q4_K_M",
+   "original_repo": "Qwen/Qwen3.8-27B",
+   "inclusion_reason": "Newer Qwen frontier; high HF community uptake",
+   "tier": "A",
+   "special_notes": "",
+   "lineage": "original_lab_release",
+   "quant_publisher": "unsloth",
+   "gguf_repo_url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF",
+   "original_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+   "repro_status": "HUB_QUANT_ATTESTED",
+   "quant_file": "Qwen3.8-27B-UD-Q6_K_L.gguf",
+   "quant_size_gb": 24.194,
+   "exact_file_url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/blob/4ca720788d1e01f1bff70c033e0d0028fd02e502/Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "listed_file_name": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "listed_size_gb": 16.5,
+   "listed_source_url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/blob/main/Qwen3.8-27B-UD-Q4_K_M.gguf",
+   "web_spotchecked": true,
+   "model_repo_sha": "4ca720788d1e01f1bff70c033e0d0028fd02e502",
+   "selected_quant_policy": "Bartowski publisher recommended Q4_K_M; Unsloth UD-Q4_K_XL/UD-Q4_K_M; publisher GGUF same 4-bit; gpt-oss Q4_K_M with native MXFP4_MOE experts preserved",
+   "deck_default_candidate": false,
+   "deck_note": "LAN / unknown memory requirements",
+   "small_model_high_quant_challenger": null,
+   "runtime_validated": false,
+   "translation_quality_measured": false,
+   "eligibility_lane": "lab_original_or_existing_v2_specialist",
+   "eligibility_evidence_url": "https://huggingface.co/Qwen/Qwen3.8-27B",
+   "prompt_style": "chat",
+   "canary_required": true,
+   "repo_declared_parents": [
+    "Qwen/Qwen3.8-27B"
+   ],
+   "lineage_attestation": "publisher_declared",
+   "repository_downloads_30d": 5937802,
+   "selected_quant": "UD-Q6_K_L",
+   "non_default_fallback": false,
+   "quant_files_count": 1,
+   "hf_paths": [
+    "Qwen3.8-27B-UD-Q4_K_M.gguf"
+   ],
+   "file_sizes_bytes": [
+    16464440224
+   ],
+   "quant_sha256": "121355b4c7422771da25adc74090e3c90138f77ce5c92d348687d47824ec80f4",
+   "quant_note": "largest quant that fits 24 GB at 2k ctx (screen profile)"
+  }
+ ],
+ "notes": "single-model catalog for a higher-quant run; same pinned revision as data/attested.json"
+}

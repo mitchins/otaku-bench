@@ -19,7 +19,7 @@ Reruns are safe: finished models and finished items are skipped. Models deferred
 python mission/judge_table.py  # results/judge/RANKING.md
 ```
 
-The judge records every call's tokens in `results/judge/token_ledger.jsonl` and stops before `--daily-token-cap` (default 200K per UTC day), so a scheduled run stays inside a free daily allowance. Judging needs the eval gold, so it needs the git-crypt key.
+The judge records every call's tokens in `results/judge/token_ledger.jsonl` and stops before `--daily-token-cap`. The queue sets that cap from the organisation Usage API (`python tools/openai_usage.py`): what is left of the shared 250K data-sharing pool after a 5K margin and a 20K reserve for other keys. It falls back to 200K if the API is unreachable. Judging needs the eval gold, so it needs the git-crypt key.
 
 ## Docs
 

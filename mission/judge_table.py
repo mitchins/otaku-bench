@@ -48,8 +48,8 @@ def line_cats() -> dict[str, list[str]]:
 
 def summaries() -> dict[str, dict]:
     out = {}
-    for p in [RES / 'screen/summary.jsonl', *RES.glob('screen_variants/*/summary.jsonl')]:
-        variant = p.parent.name if p.parent.parent.name == 'screen_variants' else ''
+    for p in [RES / 'screen/summary.jsonl', *RES.glob('screen_variants/*/summary.jsonl'), *RES.glob('screen_quants/*/summary.jsonl')]:
+        variant = p.parent.name if p.parent.parent.name in ('screen_variants', 'screen_quants') else ''
         for r in load(p):
             out[f"{r['rank']:02d}" + (f'+{variant}' if variant else '')] = r
     return out

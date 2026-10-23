@@ -11,7 +11,24 @@ set -a
 # shellcheck disable=SC1091
 . ./.env
 set +a
-CAP="${CAP:-200000}"   # org-wide Build allowance is 250K/day; leave room for EasyDict etc.
+# Daily cap from the org Usage API: what's left of the shared 250K after other keys' reserve and a margin,
+# added to what the local ledger already counted today (the judge checks ledger + next call against it).
+# Static 200K if the Usage API is unreachable.
+if [ -z "${CAP:-}" ]; then
+  if REM=$(python tools/openai_usage.py --remaining 2>/dev/null); then
+    LEDGER=$(python - <<'PY'
+import json, time
+from pathlib import Path
+p, d = Path('results/judge/token_ledger.jsonl'), time.strftime('%Y-%m-%d', time.gmtime())
+print(sum(json.loads(l)['tokens'] for l in p.open() if json.loads(l)['day'] == d) if p.exists() else 0)
+PY
+)
+    CAP=$((LEDGER + REM))
+  else
+    CAP=200000
+  fi
+fi
+unset OPENAI_ADMIN_API_KEY   # only the usage monitor needs it; keep it out of the judge
 OUT=results/judge/sol
 LOG="results/judge/queue_$(date -u +%Y%m%d).log"
 mkdir -p "$OUT"
@@ -20,7 +37,12 @@ mkdir -p "$OUT"
 QUEUE=(
   screen/03_Qwen3.6-35B-A3B
   screen/05_Gemma_4_26B-A4B_IT
+  # the two strongest dense candidates: existing Q4 responses (same footing as every other model)
   screen/01_Qwen3.8-27B
+  screen/02_Gemma_4_31B_IT
+  # then their largest quant that fits 24 GB, to see whether the extra memory buys quality
+  screen_quants/UD-Q6_K_L/01_Qwen3.8-27B
+  screen_quants/Q5_K_M/02_Gemma_4_31B_IT
   screen/21_Sugoi-14B-Ultra
   screen/32_TranslateGemma_27B_IT
   screen/33_TranslateGemma_12B_IT
@@ -42,8 +64,9 @@ judge() {  # dir dataset mode split tag
 
 {
   echo "=== $(date -u +%FT%TZ) judge queue, cap $CAP"
+  python tools/openai_usage.py 2>&1 || true
   for dir in "${QUEUE[@]}"; do
-    tag=""; case $dir in screen_variants/*) tag=$(basename "$(dirname "$dir")");; esac
+    tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
     echo "--- $dir"
     judge "$dir" scenes full all "$tag" || break
     judge "$dir" lines bare eval "$tag" || break
