@@ -1,5 +1,5 @@
-# Ranking
+# Full table
 
-Models are judged in priority order: complete runs that are deployable and fast come first. The table refreshes after each daily judging run.
+Every judged model with both scores, its share of badly translated lines and its typical mistakes. The landing page shows the same ranking as bars.
 
 --8<-- "results/judge/RANKING.md:2:"

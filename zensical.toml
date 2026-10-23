@@ -4,9 +4,10 @@ site_description = "Which local GGUF model translates the visual-novel line on s
 site_url = "https://mitchins.github.io/otaku-bench/"
 repo_url = "https://github.com/mitchins/otaku-bench"
 repo_name = "mitchins/otaku-bench"
+extra_css = ["stylesheets/board.css"]
 nav = [
-  { "Overview" = "index.md" },
-  { "Ranking" = "ranking.md" },
+  { "Leaderboard" = "index.md" },
+  { "Full table" = "ranking.md" },
   { "Latency" = "latency.md" },
   { "Method" = "method.md" },
   { "Data policy" = "data.md" },
@@ -38,6 +39,8 @@ toggle = { icon = "lucide/sun", name = "Light mode" }
 
 [project.markdown_extensions.tables]
 [project.markdown_extensions.admonition]
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.attr_list]
 [project.markdown_extensions.pymdownx.superfences]
 # generated reports live under results/; pages include them so they never drift
 [project.markdown_extensions.pymdownx.snippets]

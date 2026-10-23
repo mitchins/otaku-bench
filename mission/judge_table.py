@@ -6,6 +6,7 @@ can't rank higher by dropping hard lines. Latency/VRAM come from the mission sum
 """
 from __future__ import annotations
 
+import html
 import json
 from collections import Counter
 from pathlib import Path
@@ -15,6 +16,11 @@ RES = ROOT / 'results'
 JUDGE = RES / 'judge/sol'
 GOLD = ROOT / 'benchmark/otakubench/data/build'
 ARMS = {'scenes_full': ('scenes_gold.jsonl', None), 'lines_eval': ('lines_gold.jsonl', 'eval')}
+# judge flags in reader terms
+SLIPS = {'IDIOM': 'idioms', 'VOICE': 'voice', 'OMIT': 'omissions', 'ADD': 'additions', 'AGENT': 'who did what',
+         'NEG': 'negation', 'ASPECT': 'tense/aspect', 'MOD': 'modality', 'KEIGO': 'politeness', 'IMPL': 'implication',
+         'CULT': 'cultural terms', 'HUMOUR': 'wordplay', 'REFUSAL': 'refusals', 'TERMINOLOGY': 'terms',
+         'FORMAT': 'formatting', 'AMBIGUITY': 'ambiguity'}
 
 
 def load(p: Path) -> list[dict]:
@@ -55,7 +61,8 @@ def main() -> int:
         s = summ.get(name.partition('_')[0] + (f'+{variant}' if variant else ''), {})
         row['lat'] = ((s.get('latency') or {}).get(str(s.get('gate_depth', 6))) or {}).get('median_s')
         row['vram'] = s.get('vram_used_mib_loaded')
-        row['flags'] = ', '.join(f'{f}×{n}' for f, n in flags.most_common(3))
+        row['slips'] = ', '.join(SLIPS.get(f, f.lower()) for f, _ in flags.most_common(3))
+        row['label'] = (s.get('model') or name.split('_', 1)[-1].replace('_', ' ')) + (f' ({variant})' if variant else '')
         rows.append(row)
 
     def key(r):  # complete lines arm first, then lines mean
@@ -63,18 +70,75 @@ def main() -> int:
         return (-(la[1] == la[2]) if la else 1, -(la[0] if la else 0))
 
     rows.sort(key=key)
-    fmt = lambda a: '—' if not a else (f'{a[0]:.2f}' + ('' if a[1] == a[2] else f' ({a[1]}/{a[2]} judged)'))
-    out = ['# OtakuBench screen ranking (gpt-6.1-sol judge)', '',
-           'Score /10 = adequacy 0–4 + pragmatics 0–4 + fluency 0–2. Missing items count as 0. '
-           'Latency = median full line at 6 lines of history, RTX 3090. Partially judged rows are still in the queue.', '',
-           '| model | lines (200 eval) | ≤5 | full scenes (31) | ≤5 | line s | VRAM MiB | top flags |',
-           '|---|---:|---:|---:|---:|---:|---:|---|']
-    for r in rows:
-        out.append(f"| {r['name']} | {fmt(r.get('lines_eval'))} | {r.get('lines_eval_low', '—')} | {fmt(r.get('scenes_full'))} "
-                   f"| {r.get('scenes_full_low', '—')} | {r['lat'] or '—'} | {r['vram'] or '—'} | {r['flags']} |")
+    done = [r for r in rows if all(r.get(a) and r[a][1] == r[a][2] for a in ARMS)]
+    queued = [r for r in rows if r not in done]
+    gb = lambda r: f"{r['vram'] / 1024:.1f}" if r['vram'] else '—'
+    out = ['# Ranking', '',
+           '| # | Model | Hard lines /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |',
+           '|---:|---|---:|---:|---:|---:|---:|---|']
+    for n, r in enumerate(done, 1):
+        out.append(f"| {n} | **{r['label']}** | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
+                   f"| {r['lat'] or '—'} | {gb(r)} | {r['slips']} |")
+    if queued:
+        out += ['', 'Being judged: ' + ', '.join(
+            f"{r['label']} ({(r.get('lines_eval') or (0, 0, 200))[1]}/200 lines)" for r in queued) + '.']
+    out += ['', 'Scores are out of 10: adequacy 0–4, pragmatics and voice 0–4, fluency 0–2, judged by GPT-6.1 Sol. '
+            'A line the model failed to produce scores 0. Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
     (RES / 'judge/RANKING.md').write_text('\n'.join(out) + '\n', encoding='utf8')
-    print('\n'.join(out))
+
+    # one-paragraph answer for the landing page
+    if done:
+        b = done[0]
+        head = (f"**Best so far: {b['label']}.** It scores {b['lines_eval'][0]:.2f}/10 on the hard lines and "
+                f"{b['scenes_full'][0]:.2f}/10 on full scenes, finishing a line in {b['lat']} s using {gb(b)} GB of VRAM. "
+                f"{len(done)} model{'s' if len(done) != 1 else ''} fully judged so far.")
+    else:
+        head = 'No model is fully judged yet.'
+    (RES / 'judge/HEADLINE.md').write_text(head + '\n', encoding='utf8')
+    (RES / 'judge/BOARD.html').write_text(board(done, queued), encoding='utf8')
+    print('\n'.join(out) + '\n\n' + head)
     return 0
+
+
+def fits(mib: int | None) -> str:
+    """Smallest common GPU memory size the loaded model fits in, with ~1 GB left for the desktop."""
+    if not mib:
+        return ''
+    for gb in (8, 12, 16, 24):
+        if mib <= (gb - 1) * 1024:
+            return f'fits {gb} GB'
+    return 'needs > 24 GB'
+
+
+def board(done: list[dict], queued: list[dict]) -> str:
+    """Landing-page leaderboard: one bar per model on a 0-10 axis; each row expands to its details.
+
+    Kept free of blank lines so Markdown passes it through as one raw HTML block.
+    """
+    e = lambda s: html.escape(str(s))
+    rows = []
+    for n, r in enumerate(done, 1):
+        score, scenes = r['lines_eval'][0], r['scenes_full'][0]
+        qual = ' · '.join(x for x in (f"{r['lat']:.2f} s/line" if r['lat'] else '', fits(r['vram'])) if x)
+        tip = f"{r['label']}: {score:.2f}/10 on hard lines, {scenes:.2f}/10 on full scenes"
+        vram = f"{r['vram'] / 1024:.1f} GB VRAM loaded" if r['vram'] else ''
+        rows.append(
+            f'<details class="ob-row"><summary title="{e(tip)}">'
+            f'<span class="ob-rank">{n}</span><span class="ob-name">{e(r["label"])}</span>'
+            f'<span class="ob-track"><span class="ob-bar" style="width:{score * 10:.1f}%"></span></span>'
+            f'<span class="ob-score">{score:.2f}</span><span class="ob-qual">{e(qual)}</span></summary>'
+            f'<div class="ob-more"><span><b>{scenes:.2f}</b>/10 on 31 full scenes</span>'
+            f'<span><b>{r["lines_eval_low"]}</b> of 200 lines scored 5 or less</span>'
+            f'<span>Most common slips: {e(r["slips"] or "none")}</span>'
+            f'<span>{e(vram)}</span></div></details>')
+    for r in queued:
+        got = (r.get('lines_eval') or (0, 0, 200))[1]
+        rows.append(f'<div class="ob-row ob-queued"><span class="ob-rank">·</span><span class="ob-name">{e(r["label"])}</span>'
+                    f'<span class="ob-pending">being judged: {got}/200 lines</span></div>')
+    axis = ('<div class="ob-axis" aria-hidden="true"><span></span><span></span>'
+            '<span class="ob-ticks"><span>0</span><span>5</span><span>10</span></span><span></span><span></span></div>')
+    return ('<div class="ob-board" role="list" aria-label="Ranking by score on 200 hard lines, out of 10">'
+            + ''.join(rows) + axis + '</div>\n')
 
 
 if __name__ == '__main__':

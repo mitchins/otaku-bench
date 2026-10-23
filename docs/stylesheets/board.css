@@ -1,0 +1,87 @@
+/* Landing-page leaderboard: one series, one colour, bars on a zero-based 0–10 axis.
+   Tokens live on .ob-board (not :root) so the theme's scheme variables resolve per light/dark. */
+.ob-board {
+  --ob-bar: #2a78d6;            /* validated vs #ffffff: lightness, chroma, >= 3:1 */
+  --ob-track: rgba(0, 0, 0, .06);
+  --ob-ink: var(--md-default-fg-color);
+  --ob-muted: var(--md-default-fg-color--light);
+  --ob-rule: var(--md-default-fg-color--lightest);
+}
+[data-md-color-scheme="slate"] .ob-board {
+  --ob-bar: #3987e5;            /* validated vs #1e2029 */
+  --ob-track: rgba(255, 255, 255, .07);
+}
+
+/* the theme styles every <details> as a collapsible admonition; these rows are plain */
+.md-typeset .ob-board details.ob-row {
+  margin: 0; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; font-size: inherit; overflow: visible;
+}
+.md-typeset .ob-board details.ob-row > summary {
+  margin: 0; padding: .45em .3em; border: 0; background: none; font-weight: inherit; color: inherit;
+}
+.md-typeset .ob-board details.ob-row > summary::before,
+.md-typeset .ob-board details.ob-row > summary::after { content: none; display: none; }
+
+/* FAQ sections under the board recede: neutral rule, no tint */
+.md-typeset details.question {
+  border: 0; border-top: 1px solid var(--md-default-fg-color--lightest); border-radius: 0;
+  background: none; box-shadow: none; margin: 0; font-size: .8rem;
+}
+.md-typeset details.question > summary { background: none; padding-left: 1.8rem; }
+.md-typeset details.question > summary::before { background-color: var(--md-default-fg-color--light); }
+.md-typeset details.question > summary::after { color: var(--md-default-fg-color--light); }
+.md-typeset details.question:last-of-type { border-bottom: 1px solid var(--md-default-fg-color--lightest); }
+
+.ob-board { margin: 1.2em 0 .4em; font-variant-numeric: tabular-nums; }
+
+.ob-row > summary,
+.ob-queued,
+.ob-axis {
+  display: grid;
+  grid-template-columns: 1.6em minmax(9em, 15em) 1fr 3.2em minmax(8em, 11em);
+  align-items: center;
+  gap: 0 .8em;
+}
+.md-typeset .ob-board details.ob-row > summary { list-style: none; cursor: pointer; border-radius: 4px; }
+.ob-row > summary::-webkit-details-marker { display: none; }
+.md-typeset .ob-board details.ob-row > summary:hover,
+.md-typeset .ob-board details.ob-row[open] > summary { background: var(--ob-track); }
+.ob-row > summary:focus-visible { outline: 2px solid var(--ob-bar); outline-offset: 1px; }
+
+.ob-rank { color: var(--ob-muted); text-align: right; }
+.ob-name { font-weight: 600; color: var(--ob-ink); overflow-wrap: anywhere; }
+.ob-track { height: .7em; background: var(--ob-track); border-radius: 4px; }
+.ob-bar { display: block; height: 100%; background: var(--ob-bar); border-radius: 0 4px 4px 0; }
+.ob-score { font-weight: 700; color: var(--ob-ink); text-align: right; }
+.ob-qual { color: var(--ob-muted); font-size: .85em; }
+
+.ob-more {
+  display: flex; flex-wrap: wrap; gap: .3em 1.6em;
+  margin: .1em 0 .6em calc(1.6em + .8em);
+  padding: .5em .8em;
+  border-left: 2px solid var(--ob-bar);
+  color: var(--ob-muted); font-size: .85em;
+}
+.ob-more b { color: var(--ob-ink); }
+
+.ob-queued { padding: .45em .3em; color: var(--ob-muted); }
+.ob-queued .ob-name { font-weight: 400; color: var(--ob-muted); }
+.ob-pending { grid-column: 3 / 6; font-size: .85em; font-style: italic; }
+
+/* columns are em-sized, so the axis row keeps the row font size; only the labels shrink */
+.ob-axis { padding: .2em .3em 0; color: var(--ob-muted); }
+.ob-ticks > span { font-size: .75em; }
+.ob-ticks { display: flex; justify-content: space-between; border-top: 1px solid var(--ob-rule); padding-top: .2em; }
+
+/* phone width: name on its own line, qualifier under the bar */
+@media (max-width: 40em) {
+  .ob-row > summary, .ob-queued, .ob-axis { grid-template-columns: 1.4em 1fr 3em; }
+  .ob-name { grid-column: 2 / 4; }
+  .ob-track { grid-column: 2; }
+  .ob-score { grid-column: 3; }
+  .ob-qual { grid-column: 2 / 4; }
+  .ob-pending { grid-column: 2 / 4; }
+  .ob-axis > span:nth-child(2), .ob-axis > span:nth-child(4), .ob-axis > span:nth-child(5) { display: none; }
+  .ob-ticks { grid-column: 2; }
+  .ob-more { margin-left: 1.4em; }
+}
