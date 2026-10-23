@@ -46,6 +46,6 @@ A dry run is the default. Add `--execute` to spend money.
 
 ## Limits worth knowing
 
-- Latency is measured on a warm server (weights resident, instruction prefix cached), with history prefilled fresh each request, as a sliding-window client would send it. An append-only client keeps its history cached and lands close to the `d0` figure. Deck latency has to be measured on the Deck.
+- Latency is measured on a warm server (weights resident, instruction prefix cached), with history prefilled fresh each request, as a sliding-window client would send it. d6 is the headline latency; how much an append-only client gains from cached history hasn't been measured yet. Deck latency has to be measured on the Deck.
 - The scenes only carry 2–3 lines of real context, so the 6/12/24 depths use earlier scenes as realistic filler. That measures the latency cost of history, not its quality benefit.
 - TranslateGemma is skipped because its native template on llama-server is still unverified.
