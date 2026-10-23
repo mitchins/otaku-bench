@@ -2,7 +2,8 @@
 # Daily judge queue: works down the shortlist with gpt-6.1-sol inside the free data-sharing allowance.
 # Each run judges full scenes, then eval lines, for each model in order. Already-judged items are skipped,
 # so the queue resumes where yesterday's run hit the cap. Then it refreshes results/judge/RANKING.md.
-#   ./mission/judge_queue.sh          # cron: 20 0 * * * (tiger runs on UTC)
+#   ./mission/judge_queue.sh                        # cron 00:20 UTC: keeps 20K reserved for other keys
+#   RESERVE=0 STOP=23:58 ./mission/judge_queue.sh   # cron 23:45 UTC: spend what other keys left unused
 set -uo pipefail
 cd "$(dirname "$0")/.."
 # shellcheck disable=SC1091
@@ -15,7 +16,7 @@ set +a
 # added to what the local ledger already counted today (the judge checks ledger + next call against it).
 # Static 200K if the Usage API is unreachable.
 if [ -z "${CAP:-}" ]; then
-  if REM=$(python tools/openai_usage.py --remaining 2>/dev/null); then
+  if REM=$(python tools/openai_usage.py --remaining --reserve "${RESERVE:-20000}" 2>/dev/null); then
     LEDGER=$(python - <<'PY'
 import json, time
 from pathlib import Path
@@ -52,19 +53,19 @@ QUEUE=(
   screen/46_Qwen3-4B-Instruct-2507
 )
 
-judge() {  # dir dataset mode split tag
-  local dir=$1 name; name=$(basename "$1")
+judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)
+  local dir=$1 name out; name=$(basename "$1")
   [ -n "${5:-}" ] && name="$name+$5"
-  python tools/judge.py --responses "results/$dir/$2_$([ "$2" = lines ] && echo bare || echo "$3").jsonl" \
-    --dataset "$2" --mode "$3" --split "$4" --budget-usd 5 --daily-token-cap "$CAP" \
-    --output "$OUT/$name.$2_$([ "$2" = lines ] && echo "$4" || echo "$3").jsonl" --execute 2>&1 \
-    | grep -vE '^[0-9]+/[0-9]+ .* => '  # the caller's block already appends to $LOG
-  ! grep -q 'Daily token cap reached' "$LOG"
+  out=$(python tools/judge.py --responses "results/$dir/$2_$([ "$2" = lines ] && echo bare || echo "$3").jsonl" \
+    --dataset "$2" --mode "$3" --split "$4" --budget-usd 5 --daily-token-cap "$CAP" ${STOP:+--stop-before-utc "$STOP"} \
+    --output "$OUT/$name.$2_$([ "$2" = lines ] && echo "$4" || echo "$3").jsonl" --execute 2>&1)
+  grep -vE '^[0-9]+/[0-9]+ .* => ' <<<"$out"  # the caller's block appends this to $LOG
+  ! grep -qE 'Daily token cap reached|Stop time .* reached' <<<"$out"
 }
 
 {
-  echo "=== $(date -u +%FT%TZ) judge queue, cap $CAP"
-  python tools/openai_usage.py 2>&1 || true
+  echo "=== $(date -u +%FT%TZ) judge queue, cap $CAP, reserve ${RESERVE:-20000}${STOP:+, stop $STOP UTC}"
+  python tools/openai_usage.py --reserve "${RESERVE:-20000}" 2>&1 || true
   for dir in "${QUEUE[@]}"; do
     tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
     echo "--- $dir"

@@ -115,6 +115,7 @@ def main():
  p.add_argument('--execute',action='store_true',help='Must opt in to paid API requests')
  p.add_argument('--daily-token-cap',type=int,default=200_000,help='stop before this many judge tokens (in+out) per UTC day, summed over all runs via the ledger; 0 disables')
  p.add_argument('--ledger',type=Path,default=ROOT/'results/judge/token_ledger.jsonl')
+ p.add_argument('--stop-before-utc',default=None,help='HH:MM; make no new call at or after this UTC time (keeps a late run inside the day)')
  args=p.parse_args()
  if args.dataset=='lines' and args.mode!='bare':p.error('line benchmark only supports bare mode; old context mode was leaking answers')
  if args.budget_usd<=0 or args.max_output_tokens<300:p.error('invalid resource budget')
@@ -161,6 +162,8 @@ def main():
   for n,(r,d,key) in enumerate(tasks,1):
    if spent>=args.budget_usd:
     print(f'Cost limit reached: ${spent:.4f}; stopped before another call.',file=sys.stderr);break
+   if args.stop_before_utc and time.strftime('%H:%M',time.gmtime())>=args.stop_before_utc:
+    print(f'Stop time {args.stop_before_utc} UTC reached; resume next run (idempotent).',file=sys.stderr);break
    # leave room for one more call of the size seen so far
    if args.daily_token_cap and used_today+max(per_call,1500)>args.daily_token_cap:
     print(f'Daily token cap reached: {used_today} tokens today; resume tomorrow (idempotent).',file=sys.stderr);break
