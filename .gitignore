@@ -1,0 +1,14 @@
+# secrets / local env
+.env
+mission/.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# runtime noise: llama-server logs and run logs (summary.jsonl holds the outcomes)
+results/**/server.log
+results/**/*.log
+
+# built docs site
+site/

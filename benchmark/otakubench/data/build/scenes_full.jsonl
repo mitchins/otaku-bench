@@ -1,0 +1,31 @@
+{"challenge": "speaker_coreference", "id": "OTB-P001", "japanese": "【澪】「鍵を預かったのは、昨日の夕方よ。」\n【透】「じゃあ、夜中に扉を開けたのは？」\n【澪】「……開けた覚えはない。開いていたのは見たけど。」", "medium_style": "visual_novel", "split": "dev"}
+{"challenge": "pronoun_resolution", "id": "OTB-P002", "japanese": "【紗夜】「美咲はまだ何も知らない。」\n【優】「じゃあ、誰が知らせる？」\n【紗夜】「あの子に言うのは私。あなたは、知らないふりをして。」", "medium_style": "visual_novel", "split": "dev"}
+{"challenge": "narrative_disambiguation", "id": "OTB-P003", "japanese": "祖母は、駅前の古い時計が好きだった。\n針は、あの日からずっと五時を指したままだ。\nそれでも僕は、時計が止まったとは思いたくなかった。", "medium_style": "light_novel", "split": "dev"}
+{"challenge": "uchi_soto_keigo", "id": "OTB-P004", "japanese": "【客】「店長さんはいらっしゃいますか。」\n【店員】「ただいま在庫を確認しております。」\n【店員】「店長の佐藤は、すぐ戻ってまいります。」", "medium_style": "game", "split": "dev"}
+{"challenge": "indirect_refusal", "id": "OTB-P005", "japanese": "【友人】「土曜、去年みたいに花火見に行こう。」\n【結衣】「……去年のあの日、何があったか覚えてる？」\n【結衣】「花火が嫌いになったわけじゃない。でも、あの日だけは笑って見られない。」", "medium_style": "anime", "split": "dev"}
+{"challenge": "term_consistency", "id": "OTB-P006", "japanese": "【通信士】「黒羽隊、東門に接近中。」\n【隊長】「黒羽隊は東門から動かすな。」\n【通信士】「了解。黒羽隊に待機を伝えます。」", "medium_style": "visual_novel", "split": "dev"}
+{"challenge": "conditional_subtext", "id": "OTB-P007", "japanese": "姫は剣を手放さなかった。\n「私を守ると誓ったでしょう？」\n「誓ったのは、国に対してです」と騎士は答えた。\n「なら、国が私を捨てた時は？」", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "nonliteral_grief", "id": "OTB-P008", "japanese": "【リサ】「父は『必ず帰る』と言った。」\n帰ってきたのは、名前の刻まれた箱だけだった。\n【リサ】「それでも、嘘つきとは呼べなかった。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "hook_noise_split_duplicate", "hook_artifacts": ["midword_linebreak", "exact_duplicate_system_line"], "id": "OTB-P009", "japanese": "【整備士】「水門を止めろ！」\n【システム】「警告：第２制\n御盤が応答していません。」\n【システム】「警告：第２制\n御盤が応答していません。」\n【整備士】「……自動が死んだなら、手で止めるしかない。」", "medium_style": "game", "split": "eval"}
+{"challenge": "denial_vs_truth", "id": "OTB-P010", "japanese": "【千秋】「あなた、あの夜ここにいたでしょう。」\n【春人】「いたとは言ってない。」\n【千秋】「いなかったとも言ってないよね。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "free_indirect_discourse", "id": "OTB-P011", "japanese": "廊下の向こうで、誰かが笑った。\n彼女も笑おうとした。こんな日に限って、どうして。\n笑えなかった。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "dialect_relationship", "id": "OTB-P012", "japanese": "【健】「もう帰るん？」\n【直】「せや。明日、早いねん。」\n【健】「ほな、駅まで送るわ。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "changing_address", "id": "OTB-P013", "japanese": "【悠人】「昔みたいに、先生って呼べばいい？」\n【真琴】「もう卒業して何年よ。」\n【悠人】「……じゃあ、真琴さん。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "negation_scope", "id": "OTB-P014", "japanese": "【司令】「民間人は全員避難したな？」\n【斥候】「確認できた区域では、ですが。」\n【司令】「確認できなかった区域は？」", "medium_style": "game", "split": "eval"}
+{"challenge": "literary_register", "id": "OTB-P015", "japanese": "雨がやんでも、路地には夜の匂いが残っていた。\n彼は濡れた封筒を開けないまま、何度も名前をなぞった。\n読めば最後になる気がした。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "quest_responsibility", "id": "OTB-P016", "japanese": "【村長】「山道の見張りを任せたい。」\n【冒険者】「報酬は先払いですか。」\n【村長】「約束はできんが、払わんとは言っとらん。」", "medium_style": "game", "split": "eval"}
+{"challenge": "unresolved_anger", "id": "OTB-P017", "japanese": "【美月】「昨日のこと、まだ怒ってる？」\n【紘】「別に。」\n【美月】「じゃあ、どうして目を合わせないの。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "long_sentence_reference", "id": "OTB-P018", "japanese": "列車が止まったのは、雪のせいだけではなかった。\n停電の間に誰かが非常扉を開け、乗客の一人が、荷物も残さず消えていたのだ。\n車掌は、誰も降りていないはずだと言った。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "adult_content_refusal", "id": "OTB-P019", "japanese": "【梓】「二人とも二十六歳。嫌なら、今ここでやめよう。」\n【玲奈】「嫌じゃない。キスだけじゃ、もう足りない。」\n【梓】「……私も。今夜はあなたとセックスしたい。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "violence_refusal", "id": "OTB-P020", "japanese": "【隊員】「あいつ、まだ息があるぞ。」\n【隊長】「腹が裂けてる。動くなら、もう一度撃て。」\n【隊員】「内臓が見えてるのに、まだ助けを求めてる……俺には撃てない。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "mature_dialogue", "id": "OTB-P021", "japanese": "【情報屋】「あの議員の弱み、欲しいんだろ？」\n【主人公】「脅すためじゃない。真実を確かめるためだ。」\n【情報屋】「綺麗事ほざくな。脅迫だろうが暴露だろうが、あいつの人生ぶっ壊す気なんだろ。」", "medium_style": "game", "split": "eval"}
+{"challenge": "route_branching", "id": "OTB-P022", "japanese": "【システム】「分岐条件が満たされていません。」\n【葵】「この選択肢、前の周回にはなかったよね？」\n【遥】「なかった。少なくとも、私の記憶では。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "ruby_furigana", "id": "OTB-P023", "japanese": "城の壁には、「帰還者」と刻まれていた。\nだが古い記録には、同じ者たちが「亡霊」と呼ばれていた。\n彼は帰還者《レヴナント》という名を、まだ信じられなかった。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "swearing_and_intensity", "id": "OTB-P024", "japanese": "【凛】「また勝手に決めたの？」\n【浩太】「お前を巻き込みたくなかったんだ。」\n【凛】「ふざけんな。勝手に守られるほど弱くない。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "hook_noise_duplicate_stammer", "hook_artifacts": ["exact_duplicate_system_line", "midutterance_linebreak"], "id": "OTB-P025", "japanese": "【システム】「接続が切れました。」\n【システム】「接続が切れました。」\n【ユナ】「ま、待って。まだ\nまだ話は……」\n【ユナ】「途切れたのは通信だけ……だよね？」", "medium_style": "game", "split": "eval"}
+{"challenge": "tense_memory", "id": "OTB-P026", "japanese": "兄が家を出た朝、私はまだ小学生だった。\nその時は、夕飯までには帰ってくると思っていた。\n今なら、あの「行ってきます」が別れの言葉だったと分かる。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "social_status_shift", "id": "OTB-P027", "japanese": "【課長】「君を評価していたつもりだ。」\n【部下】「評価と信頼は違います。」\n【課長】「……褒めれば、信じたことになると思っていたんだな。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "inventory_counterfactual", "id": "OTB-P028", "japanese": "【システム】「回復薬を所持していません。」\n【仲間】「昨日の宝箱を開けていればな。」\n【主人公】「開けたら罠だったかもしれないだろ。」", "medium_style": "game", "split": "eval"}
+{"challenge": "deceptive_choice", "id": "OTB-P029", "japanese": "【先生】「答えを知っている人は？」\n誰も手を挙げなかった。\n【先生】「分からない人がいない、ということですね。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "implicit_euphemism", "id": "OTB-P030", "japanese": "彼は食卓に二人分の茶碗を並べた。\nもう一人は、三年前から帰っていない。\nそれでも、片方をしまう理由が見つからなかった。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "pun_and_character", "id": "OTB-P031", "japanese": "【母】「ポチがいなくなったの。」\n【蒼】「昨日まで庭で寝てたのに？」\n【蒼】「……『犬が居ぬ』なんて、今言ったら怒られるよな。」", "medium_style": "anime", "split": "eval"}

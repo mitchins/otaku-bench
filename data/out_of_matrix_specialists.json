@@ -1,0 +1,17 @@
+[
+  {
+    "model": "PLaMo-2-translate",
+    "original_repo": "pfnet/plamo-2-translate",
+    "parameters_total_b": 10,
+    "runtime": "vLLM or Transformers trust_remote_code=True using <|plamo:op|> translation prompt; do not present as GGUF drop-in",
+    "status": "specialist lane / no attested mainstream recommended GGUF",
+    "license": "PLaMo community license with commercial restrictions; read before downloading",
+    "why": "Japanese-to-English direct specialism plus pairwise-eval sibling"
+  },
+  {
+    "model": "CAT-Translate-3.3B-final",
+    "original_repo": "cyberagent/CAT-Translate-3.3b",
+    "status": "current lab final has no reliable recommended GGUF yet; 3.3B-beta is in the 50-model GGUF lane",
+    "why": "do not misrepresent beta GGUF as the current final lab weights"
+  }
+]

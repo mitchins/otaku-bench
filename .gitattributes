@@ -1,0 +1,11 @@
+# git-crypt: eval answers stay versioned but unreadable without the key.
+# Public: harness, docs, blind sources (Japanese only), aggregate reports.
+# NEVER add a pattern that matches .gitattributes itself.
+benchmark/otakubench/data/items/** filter=git-crypt diff=git-crypt
+benchmark/otakubench/data/scenes/** filter=git-crypt diff=git-crypt
+benchmark/otakubench/data/build/*_gold.* filter=git-crypt diff=git-crypt
+benchmark/jpmedia250/data/** filter=git-crypt diff=git-crypt
+tools/patch_corpus_v4.py filter=git-crypt diff=git-crypt
+# raw model outputs and judge evidence quote or paraphrase the references
+results/**/*.jsonl filter=git-crypt diff=git-crypt
+results/**/SKIM.md filter=git-crypt diff=git-crypt

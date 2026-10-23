@@ -1,0 +1,71 @@
+{
+  "scope": "Representative exact GGUF file paths and displayed file sizes sourced from Hugging Face listings as of 2026-10-23; NOT Hub-API/SHA attestation and NOT proof of inference compatibility",
+  "entries": [
+    {
+      "rank": 1,
+      "file": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+      "displayed_gb": 16.5,
+      "source_url": "https://huggingface.co/unsloth/Qwen3.8-27B-GGUF/blob/main/Qwen3.8-27B-UD-Q4_K_M.gguf"
+    },
+    {
+      "rank": 2,
+      "file": "google_gemma-4-31B-it-Q4_K_M.gguf",
+      "displayed_gb": 19.6,
+      "source_url": "https://huggingface.co/bartowski/google_gemma-4-31B-it-GGUF/blame/main/README.md"
+    },
+    {
+      "rank": 3,
+      "file": "Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf",
+      "displayed_gb": 22.29,
+      "source_url": "https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF/blame/main/README.md"
+    },
+    {
+      "rank": 6,
+      "file": "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf",
+      "displayed_gb": 16.9,
+      "source_url": "https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF/blob/main/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
+    },
+    {
+      "rank": 8,
+      "file": "llm-jp-4.1-32b-a3b-thinking-Q4_K_M.gguf",
+      "displayed_gb": 21.5,
+      "source_url": "https://huggingface.co/llm-jp/llm-jp-4.1-32b-a3b-thinking-gguf/blob/main/llm-jp-4.1-32b-a3b-thinking-Q4_K_M.gguf"
+    },
+    {
+      "rank": 9,
+      "file": "llm-jp-4.1-33b-thinking-Q4_K_M.gguf",
+      "displayed_gb": 20.4,
+      "source_url": "https://huggingface.co/llm-jp/llm-jp-4.1-33b-thinking-gguf/blob/main/llm-jp-4.1-33b-thinking-Q4_K_M.gguf"
+    },
+    {
+      "rank": 12,
+      "file": "Qwen_Qwen3.5-4B-Q4_K_M.gguf",
+      "displayed_gb": 3.01,
+      "source_url": "https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF/blob/main/Qwen_Qwen3.5-4B-Q4_K_M.gguf"
+    },
+    {
+      "rank": 14,
+      "file": "translategemma-12b-it.Q4_K_M.gguf",
+      "displayed_gb": 7.3,
+      "source_url": "https://huggingface.co/mradermacher/translategemma-12b-it-GGUF/tree/main"
+    },
+    {
+      "rank": 17,
+      "file": "LiquidAI_LFM2.5-24B-A2B-Q4_K_M.gguf",
+      "displayed_gb": 15.35,
+      "source_url": "https://huggingface.co/bartowski/LiquidAI_LFM2.5-24B-A2B-GGUF"
+    },
+    {
+      "rank": 23,
+      "file": "openai_gpt-oss-20b-Q4_K_M.gguf",
+      "displayed_gb": 11.67,
+      "source_url": "https://huggingface.co/bartowski/openai_gpt-oss-20b-GGUF/blob/main/openai_gpt-oss-20b-Q4_K_M.gguf"
+    },
+    {
+      "rank": 43,
+      "file": "aya-expanse-8b-Q4_K_M.gguf",
+      "displayed_gb": 5.06,
+      "source_url": "https://huggingface.co/bartowski/aya-expanse-8b-GGUF"
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+# OtakuBench v3 — 50-model GGUF shortlist
+
+> **Priority ordering is for experiments, not measured translation ability.** None of these 50 candidates has completed a live OtakuBench run here. New GGUF filenames were individually checked against repository pages; none of the new 12 has a pinned Hugging Face API revision in this workspace. Memory suitability of any candidate is also unverified.
+
+**50 candidates, 12 newly admitted adaptations/specialists, 12 retired; 21 file-size-only Deck candidates (not confirmed to load).**
+
+Original training publisher and GGUF-conversion publisher are recorded separately. All files and evidence links are in `data/otakubench50.json` / `.csv`.
+
+| Priority | Model and original release | Total B | Training lane | GGUF source and exact filename | Quant | File GB† | Deck file size |
+|---:|---|---:|---|---|---|---:|---|
+| 1 | [Qwen3.8-27B](https://huggingface.co/Qwen/Qwen3.8-27B) | 27 | lab original or existing v2 specialist | [unsloth/Qwen3.8-27B-GGUF](https://huggingface.co/unsloth/Qwen3.8-27B-GGUF) — `Qwen3.8-27B-UD-Q4_K_M.gguf` | `UD-Q4_K_M` | 16.50 | no |
+| 2 | [Gemma 4 31B IT](https://huggingface.co/google/gemma-4-31b-it) | 31 | lab original or existing v2 specialist | [bartowski/google_gemma-4-31B-it-GGUF](https://huggingface.co/bartowski/google_gemma-4-31B-it-GGUF) — `google_gemma-4-31B-it-Q4_K_M.gguf` | `Q4_K_M` | 19.60 | no |
+| 3 | [Qwen3.6-35B-A3B](https://huggingface.co/Qwen/Qwen3.6-35B-A3B) | 35 | lab original or existing v2 specialist | [bartowski/Qwen_Qwen3.6-35B-A3B-GGUF](https://huggingface.co/bartowski/Qwen_Qwen3.6-35B-A3B-GGUF) — `Qwen_Qwen3.6-35B-A3B-Q4_K_M.gguf` | `Q4_K_M` | 22.29 | no |
+| 4 | [Qwen3.6-27B](https://huggingface.co/Qwen/Qwen3.6-27B) | 27 | lab original or existing v2 specialist | [bartowski/Qwen_Qwen3.6-27B-GGUF](https://huggingface.co/bartowski/Qwen_Qwen3.6-27B-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 5 | [Gemma 4 26B-A4B IT](https://huggingface.co/google/gemma-4-26B-A4B-it) | 26 | lab original or existing v2 specialist | [unsloth/gemma-4-26B-A4B-it-GGUF](https://huggingface.co/unsloth/gemma-4-26B-A4B-it-GGUF) — `gemma-4-26B-A4B-it-UD-Q4_K_M.gguf` | `UD-Q4_K_M` | 16.90 | no |
+| 6 | [LLM-jp-4.1-32B-A3B Thinking](https://huggingface.co/llm-jp/llm-jp-4.1-32b-a3b-thinking) | 32.139 | lab original or existing v2 specialist | [llm-jp/llm-jp-4.1-32b-a3b-thinking-gguf](https://huggingface.co/llm-jp/llm-jp-4.1-32b-a3b-thinking-gguf) — `llm-jp-4.1-32b-a3b-thinking-Q4_K_M.gguf` | `Q4_K_M` | 21.50 | no |
+| 7 | [LLM-jp-4.1-33B Thinking](https://huggingface.co/llm-jp/llm-jp-4.1-33b-thinking) | 33.22 | lab original or existing v2 specialist | [llm-jp/llm-jp-4.1-33b-thinking-gguf](https://huggingface.co/llm-jp/llm-jp-4.1-33b-thinking-gguf) — `llm-jp-4.1-33b-thinking-Q4_K_M.gguf` | `Q4_K_M` | 20.40 | no |
+| 8 | [Gemma 4 12B IT](https://huggingface.co/google/gemma-4-12b-it) | 12 | lab original or existing v2 specialist | [unsloth/gemma-4-12b-it-GGUF](https://huggingface.co/unsloth/gemma-4-12b-it-GGUF) — `unverified` | `UD-Q4_K_XL` | — | no |
+| 9 | [Qwen3-Swallow-30B-A3B-RL-v0.2](https://huggingface.co/tokyotech-llm/Qwen3-Swallow-30B-A3B-RL-v0.2) | 31 | lab original or existing v2 specialist | [yuseiito/Qwen3-Swallow-30B-A3B-RL-v0.2-GGUF](https://huggingface.co/yuseiito/Qwen3-Swallow-30B-A3B-RL-v0.2-GGUF) — `Qwen3-Swallow-30B-A3B-RL-v0.2-Q4_K_M.gguf` | `Q4_K_M` | 18.60 | no |
+| 10 | [CAT-Translate-7B](https://huggingface.co/cyberagent/CAT-Translate-7b) | 7 | lab original or existing v2 specialist | [mradermacher/CAT-Translate-7b-GGUF](https://huggingface.co/mradermacher/CAT-Translate-7b-GGUF) — `CAT-Translate-7b.Q4_K_M.gguf` | `Q4_K_M` | 4.54 | size only |
+| 11 | [Qwen3-Swallow-32B-RL-v0.2](https://huggingface.co/tokyotech-llm/Qwen3-Swallow-32B-RL-v0.2) **NEW** | 32.5 | heavy adaptation | [ultimatechris/Qwen3-Swallow-32B-RL-v0.2-GGUF](https://huggingface.co/ultimatechris/Qwen3-Swallow-32B-RL-v0.2-GGUF) — `Qwen3-Swallow-32B-RL-v0.2-Q4_K_M.gguf` | `Q4_K_M` | 19.80 | no |
+| 12 | [GPT-OSS-Swallow-20B-RL-v0.1](https://huggingface.co/tokyotech-llm/GPT-OSS-Swallow-20B-RL-v0.1) **NEW** | 21 | heavy adaptation | [mradermacher/GPT-OSS-Swallow-20B-RL-v0.1-GGUF](https://huggingface.co/mradermacher/GPT-OSS-Swallow-20B-RL-v0.1-GGUF) — `GPT-OSS-Swallow-20B-RL-v0.1.Q4_K_M.gguf` | `Q4_K_M` | 15.80 | no |
+| 13 | [NVIDIA-Nemotron-Nano-9B-v2-Japanese](https://huggingface.co/nvidia/NVIDIA-Nemotron-Nano-9B-v2-Japanese) **NEW** | 9 | first party japanese | [mmnga-o/NVIDIA-Nemotron-Nano-9B-v2-Japanese-gguf](https://huggingface.co/mmnga-o/NVIDIA-Nemotron-Nano-9B-v2-Japanese-gguf) — `NVIDIA-Nemotron-Nano-9B-v2-Japanese-Q4_K_M.gguf` | `Q4_K_M` | 6.53 | size only |
+| 14 | [Shisa-v2.1-unphi4-14B](https://huggingface.co/shisa-ai/shisa-v2.1-unphi4-14b) **NEW** | 14 | large sft rl | [XpressAI/shisa-v2.1-unphi4-14b-GGUF](https://huggingface.co/XpressAI/shisa-v2.1-unphi4-14b-GGUF) — `shisa-v2.1-unphi4-14b-Q4_K_M.gguf` | `Q4_K_M` | 8.89 | size only |
+| 15 | [Shisa-v2.1-qwen3-8B](https://huggingface.co/shisa-ai/shisa-v2.1-qwen3-8b) **NEW** | 8 | large sft rl | [XpressAI/shisa-v2.1-qwen3-8b-GGUF](https://huggingface.co/XpressAI/shisa-v2.1-qwen3-8b-GGUF) — `shisa-v2.1-qwen3-8b-Q4_K_M.gguf` | `Q4_K_M` | 5.03 | size only |
+| 16 | [Shisa-v2.1-llama3.2-3B](https://huggingface.co/shisa-ai/shisa-v2.1-llama3.2-3b) **NEW** | 3 | large sft rl | [XpressAI/shisa-v2.1-llama3.2-3b-GGUF](https://huggingface.co/XpressAI/shisa-v2.1-llama3.2-3b-GGUF) — `shisa-v2.1-llama3.2-3b-Q4_K_M.gguf` | `Q4_K_M` | 2.02 | size only |
+| 17 | [Shisa-v2.1-lfm2-1.2B](https://huggingface.co/shisa-ai/shisa-v2.1-lfm2-1.2b) **NEW** | 1.2 | large sft rl | [XpressAI/shisa-v2.1-lfm2-1.2b-GGUF](https://huggingface.co/XpressAI/shisa-v2.1-lfm2-1.2b-GGUF) — `shisa-v2.1-lfm2-1.2b-Q4_K_M.gguf` | `Q4_K_M` | 0.73 | size only |
+| 18 | [TinySwallow-1.5B-Instruct](https://huggingface.co/SakanaAI/TinySwallow-1.5B-Instruct) **NEW** | 1.5 | lab distillation | [SakanaAI/TinySwallow-1.5B-Instruct-GGUF](https://huggingface.co/SakanaAI/TinySwallow-1.5B-Instruct-GGUF) — `tinyswallow-1.5b-instruct-q5_k_m.gguf` | `Q5_K_M` | 1.13 | size only |
+| 19 | [LFM2.5-1.2B-JP-202606](https://huggingface.co/LiquidAI/LFM2.5-1.2B-JP-202606) **NEW** | 1.17 | first party japanese | [LiquidAI/LFM2.5-1.2B-JP-202606-GGUF](https://huggingface.co/LiquidAI/LFM2.5-1.2B-JP-202606-GGUF) — `LFM2.5-1.2B-JP-202606-Q4_K_M.gguf` | `Q4_K_M` | 0.73 | size only |
+| 20 | [VNTL-Llama3-8B-v2](https://huggingface.co/lmg-anon/vntl-llama3-8b-v2-hf) **NEW** | 8 | domain exception | [lmg-anon/vntl-llama3-8b-v2-gguf](https://huggingface.co/lmg-anon/vntl-llama3-8b-v2-gguf) — `vntl-llama3-8b-v2-hf-q5_k_m.gguf` | `Q5_K_M` | 5.73 | size only |
+| 21 | [Sugoi-14B-Ultra](https://huggingface.co/sugoitoolkit/Sugoi-14B-Ultra-HF) **NEW** | 14.7 | domain exception | [sugoitoolkit/Sugoi-14B-Ultra-GGUF](https://huggingface.co/sugoitoolkit/Sugoi-14B-Ultra-GGUF) — `Sugoi-14B-Ultra-Q4_K_M.gguf` | `Q4_K_M` | 8.99 | size only |
+| 22 | [Sugoi-32B-Ultra](https://huggingface.co/sugoitoolkit/Sugoi-32B-Ultra-GGUF) **NEW** | 32.5 | domain exception | [sugoitoolkit/Sugoi-32B-Ultra-GGUF](https://huggingface.co/sugoitoolkit/Sugoi-32B-Ultra-GGUF) — `Sugoi-32B-Ultra-Q4_K_M.gguf` | `Q4_K_M` | 19.90 | no |
+| 23 | [HY-MT1.5-7B](https://huggingface.co/tencent/HY-MT1.5-7B) | 8 | lab original or existing v2 specialist | [tencent/HY-MT1.5-7B-GGUF](https://huggingface.co/tencent/HY-MT1.5-7B-GGUF) — `HY-MT1.5-7B-Q4_K_M.gguf` | `Q4_K_M` | 4.62 | size only |
+| 24 | [Hunyuan-MT-7B](https://huggingface.co/tencent/Hunyuan-MT-7B) | 8 | lab original or existing v2 specialist | [mradermacher/Hunyuan-MT-7B-GGUF](https://huggingface.co/mradermacher/Hunyuan-MT-7B-GGUF) — `Hunyuan-MT-7B.Q4_K_M.gguf` | `Q4_K_M` | 4.62 | size only |
+| 25 | [Seed-X-PPO-7B](https://huggingface.co/ByteDance-Seed/Seed-X-PPO-7B) | 8 | lab original or existing v2 specialist | [mradermacher/Seed-X-PPO-7B-GGUF](https://huggingface.co/mradermacher/Seed-X-PPO-7B-GGUF) — `Seed-X-PPO-7B.Q4_K_M.gguf` | `Q4_K_M` | 4.56 | size only |
+| 26 | [CAT-Translate-3.3B-beta](https://huggingface.co/cyberagent/CAT-Translate-3.3b-beta) | 3.3 | lab original or existing v2 specialist | [mradermacher/CAT-Translate-3.3b-beta-GGUF](https://huggingface.co/mradermacher/CAT-Translate-3.3b-beta-GGUF) — `CAT-Translate-3.3b-beta.Q4_K_M.gguf` | `Q4_K_M` | 2.07 | size only |
+| 27 | [Qwen3-Swallow-8B-RL-v0.2](https://huggingface.co/tokyotech-llm/Qwen3-Swallow-8B-RL-v0.2) | 8 | lab original or existing v2 specialist | [mmnga-o/Qwen3-Swallow-8B-RL-v0.2-gguf](https://huggingface.co/mmnga-o/Qwen3-Swallow-8B-RL-v0.2-gguf) — `Qwen3-Swallow-8B-RL-v0.2-Q4_K_M.gguf` | `Q4_K_M` | 5.03 | size only |
+| 28 | [CAT-Translate-1.4B](https://huggingface.co/cyberagent/CAT-Translate-1.4b) | 1.4 | lab original or existing v2 specialist | [mradermacher/CAT-Translate-1.4b-GGUF](https://huggingface.co/mradermacher/CAT-Translate-1.4b-GGUF) — `CAT-Translate-1.4b.Q4_K_M.gguf` | `Q4_K_M` | 0.93 | size only |
+| 29 | [HY-MT1.5-1.8B](https://huggingface.co/tencent/HY-MT1.5-1.8B) | 1.8 | lab original or existing v2 specialist | [tencent/HY-MT1.5-1.8B-GGUF](https://huggingface.co/tencent/HY-MT1.5-1.8B-GGUF) — `HY-MT1.5-1.8B-Q4_K_M.gguf` | `Q4_K_M` | 1.13 | size only |
+| 30 | [CAT-Translate-0.8B](https://huggingface.co/cyberagent/CAT-Translate-0.8b) | 0.8 | lab original or existing v2 specialist | [mradermacher/CAT-Translate-0.8b-GGUF](https://huggingface.co/mradermacher/CAT-Translate-0.8b-GGUF) — `CAT-Translate-0.8b.Q4_K_M.gguf` | `Q4_K_M` | 0.53 | size only |
+| 31 | [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B) | 9 | lab original or existing v2 specialist | [bartowski/Qwen_Qwen3.5-9B-GGUF](https://huggingface.co/bartowski/Qwen_Qwen3.5-9B-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 32 | [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) | 4 | lab original or existing v2 specialist | [bartowski/Qwen_Qwen3.5-4B-GGUF](https://huggingface.co/bartowski/Qwen_Qwen3.5-4B-GGUF) — `Qwen_Qwen3.5-4B-Q4_K_M.gguf` | `Q4_K_M` | 3.01 | size only |
+| 33 | [TranslateGemma 27B IT](https://huggingface.co/google/translategemma-27b-it) | 27 | lab original or existing v2 specialist | [mradermacher/translategemma-27b-it-GGUF](https://huggingface.co/mradermacher/translategemma-27b-it-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 34 | [TranslateGemma 12B IT](https://huggingface.co/google/translategemma-12b-it) | 12 | lab original or existing v2 specialist | [mradermacher/translategemma-12b-it-GGUF](https://huggingface.co/mradermacher/translategemma-12b-it-GGUF) — `translategemma-12b-it.Q4_K_M.gguf` | `Q4_K_M` | 7.30 | size only |
+| 35 | [TranslateGemma 4B IT](https://huggingface.co/google/translategemma-4b-it) | 4 | lab original or existing v2 specialist | [mradermacher/translategemma-4b-it-GGUF](https://huggingface.co/mradermacher/translategemma-4b-it-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 36 | [LLM-jp-4.1-8B Thinking](https://huggingface.co/llm-jp/llm-jp-4.1-8b-thinking) | 8.59 | lab original or existing v2 specialist | [llm-jp/llm-jp-4.1-8b-thinking-gguf](https://huggingface.co/llm-jp/llm-jp-4.1-8b-thinking-gguf) — `unverified` | `Q4_K_M` | — | no |
+| 37 | [LFM2.5-24B-A2B](https://huggingface.co/LiquidAI/LFM2.5-24B-A2B) | 24 | lab original or existing v2 specialist | [bartowski/LiquidAI_LFM2.5-24B-A2B-GGUF](https://huggingface.co/bartowski/LiquidAI_LFM2.5-24B-A2B-GGUF) — `LiquidAI_LFM2.5-24B-A2B-Q4_K_M.gguf` | `Q4_K_M` | 15.35 | no |
+| 38 | [GLM-4.7-Flash](https://huggingface.co/zai-org/GLM-4.7-Flash) | 30 | lab original or existing v2 specialist | [bartowski/zai-org_GLM-4.7-Flash-GGUF](https://huggingface.co/bartowski/zai-org_GLM-4.7-Flash-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 39 | [Qwen3-8B](https://huggingface.co/Qwen/Qwen3-8B) | 8 | lab original or existing v2 specialist | [bartowski/Qwen_Qwen3-8B-GGUF](https://huggingface.co/bartowski/Qwen_Qwen3-8B-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 40 | [gpt-oss-20b](https://huggingface.co/openai/gpt-oss-20b) | 21 | lab original or existing v2 specialist | [bartowski/openai_gpt-oss-20b-GGUF](https://huggingface.co/bartowski/openai_gpt-oss-20b-GGUF) — `openai_gpt-oss-20b-Q4_K_M.gguf` | `Q4_K_M` | 11.67 | no |
+| 41 | [Nemotron 3 Nano 30B-A3B](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16) | 32 | lab original or existing v2 specialist | [bartowski/nvidia_Nemotron-3-Nano-30B-A3B-GGUF](https://huggingface.co/bartowski/nvidia_Nemotron-3-Nano-30B-A3B-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 42 | [Gemma 4 E4B IT](https://huggingface.co/google/gemma-4-E4B-it) | 8 | lab original or existing v2 specialist | [unsloth/gemma-4-E4B-it-GGUF](https://huggingface.co/unsloth/gemma-4-E4B-it-GGUF) — `unverified` | `UD-Q4_K_XL` | — | no |
+| 43 | [Gemma 4 E2B IT](https://huggingface.co/google/gemma-4-E2B-it) | 5.1 | lab original or existing v2 specialist | [unsloth/gemma-4-E2B-it-GGUF](https://huggingface.co/unsloth/gemma-4-E2B-it-GGUF) — `unverified` | `UD-Q4_K_XL` | — | no |
+| 44 | [Ministral 3 8B Instruct](https://huggingface.co/mistralai/Ministral-3-8B-Instruct-2512) | 8 | lab original or existing v2 specialist | [unsloth/Ministral-3-8B-Instruct-2512-GGUF](https://huggingface.co/unsloth/Ministral-3-8B-Instruct-2512-GGUF) — `unverified` | `UD-Q4_K_XL` | — | no |
+| 45 | [Qwen3.5-2B](https://huggingface.co/Qwen/Qwen3.5-2B) | 2 | lab original or existing v2 specialist | [bartowski/Qwen_Qwen3.5-2B-GGUF](https://huggingface.co/bartowski/Qwen_Qwen3.5-2B-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 46 | [Qwen2.5-7B Instruct](https://huggingface.co/Qwen/Qwen2.5-7B-Instruct) | 7 | lab original or existing v2 specialist | [bartowski/Qwen2.5-7B-Instruct-GGUF](https://huggingface.co/bartowski/Qwen2.5-7B-Instruct-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 47 | [Aya Expanse 8B](https://huggingface.co/CohereForAI/aya-expanse-8b) | 8 | lab original or existing v2 specialist | [bartowski/aya-expanse-8b-GGUF](https://huggingface.co/bartowski/aya-expanse-8b-GGUF) — `aya-expanse-8b-Q4_K_M.gguf` | `Q4_K_M` | 5.06 | size only |
+| 48 | [LFM2.5-2.6B](https://huggingface.co/LiquidAI/LFM2.5-2.6B) | 2.6 | lab original or existing v2 specialist | [bartowski/LiquidAI_LFM2.5-2.6B-GGUF](https://huggingface.co/bartowski/LiquidAI_LFM2.5-2.6B-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 49 | [LFM2.5-1.2B Instruct](https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct) | 1.2 | lab original or existing v2 specialist | [LiquidAI/LFM2.5-1.2B-Instruct-GGUF](https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF) — `unverified` | `Q4_K_M` | — | no |
+| 50 | [RakutenAI-7B-instruct](https://huggingface.co/Rakuten/RakutenAI-7B-instruct) | 7 | lab original or existing v2 specialist | [mradermacher/RakutenAI-7B-instruct-GGUF](https://huggingface.co/mradermacher/RakutenAI-7B-instruct-GGUF) — `unverified` | `Q4_K_M` | — | no |
+
+† Decimal gigabytes where a file size was reported. Not RAM/VRAM or a verified measurement. Some prior-v2 rows list a repository size or recommended quant without a fully verified exact file; run `tools/resolve_ggufs.py` to attest each candidate, and check multi-part GGUF support before evaluation.
+
+## New admission breakdown
+
+- `domain_exception`: 3 model(s)
+- `first_party_japanese`: 2 model(s)
+- `heavy_adaptation`: 2 model(s)
+- `lab_distillation`: 1 model(s)
+- `large_sft_rl`: 4 model(s)
+
+## Guardrails
+
+- Do not treat `deck_default_candidate=true` as confirmation the model fits a 16GB Deck. Test actual memory with KV cache, OS reserve, and chosen context.
+- VNTL v2 uses publisher-documented raw Llama3 `Japanese` / `English` turn headers, not generic system/user chat. Bare lines and bare multi-line scenes supported by runner; context-mode templates require qualification.
+- Sugoi 14B and 32B use the publisher localization system prompt and lower sampling temperature.
+- Swallow reasoning-on is the qualified prompt exploration starting point, not a proven winner.
+- Pinned Hugging Face quant metadata and matching card ancestry do not prove weights parity or translation quality.
+- Translator models, plus premium judges, must pass canary, semantic scoring and independent adjudication before public rankings.
+
+See `ELIGIBILITY_POLICY.md` for detailed selection rules and `README_V3.md` for repeatable commands.

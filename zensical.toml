@@ -1,0 +1,45 @@
+[project]
+site_name = "OtakuBench"
+site_description = "Which local GGUF model translates the visual-novel line on screen well enough, fast enough?"
+site_url = "https://mitchins.github.io/otaku-bench/"
+repo_url = "https://github.com/mitchins/otaku-bench"
+repo_name = "mitchins/otaku-bench"
+nav = [
+  { "Overview" = "index.md" },
+  { "Ranking" = "ranking.md" },
+  { "Latency" = "latency.md" },
+  { "Method" = "method.md" },
+  { "Data policy" = "data.md" },
+  { "Running it" = "running.md" },
+]
+
+[project.theme]
+language = "en"
+features = [
+  "content.code.copy",
+  "navigation.footer",
+  "navigation.instant",
+  "navigation.sections",
+  "navigation.top",
+  "search.highlight",
+]
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "deep purple"
+toggle = { icon = "lucide/moon", name = "Dark mode" }
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "deep purple"
+toggle = { icon = "lucide/sun", name = "Light mode" }
+
+[project.markdown_extensions.tables]
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.pymdownx.superfences]
+# generated reports live under results/; pages include them so they never drift
+[project.markdown_extensions.pymdownx.snippets]
+base_path = ["."]
+check_paths = true

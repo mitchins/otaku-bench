@@ -1,0 +1,27 @@
+{
+  "project": "OtakuBench",
+  "version": "4.0.0-editorial-draft",
+  "as_of": "2026-10-23",
+  "selected_model_candidates": 50,
+  "japanese_bare_items": 250,
+  "contextual_scenes": 31,
+  "evaluated_models": 0,
+  "verified_hf_revision_downloads": 0,
+  "judge_calibrations_completed": 0,
+  "gold_reference_auditor_runs_completed": 0,
+  "publishable_model_rankings": 0,
+  "text_generation_runs": 0,
+  "tests_last_run": "50 passed (local offline pytest suite)",
+  "release_digests": {
+    "lines.jsonl": "de5ad2a324b0dfb15b4522282d927ca3d4d443b9ff44b1f9e7c59648ae5a5dba",
+    "scenes.jsonl": "b19ddc37a286ceec07df47c2078e1b6e1ea88f2b1e0a106390a7976cf276daf5"
+  },
+  "limitations": [
+    "Original authored text, not actual publisher excerpts",
+    "Two external bilingual-AI gold audits not yet run",
+    "No real Steam Deck memory or latency measurement",
+    "No GGUF loaded or benchmarked",
+    "Scene eval=25, below 60-scene publication floor"
+  ],
+  "next_action": "Pilot six distinct Deck-class models on 250 bare lines plus 31 full scenes, dry-run judge on dev before committing to API spend."
+}

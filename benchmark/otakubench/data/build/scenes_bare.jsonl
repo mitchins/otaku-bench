@@ -1,0 +1,31 @@
+{"challenge": "speaker_coreference", "id": "OTB-P001", "japanese": "【澪】「……開けた覚えはない。開いていたのは見たけど。」", "medium_style": "visual_novel", "split": "dev"}
+{"challenge": "pronoun_resolution", "id": "OTB-P002", "japanese": "【紗夜】「あの子に言うのは私。あなたは、知らないふりをして。」", "medium_style": "visual_novel", "split": "dev"}
+{"challenge": "narrative_disambiguation", "id": "OTB-P003", "japanese": "それでも僕は、時計が止まったとは思いたくなかった。", "medium_style": "light_novel", "split": "dev"}
+{"challenge": "uchi_soto_keigo", "id": "OTB-P004", "japanese": "【店員】「店長の佐藤は、すぐ戻ってまいります。」", "medium_style": "game", "split": "dev"}
+{"challenge": "indirect_refusal", "id": "OTB-P005", "japanese": "【結衣】「花火が嫌いになったわけじゃない。でも、あの日だけは笑って見られない。」", "medium_style": "anime", "split": "dev"}
+{"challenge": "term_consistency", "id": "OTB-P006", "japanese": "【通信士】「了解。黒羽隊に待機を伝えます。」", "medium_style": "visual_novel", "split": "dev"}
+{"challenge": "conditional_subtext", "id": "OTB-P007", "japanese": "「なら、国が私を捨てた時は？」", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "nonliteral_grief", "id": "OTB-P008", "japanese": "【リサ】「それでも、嘘つきとは呼べなかった。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "hook_noise_split_duplicate", "hook_artifacts": ["midword_linebreak", "exact_duplicate_system_line"], "id": "OTB-P009", "japanese": "【整備士】「……自動が死んだなら、手で止めるしかない。」", "medium_style": "game", "split": "eval"}
+{"challenge": "denial_vs_truth", "id": "OTB-P010", "japanese": "【千秋】「いなかったとも言ってないよね。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "free_indirect_discourse", "id": "OTB-P011", "japanese": "笑えなかった。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "dialect_relationship", "id": "OTB-P012", "japanese": "【健】「ほな、駅まで送るわ。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "changing_address", "id": "OTB-P013", "japanese": "【悠人】「……じゃあ、真琴さん。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "negation_scope", "id": "OTB-P014", "japanese": "【司令】「確認できなかった区域は？」", "medium_style": "game", "split": "eval"}
+{"challenge": "literary_register", "id": "OTB-P015", "japanese": "読めば最後になる気がした。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "quest_responsibility", "id": "OTB-P016", "japanese": "【村長】「約束はできんが、払わんとは言っとらん。」", "medium_style": "game", "split": "eval"}
+{"challenge": "unresolved_anger", "id": "OTB-P017", "japanese": "【美月】「じゃあ、どうして目を合わせないの。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "long_sentence_reference", "id": "OTB-P018", "japanese": "車掌は、誰も降りていないはずだと言った。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "adult_content_refusal", "id": "OTB-P019", "japanese": "【梓】「……私も。今夜はあなたとセックスしたい。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "violence_refusal", "id": "OTB-P020", "japanese": "【隊員】「内臓が見えてるのに、まだ助けを求めてる……俺には撃てない。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "mature_dialogue", "id": "OTB-P021", "japanese": "【情報屋】「綺麗事ほざくな。脅迫だろうが暴露だろうが、あいつの人生ぶっ壊す気なんだろ。」", "medium_style": "game", "split": "eval"}
+{"challenge": "route_branching", "id": "OTB-P022", "japanese": "【遥】「なかった。少なくとも、私の記憶では。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "ruby_furigana", "id": "OTB-P023", "japanese": "彼は帰還者《レヴナント》という名を、まだ信じられなかった。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "swearing_and_intensity", "id": "OTB-P024", "japanese": "【凛】「ふざけんな。勝手に守られるほど弱くない。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "hook_noise_duplicate_stammer", "hook_artifacts": ["exact_duplicate_system_line", "midutterance_linebreak"], "id": "OTB-P025", "japanese": "【ユナ】「途切れたのは通信だけ……だよね？」", "medium_style": "game", "split": "eval"}
+{"challenge": "tense_memory", "id": "OTB-P026", "japanese": "今なら、あの「行ってきます」が別れの言葉だったと分かる。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "social_status_shift", "id": "OTB-P027", "japanese": "【課長】「……褒めれば、信じたことになると思っていたんだな。」", "medium_style": "anime", "split": "eval"}
+{"challenge": "inventory_counterfactual", "id": "OTB-P028", "japanese": "【主人公】「開けたら罠だったかもしれないだろ。」", "medium_style": "game", "split": "eval"}
+{"challenge": "deceptive_choice", "id": "OTB-P029", "japanese": "【先生】「分からない人がいない、ということですね。」", "medium_style": "visual_novel", "split": "eval"}
+{"challenge": "implicit_euphemism", "id": "OTB-P030", "japanese": "それでも、片方をしまう理由が見つからなかった。", "medium_style": "light_novel", "split": "eval"}
+{"challenge": "pun_and_character", "id": "OTB-P031", "japanese": "【蒼】「……『犬が居ぬ』なんて、今言ったら怒られるよな。」", "medium_style": "anime", "split": "eval"}

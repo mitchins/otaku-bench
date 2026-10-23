@@ -1,0 +1,27 @@
+{
+  "name": "OtakuBench",
+  "version": "4.0.0-editorial-draft",
+  "line_items": 250,
+  "scene_items": 31,
+  "source_sha256": {
+    "lines.jsonl": "de5ad2a324b0dfb15b4522282d927ca3d4d443b9ff44b1f9e7c59648ae5a5dba",
+    "scenes.jsonl": "b19ddc37a286ceec07df47c2078e1b6e1ea88f2b1e0a106390a7976cf276daf5"
+  },
+  "gold_sha256": {
+    "lines_gold.jsonl": "114c22902a91466870a6091b99c8d6a7a485d6743b14ac2a7a65cfbd64ce0e52",
+    "scenes_gold.jsonl": "f49129890ba610f8ff7599221662aebab1c0189b5647ac116f56bfd015eef70d"
+  },
+  "split": {
+    "lines": {
+      "dev": 50,
+      "eval": 200
+    },
+    "scenes": {
+      "dev": 6,
+      "eval": 25
+    }
+  },
+  "media_metadata_policy": "line scenario_style_unvalidated is legacy round-robin bookkeeping only; exclude from medium performance claims",
+  "contexts": "line scene_context is judge-only original annotation and must never reach translator; passage context contains only actual preceding Japanese",
+  "truth": "editorial-draft translations, no human or external judge gold validation performed"
+}
