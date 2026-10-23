@@ -18,9 +18,12 @@ mkdir -p "$OUT"
 
 # priority order: complete, deployable, fast. Paths are response dirs relative to results/.
 QUEUE=(
+  # Highest-priority 3090-fit ceiling probes: inference complete, judging pending.
+  screen/01_Qwen3.8-27B
+  screen/02_Gemma_4_31B_IT
+  # Existing completed/partial judges remain resumable; keep as comparisons.
   screen/03_Qwen3.6-35B-A3B
   screen/05_Gemma_4_26B-A4B_IT
-  screen/01_Qwen3.8-27B
   screen/21_Sugoi-14B-Ultra
   screen/32_TranslateGemma_27B_IT
   screen/33_TranslateGemma_12B_IT
