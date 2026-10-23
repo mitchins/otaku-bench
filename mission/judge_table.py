@@ -21,6 +21,13 @@ SLIPS = {'IDIOM': 'idioms', 'VOICE': 'voice', 'OMIT': 'omissions', 'ADD': 'addit
          'NEG': 'negation', 'ASPECT': 'tense/aspect', 'MOD': 'modality', 'KEIGO': 'politeness', 'IMPL': 'implication',
          'CULT': 'cultural terms', 'HUMOUR': 'wordplay', 'REFUSAL': 'refusals', 'TERMINOLOGY': 'terms',
          'FORMAT': 'formatting', 'AMBIGUITY': 'ambiguity'}
+# the 10 line categories (20 eval lines each), in one fixed order so models compare side by side
+CATS = [('idiom_proverb', 'Idioms & proverbs'), ('wordplay_irony', 'Wordplay & irony'),
+        ('dialect_character_voice', 'Dialect & voice'), ('keigo_politeness', 'Politeness (keigo)'),
+        ('indirectness_pragmatics', 'Indirect speech'), ('emotion_subtext', 'Emotional subtext'),
+        ('ellipsis_coreference', 'Omitted subjects'), ('culture_institutions', 'Culture & institutions'),
+        ('genre_literary_structure', 'Literary style'), ('mimetics_onomatopoeia', 'Onomatopoeia')]
+GOOD = 9  # "translated well": at most a minor slip
 
 
 def load(p: Path) -> list[dict]:
@@ -29,6 +36,14 @@ def load(p: Path) -> list[dict]:
 
 def arm_ids(gold_file: str, split: str | None) -> set[str]:
     return {g['id'] for g in load(GOLD / gold_file) if split is None or g['split'] == split}
+
+
+def line_cats() -> dict[str, list[str]]:
+    out = {c: [] for c, _ in CATS}
+    for g in load(GOLD / 'lines_gold.jsonl'):
+        if g['split'] == 'eval':
+            out[g['primary_challenge']].append(g['id'])
+    return out
 
 
 def summaries() -> dict[str, dict]:
@@ -57,6 +72,9 @@ def main() -> int:
             row[arm] = (total / len(want), len(scored.keys() & want), len(want))
             row[arm + '_low'] = sum(1 for i, s in scored.items() if i in want and s['adequacy'] + s['pragmatics'] + s['fluency'] <= 5)
             flags.update(f for s in scored.values() for f in s['flags'])
+            if arm == 'lines_eval':
+                total_of = lambda i: sum(scored[i][k] for k in ('adequacy', 'pragmatics', 'fluency')) if i in scored else 0
+                row['cats'] = {c: (sum(total_of(i) >= GOOD for i in ids), len(ids)) for c, ids in line_cats().items()}
         variant = name.partition('+')[2]
         s = summ.get(name.partition('_')[0] + (f'+{variant}' if variant else ''), {})
         row['lat'] = ((s.get('latency') or {}).get(str(s.get('gate_depth', 6))) or {}).get('median_s')
@@ -78,10 +96,16 @@ def main() -> int:
            '|---:|---|---:|---:|---:|---:|---:|---|']
     for n, r in enumerate(done, 1):
         out.append(f"| {n} | **{r['label']}** | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
-                   f"| {r['lat'] or '—'} | {gb(r)} | {r['slips']} |")
+                   f"| {f'{r["lat"]:.2f}' if r['lat'] else '—'} | {gb(r)} | {r['slips']} |")
     if queued:
         out += ['', 'Being judged: ' + ', '.join(
             f"{r['label']} ({(r.get('lines_eval') or (0, 0, 200))[1]}/200 lines)" for r in queued) + '.']
+    if done:
+        out += ['', '## By category', '', 'Share of the 20 eval lines in each category translated well (9 or 10 out of 10). '
+                'With 20 lines per cell, differences under about 20 points are noise.', '',
+                '| Model | ' + ' | '.join(label for _, label in CATS) + ' |', '|---|' + '---:|' * len(CATS)]
+        for r in done:
+            out.append(f"| {r['label']} | " + ' | '.join(f"{100 * g / n:.0f}%" for c, _ in CATS for g, n in [r['cats'][c]]) + ' |')
     out += ['', 'Scores are out of 10: adequacy 0–4, pragmatics and voice 0–4, fluency 0–2, judged by GPT-6.1 Sol. '
             'A line the model failed to produce scores 0. Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
     (RES / 'judge/RANKING.md').write_text('\n'.join(out) + '\n', encoding='utf8')
@@ -110,6 +134,19 @@ def fits(mib: int | None) -> str:
     return 'needs > 24 GB'
 
 
+def cat_bars(cats: dict | None) -> str:
+    if not cats:
+        return ''
+    cells = ''.join(
+        f'<span class="ob-cat"><span class="ob-cat-name">{html.escape(label)}</span>'
+        f'<span class="ob-track"><span class="ob-bar" style="width:{100 * good / n:.0f}%"></span></span>'
+        f'<span class="ob-cat-val">{100 * good / n:.0f}%</span></span>'
+        for c, label in CATS for good, n in [cats[c]])
+    return ('<span class="ob-cats-head">Lines translated well (9 or 10 out of 10), by category. '
+            '20 lines each, so treat differences under about 20 points as noise.</span>'
+            f'<span class="ob-cats">{cells}</span>')
+
+
 def board(done: list[dict], queued: list[dict]) -> str:
     """Landing-page leaderboard: one bar per model on a 0-10 axis; each row expands to its details.
 
@@ -130,7 +167,7 @@ def board(done: list[dict], queued: list[dict]) -> str:
             f'<div class="ob-more"><span><b>{scenes:.2f}</b>/10 on 31 full scenes</span>'
             f'<span><b>{r["lines_eval_low"]}</b> of 200 lines scored 5 or less</span>'
             f'<span>Most common slips: {e(r["slips"] or "none")}</span>'
-            f'<span>{e(vram)}</span></div></details>')
+            f'<span>{e(vram)}</span>{cat_bars(r.get("cats"))}</div></details>')
     for r in queued:
         got = (r.get('lines_eval') or (0, 0, 200))[1]
         rows.append(f'<div class="ob-row ob-queued"><span class="ob-rank">·</span><span class="ob-name">{e(r["label"])}</span>'

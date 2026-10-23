@@ -73,6 +73,17 @@
 .ob-ticks > span { font-size: .75em; }
 .ob-ticks { display: flex; justify-content: space-between; border-top: 1px solid var(--ob-rule); padding-top: .2em; }
 
+/* per-category profile inside an expanded row: label | 0-100% bar | value, two columns */
+.ob-cats-head { flex-basis: 100%; margin-top: .5em; }
+.ob-cats {
+  flex-basis: 100%;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25em 2.4em;
+}
+.ob-cat { display: grid; grid-template-columns: 11em 1fr 2.6em; align-items: center; gap: .7em; }
+.ob-cat-name { color: var(--ob-ink); }
+.ob-cat .ob-track { height: .5em; }
+.ob-cat-val { color: var(--ob-ink); text-align: right; font-weight: 600; }
+
 /* phone width: name on its own line, qualifier under the bar */
 @media (max-width: 40em) {
   .ob-row > summary, .ob-queued, .ob-axis { grid-template-columns: 1.4em 1fr 3em; }
@@ -84,4 +95,10 @@
   .ob-axis > span:nth-child(2), .ob-axis > span:nth-child(4), .ob-axis > span:nth-child(5) { display: none; }
   .ob-ticks { grid-column: 2; }
   .ob-more { margin-left: 1.4em; }
+  .ob-cats { grid-template-columns: 1fr; }
+  .ob-cat { grid-template-columns: 9.5em 1fr 2.6em; }
 }
+
+/* wide tables (the 10-category breakdown): tighter cells so they fit the content column */
+.md-typeset table:not([class]):has(th:nth-child(10)) { font-size: .62rem; }
+.md-typeset table:not([class]):has(th:nth-child(10)) :is(th, td) { padding: .6em .5em; min-width: 0; }
