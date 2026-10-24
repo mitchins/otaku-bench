@@ -46,12 +46,13 @@ QUEUE=(
   # then their largest quant that fits 24 GB, to see whether the extra memory buys quality
   screen_quants/UD-Q6_K_L/01_Qwen3.8-27B
   screen_quants/Q5_K_M/02_Gemma_4_31B_IT
+  # 24B MoE at 0.16 s/line; single-block empty-think prefill (corrected run)
+  screen_variants/empty-think/36_LFM2.5-24B-A2B
   # hardware-rule admission: 40B MoE, fits 24 GB at IQ4_XS; needs the empty-think prefill (always thinks otherwise)
   screen_variants/empty-think/51_Flint_40B-A2.5B   # single-block empty-think prefill (studies/flint_adapter.py)
   screen/21_Sugoi-14B-Ultra
   screen/32_TranslateGemma_27B_IT
   screen/33_TranslateGemma_12B_IT
-  screen_variants/empty-think/36_LFM2.5-24B-A2B
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
   screen/46_Qwen3-4B-Instruct-2507
