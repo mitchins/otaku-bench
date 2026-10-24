@@ -221,3 +221,27 @@ def test_identical_translations_are_judged_once(monkeypatch,tmp_path):
     assert b[0]['reused_from']==a[0]['key'] and b[0]['score']==a[0]['score'] and b[0]['candidate_model']=='B'
     assert 'reused_from' not in c[0] and len(read(tmp_path/'ledger.jsonl'))==2
     assert run('B','That child keeps secrets.')==b  # idempotent: nothing new on rerun
+
+
+def test_backfilled_content_key_matches_and_refuses_changed_inputs(monkeypatch,tmp_path):
+    import backfill_content_keys as bf
+    monkeypatch.setattr(judge,'api_request',lambda *a,**k:(json.dumps({'adequacy':4,'pragmatics':4,'fluency':2,'flags':[],'refusal':False,
+        'gold_uncertain':False,'confidence':0.9,'evidence':'ok','acceptable_variant':False}),{},{'input_tokens':1,'output_tokens':1},'stop'))
+    src=hashlib.sha256((GOLD/'lines_bare.jsonl').read_bytes()).hexdigest()
+    res=tmp_path/'results/screen';out=tmp_path/'judge';out.mkdir()
+    for m,text in (('A','That child keeps secrets.'),('B','That kid has secrets.')):
+        (res/m).mkdir(parents=True)
+        (res/m/'lines_bare.jsonl').write_text(json.dumps({'id':'JMB-053','model':m,'translation':text,'source_sha256':src})+'\n')
+        monkeypatch.setattr(sys,'argv',['judge.py','--responses',str(res/m/'lines_bare.jsonl'),'--dataset','lines',
+                                        '--output',str(out/f'{m}.lines_eval.jsonl'),'--ledger',str(tmp_path/'ledger.jsonl'),'--execute'])
+        assert judge.main()==0
+    want={m:read(out/f'{m}.lines_eval.jsonl')[0]['content_key'] for m in 'AB'}
+    for m in 'AB':  # simulate judgments made before content_key existed
+        f=out/f'{m}.lines_eval.jsonl';rows=read(f)
+        for r in rows:r.pop('content_key')
+        f.write_text(''.join(json.dumps(r)+'\n' for r in rows))
+    (res/'B/lines_bare.jsonl').write_text(json.dumps({'id':'JMB-053','model':'B','translation':'Changed since judging.','source_sha256':src})+'\n')
+    monkeypatch.setattr(sys,'argv',['backfill','--dir',str(out),'--results',str(tmp_path/'results'),'--write'])
+    bf.main()
+    assert read(out/'A.lines_eval.jsonl')[0]['content_key']==want['A']  # same key judge.py would have stored
+    assert 'content_key' not in read(out/'B.lines_eval.jsonl')[0]  # response no longer what the judge saw
