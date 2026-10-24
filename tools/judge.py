@@ -10,6 +10,8 @@ from pathlib import Path
 from urllib.request import Request,urlopen
 from urllib.error import HTTPError,URLError
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+import mechanical as mech  # exact echoes are scored 0 mechanically (judge_table), never sent to the judge
 GOLD=ROOT/'benchmark/otakubench/data/build'
 RUBRIC_VERSION='otakubench-4.0-judge-v1'
 PRICES={'gpt-6.1-sol':(2,10),'claude-opus-5-5':(4,20),'claude-sonnet-5-5':(2,10)} # standard USD / 1M
@@ -145,6 +147,7 @@ def main():
  tasks=[]
  for r in chosen:
   d=make_input(refs[r['id']],r['translation'],args.dataset,args.mode,args.annotated)
+  if mech.zero_reason(d['source_japanese'],r['translation'],None):continue
   key=sha({'judge':args.model,'provider':args.provider,'effort':args.effort,'rubric':RUBRIC_VERSION,'data':d,'source_model':r.get('model'),'run_id':r.get('run_id',r.get('model')),'mode':args.mode})
   if key not in prev:tasks.append((r,d,key))
  print(json.dumps({'judge':args.model,'provider':args.provider,'dataset':args.dataset,'mode':args.mode,'eligible':len(chosen),'pending':len(tasks),'already_spent_usd':round(spent,4),'execute':args.execute,'budget_usd':args.budget_usd},indent=2))

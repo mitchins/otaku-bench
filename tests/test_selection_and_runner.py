@@ -114,3 +114,17 @@ def test_reasoning_markup_is_stripped_across_families():
     for raw, want in cases.items():
         assert rt.strip_answer(raw, None) == (want, None)
     assert rt.strip_answer('<think>still going', None)[1] == 'unclosed thinking'
+
+
+def test_mechanical_zeros_and_compliance_flags():
+    import mechanical as mech
+    src = '【澪】「鍵を預かったのは、昨日の夕方よ。」'
+    assert mech.zero_reason(src, '【Mio】「鍵を預かったのは、昨日の夕方よ。」', None) == 'exact_echo'  # tag translated, body not
+    assert mech.zero_reason(src, '【Mio】"I took the key yesterday evening."', None) is None
+    assert mech.zero_reason(src, '', None) == 'inference_failure'
+    assert mech.zero_reason(src, 'x', 'hit 256-token cap') == 'inference_failure'
+    assert mech.flags('もういい。', 'Forget it.\n\n*(Note: dismissive tone)*') == ['commentary', 'format']
+    assert mech.flags('雨だ。', 'It is raining.\n\nOr, more naturally: It’s raining.') == ['commentary']
+    # a translation that itself begins with "Or" is not commentary (JMB-234: 気のせいだろうか)
+    assert mech.flags('好感度が上がった音がした。気のせいだろうか。', 'A warm chime.\n(Or maybe just my imagination.)') == []
+    assert mech.flags('【健】「もう帰るん？」', 'Ken: "Going home already?"') == ['format']

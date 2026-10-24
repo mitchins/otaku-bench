@@ -59,7 +59,7 @@ QUEUE=(
   screen/46_Qwen3-4B-Instruct-2507
   screen/31_Qwen3.5-4B
   screen/44_Qwen3.5-2B
-  screen/52_Qwen3-1.7B
+  # screen/52_Qwen3-1.7B   # dropped from paid judging: 4 failed + 22 untranslated; kept as diagnostic evidence
 )
 
 judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)

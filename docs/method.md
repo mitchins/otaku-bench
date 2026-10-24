@@ -31,3 +31,18 @@ GPT-6.1 Sol scores each translation against a reference, which is treated as *on
 It also returns flags (`IDIOM`, `NEG`, `AGENT`, `KEIGO`, `OMIT`, `ADD`, `REFUSAL` and others) and a one-line justification. It never sees the model's name. Items a model failed to produce score 0, so dropping hard lines can't help a model's rank.
 
 The context-scene arm is too easy for the top models (Qwen3.6-35B-A3B scored 10/10 on 28 of 31), so ranking uses the **200 eval lines** and the **31 full scenes**.
+
+## Output compliance
+
+A screen translator's output is shown to the reader as it is, so some outcomes are decided mechanically, identically for every model, before or instead of the judge (`tools/mechanical.py`). The policy was frozen on 2026-10-24 and checked for false positives against every stored output.
+
+| Outcome | How it's detected | Treatment |
+|---|---|---|
+| No usable output | Error, token cap, timeout, unclosed thinking, or empty text | **0**, never sent to the judge |
+| Source returned untranslated | Equal to the source after Unicode normalisation, with whitespace and speaker tags removed | **0**, never sent to the judge |
+| Partly untranslated, or Japanese terms kept | Anything short of an exact echo | Judged normally |
+| Commentary | An alternative, note or "literally" gloss appended to the translation | Flagged |
+| Format | Speaker labels rewritten as `Name:` / `**Name:**`, or markdown emphasis | Flagged |
+| Wrong meaning, lost irony, added content | The judge | Judged normally |
+
+The automatic zeros are already in the scores, and they count toward a model being fully judged. Flags are recorded in the Full table but **don't change any score yet**: a separate screen-ready score is planned, with a hard failure for commentary and a small fixed penalty for formatting. Every automatic zero and flag is saved per item under `results/judge/mechanical/`. Original translations and judgments are never modified.

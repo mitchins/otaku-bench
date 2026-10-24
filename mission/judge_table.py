@@ -8,14 +8,18 @@ from __future__ import annotations
 
 import html
 import json
+import sys
 from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / 'tools'))
+import mechanical as mech  # noqa: E402
 RES = ROOT / 'results'
 JUDGE = RES / 'judge/sol'
 GOLD = ROOT / 'benchmark/otakubench/data/build'
 ARMS = {'scenes_full': ('scenes_gold.jsonl', None), 'lines_eval': ('lines_gold.jsonl', 'eval')}
+RESPONSES = {'scenes_full': 'scenes_full', 'lines_eval': 'lines_bare'}  # response file behind each judged arm
 # judge flags in reader terms
 SLIPS = {'IDIOM': 'idioms', 'VOICE': 'voice', 'OMIT': 'omissions', 'ADD': 'additions', 'AGENT': 'who did what',
          'NEG': 'negation', 'ASPECT': 'tense/aspect', 'MOD': 'modality', 'KEIGO': 'politeness', 'IMPL': 'implication',
@@ -46,6 +50,36 @@ def line_cats() -> dict[str, list[str]]:
     return out
 
 
+def response_dir(name: str) -> Path | None:
+    """Judge-file name -> its response dir: 03_X, 36_X+empty-think (screen_variants), 01_X+UD-Q6_K_L (screen_quants)."""
+    base, _, tag = name.partition('+')
+    for d in ([RES / 'screen' / base] if not tag else [RES / 'screen_variants' / tag / base, RES / 'screen_quants' / tag / base]):
+        if d.is_dir():
+            return d
+    return None
+
+
+def mechanical(name: str, arm: str, want: set[str]) -> tuple[dict[str, str], Counter]:
+    """Items decided without the judge (id -> reason; scored 0), and compliance flags on the rest.
+    Written to results/judge/mechanical/ so every automatic zero is auditable."""
+    d = response_dir(name)
+    src = {g['id']: g['japanese'] for g in load(GOLD / f'{RESPONSES[arm]}.jsonl')}
+    resp = {r['id']: r for r in load(d / f'{RESPONSES[arm]}.jsonl')} if d else {}
+    zeros, fl, recs = {}, Counter(), []
+    for i in sorted(want):
+        r = resp.get(i)
+        why = 'not_run' if r is None else mech.zero_reason(src[i], r.get('translation'), r.get('error'))
+        if why:
+            zeros[i] = why
+        else:
+            fl.update(mech.flags(src[i], r['translation']))
+        recs.append({'id': i, 'zero': why, 'flags': [] if why else mech.flags(src[i], r['translation'])})
+    out = RES / 'judge/mechanical' / f'{name}.{arm}.jsonl'
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(''.join(json.dumps(x) + '\n' for x in recs), encoding='utf8')
+    return zeros, fl
+
+
 def summaries() -> dict[str, dict]:
     out = {}
     for p in [RES / 'screen/summary.jsonl', *RES.glob('screen_variants/*/summary.jsonl'), *RES.glob('screen_quants/*/summary.jsonl')]:
@@ -68,9 +102,14 @@ def main() -> int:
             if not scored:
                 row[arm] = None
                 continue
-            total = sum(s['adequacy'] + s['pragmatics'] + s['fluency'] for i, s in scored.items() if i in want)
-            row[arm] = (total / len(want), len(scored.keys() & want), len(want))
-            row[arm + '_low'] = sum(1 for i, s in scored.items() if i in want and s['adequacy'] + s['pragmatics'] + s['fluency'] <= 5)
+            # mechanical zeros (failed, echoed, not run) override any judgment and count toward completion
+            zeros, fl = mechanical(name, arm, want)
+            scored = {i: sc for i, sc in scored.items() if i in want and i not in zeros}
+            total = sum(s['adequacy'] + s['pragmatics'] + s['fluency'] for s in scored.values())
+            row[arm] = (total / len(want), len(scored) + len(zeros), len(want))
+            row[arm + '_low'] = len(zeros) + sum(1 for s in scored.values() if s['adequacy'] + s['pragmatics'] + s['fluency'] <= 5)
+            row[arm + '_zero'] = Counter(zeros.values())
+            row[arm + '_flags'] = fl
             flags.update(f for s in scored.values() for f in s['flags'])
             if arm == 'lines_eval':
                 total_of = lambda i: sum(scored[i][k] for k in ('adequacy', 'pragmatics', 'fluency')) if i in scored else 0
@@ -106,6 +145,17 @@ def main() -> int:
                 '| Model | ' + ' | '.join(label for _, label in CATS) + ' |', '|---|' + '---:|' * len(CATS)]
         for r in done:
             out.append(f"| {r['label']} | " + ' | '.join(f"{100 * g / n:.0f}%" for c, _ in CATS for g, n in [r['cats'][c]]) + ' |')
+    if done:
+        out += ['', '## Output compliance', '',
+                'Decided mechanically, identically for every model. **Automatic zeros** are already in the scores above: no usable '
+                'output, or the source returned untranslated. **Flags** are recorded only and do not change the score yet: '
+                '*commentary* = an alternative, note or literal gloss appended to the translation; *format* = speaker labels '
+                'rewritten as `Name:` or markdown emphasis.', '',
+                '| Model | Zero: no output | Zero: untranslated | Commentary | Format |', '|---|---:|---:|---:|---:|']
+        for r in done:
+            z = r['lines_eval_zero'] + r['scenes_full_zero']
+            f = r['lines_eval_flags'] + r['scenes_full_flags']
+            out.append(f"| {r['label']} | {z['inference_failure'] + z['not_run']} | {z['exact_echo']} | {f['commentary']} | {f['format']} |")
     out += ['', 'Scores are out of 10: adequacy 0–4, pragmatics and voice 0–4, fluency 0–2, judged by GPT-6.1 Sol. '
             'A line the model failed to produce scores 0. Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
     (RES / 'judge/RANKING.md').write_text('\n'.join(out) + '\n', encoding='utf8')
