@@ -144,13 +144,23 @@ def main():
   for x in load_jsonl(args.output):
    if x.get('key') and 'score' in x:prev[x['key']]=x
    if x.get('model')==args.model:spent+=x.get('cost',{}).get('estimated_standard_usd_excluding_cache_write') or 0.0
- tasks=[]
+ # The judge never sees the model name, so a judgment depends only on what it is shown: identical translations
+ # from different models (common on short lines) are judged once and the result is reused.
+ seen={}
+ for f in args.output.parent.glob('*.jsonl'):
+  for x in load_jsonl(f):
+   if x.get('content_key') and 'score' in x and not x.get('reused_from'):seen.setdefault(x['content_key'],x)
+ tasks=[];reuse=[]
  for r in chosen:
   d=make_input(refs[r['id']],r['translation'],args.dataset,args.mode,args.annotated)
   if mech.zero_reason(d['source_japanese'],r['translation'],None):continue
   key=sha({'judge':args.model,'provider':args.provider,'effort':args.effort,'rubric':RUBRIC_VERSION,'data':d,'source_model':r.get('model'),'run_id':r.get('run_id',r.get('model')),'mode':args.mode})
-  if key not in prev:tasks.append((r,d,key))
- print(json.dumps({'judge':args.model,'provider':args.provider,'dataset':args.dataset,'mode':args.mode,'eligible':len(chosen),'pending':len(tasks),'already_spent_usd':round(spent,4),'execute':args.execute,'budget_usd':args.budget_usd},indent=2))
+  ckey=sha({'judge':args.model,'provider':args.provider,'effort':args.effort,'rubric':RUBRIC_VERSION,'data':d,'mode':args.mode})
+  if key in prev:continue
+  if ckey in seen:reuse.append((r,key,ckey))
+  else:
+   tasks.append((r,d,key,ckey));seen.setdefault(ckey,{'_pending':True})
+ print(json.dumps({'judge':args.model,'provider':args.provider,'dataset':args.dataset,'mode':args.mode,'eligible':len(chosen),'pending':len(tasks),'reusable':len(reuse),'already_spent_usd':round(spent,4),'execute':args.execute,'budget_usd':args.budget_usd},indent=2))
  if not args.execute:
   print('Dry run only. No paid API calls. Example input:')
   print(json.dumps(tasks[0][1],ensure_ascii=False,indent=2)[:800] if tasks else '(no pending)')
@@ -162,7 +172,17 @@ def main():
  print(f'judge tokens used today ({day} UTC): {used_today} / cap {args.daily_token_cap or "off"}')
  per_call=0
  with args.output.open('a',encoding='utf8') as out:
-  for n,(r,d,key) in enumerate(tasks,1):
+  for r,key,ckey in reuse:
+   src=seen[ckey]
+   if src.get('_pending'):continue  # its first copy is judged in this run; the next run reuses it
+   out.write(json.dumps({'key':key,'content_key':ckey,'reused_from':src['key'],'gold_sha256':sha(refs[r['id']]),'id':r['id'],
+                         'candidate_model':r.get('model','unknown'),'run_id':r.get('run_id',r.get('model','unknown')),'model':args.model,
+                         'provider':args.provider,'dataset':args.dataset,'mode':args.mode,'rubric_version':RUBRIC_VERSION,
+                         'annotated':args.annotated,'quant_attested':bool(r.get('quant_attested')),'quant_repo_sha':r.get('quant_repo_sha'),
+                         'canary_passed':bool(r.get('canary_passed')),'score':src['score'],
+                         'ts':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())},ensure_ascii=False)+'\n')
+  if reuse:print(f'reused {sum(1 for _,_,c in reuse if not seen[c].get("_pending"))} identical judgments (no API call)')
+  for n,(r,d,key,ckey) in enumerate(tasks,1):
    if spent>=args.budget_usd:
     print(f'Cost limit reached: ${spent:.4f}; stopped before another call.',file=sys.stderr);break
    if args.stop_before_utc and time.strftime('%H:%M',time.gmtime())>=args.stop_before_utc:
@@ -170,7 +190,7 @@ def main():
    # leave room for one more call of the size seen so far
    if args.daily_token_cap and used_today+max(per_call,1500)>args.daily_token_cap:
     print(f'Daily token cap reached: {used_today} tokens today; resume tomorrow (idempotent).',file=sys.stderr);break
-   result={'key':key,'gold_sha256':sha(refs[r['id']]),'id':r['id'],'candidate_model':r.get('model','unknown'),'run_id':r.get('run_id',r.get('model','unknown')),'model':args.model,'provider':args.provider,
+   result={'key':key,'content_key':ckey,'gold_sha256':sha(refs[r['id']]),'id':r['id'],'candidate_model':r.get('model','unknown'),'run_id':r.get('run_id',r.get('model','unknown')),'model':args.model,'provider':args.provider,
            'dataset':args.dataset,'mode':args.mode,'rubric_version':RUBRIC_VERSION,'annotated':args.annotated,
            'quant_attested':bool(r.get('quant_attested')),'quant_repo_sha':r.get('quant_repo_sha'),
            'canary_passed':bool(r.get('canary_passed'))}

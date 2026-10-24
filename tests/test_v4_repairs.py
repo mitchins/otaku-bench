@@ -194,3 +194,30 @@ def test_gold_auditors_must_come_from_distinct_providers(tmp_path):
     report=json.loads(subprocess.check_output(cmd,text=True))
     assert report['gold_audit']['gate']
     assert report['gold_audit']['two_independent_audits_for']==len(expected)
+
+
+def test_identical_translations_are_judged_once(monkeypatch,tmp_path):
+    calls=[]
+    def fake_api(*a,**k):
+        calls.append(a[3]['candidate_english'])
+        score={'adequacy':4,'pragmatics':3,'fluency':2,'flags':[],'refusal':False,'gold_uncertain':False,
+               'confidence':0.9,'evidence':'ok','acceptable_variant':False}
+        return json.dumps(score),{},{'input_tokens':500,'output_tokens':50,'estimated_standard_usd_excluding_cache_write':0.0},'stop'
+    monkeypatch.setattr(judge,'api_request',fake_api)
+    src=hashlib.sha256((GOLD/'lines_bare.jsonl').read_bytes()).hexdigest()
+    out=tmp_path/'judge'
+    def run(model,text):
+        resp=tmp_path/f'{model}.jsonl'
+        resp.write_text(json.dumps({'id':'JMB-053','model':model,'translation':text,'source_sha256':src})+'\n')
+        monkeypatch.setattr(sys,'argv',['judge.py','--responses',str(resp),'--dataset','lines','--output',str(out/f'{model}.lines_eval.jsonl'),
+                                        '--ledger',str(tmp_path/'ledger.jsonl'),'--execute'])
+        assert judge.main()==0
+        return read(out/f'{model}.lines_eval.jsonl')
+    out.mkdir()
+    a=run('A','That child keeps secrets.')
+    b=run('B','That child keeps secrets.')
+    c=run('C','That kid has secrets.')
+    assert calls==['That child keeps secrets.','That kid has secrets.']  # B made no call
+    assert b[0]['reused_from']==a[0]['key'] and b[0]['score']==a[0]['score'] and b[0]['candidate_model']=='B'
+    assert 'reused_from' not in c[0] and len(read(tmp_path/'ledger.jsonl'))==2
+    assert run('B','That child keeps secrets.')==b  # idempotent: nothing new on rerun
