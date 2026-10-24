@@ -32,12 +32,19 @@ def choice_file(dataset,mode):
  if dataset=='lines':return DATA/'lines_bare.jsonl'
  return DATA/f'scenes_{mode}.jsonl'
 
+REASONING_TAGS=[('<think>','</think>'),('<thinking>','</thinking>'),('<reasoning>','</reasoning>'),('<seed:think>','</seed:think>'),
+                ('◁think▷','◁/think▷'),('[THINK]','[/THINK]'),('<|begin_of_thought|>','<|end_of_thought|>')]
+
 def strip_answer(text,reasoning):
  # If an incomplete thought is returned as content, never treat it as translation.
  if '<think>' in text and '</think>' not in text:return '', 'unclosed thinking'
- text=re.sub(r'<think>.*?</think>','',text,flags=re.S|re.I).strip()
- # A lone closing tag (prefilled think block the model reopened): everything before it is reasoning.
- if re.search(r'</think>',text,re.I):text=re.split(r'</think>',text,flags=re.I)[-1].strip()
+ # llama-server only separates reasoning for templates it recognises; otherwise it arrives in the content,
+ # marked differently per family. Keep only the answer: drop whole blocks, then anything before a lone closer.
+ for o,c in REASONING_TAGS:
+  text=re.sub(re.escape(o)+r'.*?'+re.escape(c),'',text,flags=re.S|re.I)
+  if re.search(re.escape(c),text,re.I):text=re.split(re.escape(c),text,flags=re.I)[-1]
+ if '<|channel|>final<|message|>' in text:text=text.split('<|channel|>final<|message|>')[-1]  # gpt-oss harmony
+ text=re.sub(r'<\|(end|return|im_end|eot_id)\|>\s*$','',text).strip()
  # Some third-party GGUFs don't mark EOS as a control token, so it is rendered as text (e.g. CAT's '</s>').
  text=re.sub(r'(\s*(</s>|<\|endoftext\|>|<\|im_end\|>|<eos>|<\|eot_id\|>))+\s*$','',text)
  if not text:return '', 'empty answer'

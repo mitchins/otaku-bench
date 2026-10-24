@@ -104,3 +104,13 @@ def test_translategemma_text_renders_ja_to_en():
     p=run_translations.make_payload({'japanese':'先に行ってて。'},SimpleNamespace(prompt_style='translategemma_text',dataset='lines',mode='bare',max_tokens=64,model='x'))
     assert 'Japanese (ja) to English (en)' in p['prompt'] and 'en-GB' not in p['prompt']
     assert p['prompt'].endswith('先に行ってて。<end_of_turn>\n<start_of_turn>model\n')
+
+
+def test_reasoning_markup_is_stripped_across_families():
+    import run_translations as rt
+    cases = {'draft</think>final': 'final', '<think>x</think>ok': 'ok', '<thinking>a</thinking>B': 'B',
+             '[THINK]plan[/THINK]Done.': 'Done.', '<seed:think>x</seed:think>Y': 'Y',
+             '<|channel|>analysis<|message|>plan<|end|><|start|>assistant<|channel|>final<|message|>Hello.<|return|>': 'Hello.'}
+    for raw, want in cases.items():
+        assert rt.strip_answer(raw, None) == (want, None)
+    assert rt.strip_answer('<think>still going', None)[1] == 'unclosed thinking'
