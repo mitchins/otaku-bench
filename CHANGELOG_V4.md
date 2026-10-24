@@ -27,3 +27,7 @@
 | Developer may mistake 50 candidate priorities for scores | all docs and JSON distinguish screen/attestation/canary/judge/audited rank | no inference or paid judgment run here |
 
 **Unresolved outside local development:** 281 references still await bilingual-AI audit; native templates and GGUFs await real canaries; 31 scenes have too little power for VN-level ranking. **Next task is the small real pilot, not more scene polishing.**
+
+## v4.0.1 (2026-10-24): misattached alternates
+
+Four line items carried an alternate reference belonging to a different line, left over from the positional-attachment bug: JMB-048 and JMB-069 (eval), JMB-041 and JMB-241 (dev). Their alternates are removed (`tools/patch_corpus_v4_0_1.py`), and the reference translations are unchanged. Judgments made against the old gold no longer match its `gold_sha256`, so the ranking treats them as pending until they're re-judged: 2 eval lines for each of the 4 judged models.

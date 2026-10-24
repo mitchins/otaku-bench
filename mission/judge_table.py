@@ -6,6 +6,7 @@ can't rank higher by dropping hard lines. Latency/VRAM come from the mission sum
 """
 from __future__ import annotations
 
+import hashlib
 import html
 import json
 import sys
@@ -36,6 +37,12 @@ GOOD = 9  # "translated well": at most a minor slip
 
 def load(p: Path) -> list[dict]:
     return [json.loads(x) for x in p.read_text(encoding='utf8').splitlines() if x.strip()] if p.exists() else []
+
+
+def gold_shas(gold_file: str) -> dict[str, str]:
+    # same fingerprint judge.py stores; a judgment of older gold is stale and reads as pending
+    return {g['id']: hashlib.sha256(json.dumps(g, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
+            for g in load(GOLD / gold_file)}
 
 
 def arm_ids(gold_file: str, split: str | None) -> set[str]:
@@ -98,7 +105,9 @@ def main() -> int:
         flags = Counter()
         for arm, (gf, split) in ARMS.items():
             want = arm_ids(gf, split)
-            scored = {j['id']: j['score'] for j in load(JUDGE / f'{name}.{arm}.jsonl') if 'score' in j}
+            cur = gold_shas(gf)
+            scored = {j['id']: j['score'] for j in load(JUDGE / f'{name}.{arm}.jsonl')
+                      if 'score' in j and j.get('gold_sha256') == cur.get(j['id'])}
             if not scored:
                 row[arm] = None
                 continue
