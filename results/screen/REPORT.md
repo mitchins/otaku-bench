@@ -54,6 +54,7 @@ Latency is full-line wall time on the mission GPU with a warm server: weights re
 | 36 | LFM2.5-24B-A2B | chat | 15.352 | 15080 | CANARY_FAILED | — | — | — | — | — |  |
 | 12 | GPT-OSS-Swallow-20B-RL-v0.1 | chat | 15.805 | 15156 | CANARY_FAILED | — | — | — | — | — |  |
 | 40 | Nemotron 3 Nano 30B-A3B | chat | 24.656 | — | DEFER_5090 | — | — | — | — | — |  |
+| 51 | Flint 40B-A2.5B | chat | 22.446 | 21642 | CANARY_FAILED | — | — | — | — | — |  |
 
 ## Deferred to the 5090
 
@@ -69,3 +70,4 @@ Latency is full-line wall time on the mission GPU with a warm server: weights re
 - 39 gpt-oss-20b — CANARY_FAILED hit 256-token cap (thinking or runaway output)
 - 36 LFM2.5-24B-A2B — CANARY_FAILED hit 256-token cap (thinking or runaway output)
 - 12 GPT-OSS-Swallow-20B-RL-v0.1 — CANARY_FAILED hit 256-token cap (thinking or runaway output)
+- 51 Flint 40B-A2.5B — CANARY_FAILED hit 256-token cap (thinking or runaway output)
