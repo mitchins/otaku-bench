@@ -36,6 +36,8 @@ def strip_answer(text,reasoning):
  # If an incomplete thought is returned as content, never treat it as translation.
  if '<think>' in text and '</think>' not in text:return '', 'unclosed thinking'
  text=re.sub(r'<think>.*?</think>','',text,flags=re.S|re.I).strip()
+ # A lone closing tag (prefilled think block the model reopened): everything before it is reasoning.
+ if re.search(r'</think>',text,re.I):text=re.split(r'</think>',text,flags=re.I)[-1].strip()
  # Some third-party GGUFs don't mark EOS as a control token, so it is rendered as text (e.g. CAT's '</s>').
  text=re.sub(r'(\s*(</s>|<\|endoftext\|>|<\|im_end\|>|<eos>|<\|eot_id\|>))+\s*$','',text)
  if not text:return '', 'empty answer'
