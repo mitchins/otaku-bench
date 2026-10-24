@@ -55,7 +55,11 @@ QUEUE=(
   screen/33_TranslateGemma_12B_IT
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
+  # edge-size comparisons (Deck-class and below)
   screen/46_Qwen3-4B-Instruct-2507
+  screen/31_Qwen3.5-4B
+  screen/44_Qwen3.5-2B
+  screen/52_Qwen3-1.7B
 )
 
 judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)

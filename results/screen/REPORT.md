@@ -42,6 +42,7 @@ Latency is full-line wall time on the mission GPU with a warm server: weights re
 | 2 | Gemma 4 31B IT | chat | 19.598 | 20528 | COMPLETE | 0.51s | 1.211s | 1.089s | 1.527s | 25.074 | L=250/250 s_bare=31/31 s_context=31/31 s_full=31/31 |
 | 1 | Qwen3.8-27B | chat | 16.464 | 15424 | COMPLETE | 0.736s | 1.086s | 1.169s | 1.308s | 31.902 | L=250/250 s_bare=31/31 s_context=31/31 s_full=31/31 |
 | 4 | Qwen3.6-27B | chat | 17.985 | 16778 | COMPLETE | 0.748s | 1.147s | 1.195s | 1.385s | 30.223 | L=250/250 s_bare=31/31 s_context=31/31 s_full=31/31 |
+| 52 | Qwen3-1.7B | chat | 1.282 | 1646 | PARTIAL | 0.032s | 0.092s | 0.074s | 0.088s | 321.594 | L=246/250 s_bare=31/31 s_context=31/31 s_full=31/31 |
 | 25 | CAT-Translate-3.3B-beta | cat | 2.066 | 2556 | PARTIAL | 0.02s | 0.094s | 0.094s | — | 198.697 | L=249/250 s_bare=31/31 s_context=31/31 s_full=31/31 |
 | 50 | Llama-3.2-3B-Instruct | chat | 2.019 | 2534 | PARTIAL | 0.037s | 0.118s | 0.1s | 0.096s | 231.009 | L=249/250 s_bare=31/31 s_context=31/31 s_full=31/31 |
 | 47 | rinna-llama-3-youko-8b | base_completion | 4.921 | 5094 | PARTIAL | 0.021s | 0.138s | 0.138s | — | 115.986 | L=249/250 s_bare=29/31 |
@@ -62,6 +63,7 @@ Latency is full-line wall time on the mission GPU with a warm server: weights re
 
 ## Needs a look
 
+- 52 Qwen3-1.7B — PARTIAL 
 - 25 CAT-Translate-3.3B-beta — PARTIAL 
 - 50 Llama-3.2-3B-Instruct — PARTIAL 
 - 47 rinna-llama-3-youko-8b — PARTIAL 
