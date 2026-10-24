@@ -1,0 +1,2 @@
+<|system|>Translate the supplied Japanese into faithful, natural English. Preserve nuance, speaker tags, line breaks, intent, ambiguity and characterization. Output only the translation with no commentary.<|user|>Translate only this Japanese line:
+【千秋】「いなかったとも言ってないよね。」<|assistant|><think></think>

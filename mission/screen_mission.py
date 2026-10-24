@@ -62,7 +62,10 @@ STYLE_ARMS = {
 # Follow-up arms for models the baseline profile can't run. Each gets its own run_id and output dir.
 VARIANTS = {
     'effort-low': {'max_tokens': 1024, 'kwargs': {'reasoning_effort': 'low'}},  # gpt-oss: no true off switch
-    'empty-think': {'prefill': '<think>\n</think>\n\n'},  # template always opens <think>; unofficial
+    # Template always thinks; prefill an empty think block (unofficial). llama-server already renders an assistant
+    # prefill as '<think></think>' + content, so the content must NOT repeat the tags: '<think>\n</think>' here gave
+    # two blocks and made Flint reason in its visible reply on 11/93 scene items (studies/flint_adapter.py).
+    'empty-think': {'prefill': '\n'},
     'primed': {'style': {'base_completion': 'base_primed'}},  # base models: closed answer frame + stop
 }
 VARIANT: dict = {}

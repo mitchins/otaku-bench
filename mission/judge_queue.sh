@@ -47,7 +47,7 @@ QUEUE=(
   screen_quants/UD-Q6_K_L/01_Qwen3.8-27B
   screen_quants/Q5_K_M/02_Gemma_4_31B_IT
   # hardware-rule admission: 40B MoE, fits 24 GB at IQ4_XS; needs the empty-think prefill (always thinks otherwise)
-  screen_variants/empty-think/51_Flint_40B-A2.5B
+  screen_variants/empty-think/51_Flint_40B-A2.5B   # single-block empty-think prefill (studies/flint_adapter.py)
   screen/21_Sugoi-14B-Ultra
   screen/32_TranslateGemma_27B_IT
   screen/33_TranslateGemma_12B_IT
