@@ -4,7 +4,7 @@
 |---:|---|---:|---:|---:|---:|---:|---|
 | 1 | **Qwen3.6-35B-A3B** | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
 
-Being judged: Gemma 4 26B-A4B IT (57/200 lines).
+Being judged: Gemma 4 26B-A4B IT (140/200 lines).
 
 ## By category
 

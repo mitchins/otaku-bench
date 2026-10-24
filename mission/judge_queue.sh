@@ -6,6 +6,8 @@
 #   RESERVE=0 STOP=23:58 ./mission/judge_queue.sh   # cron 23:45 UTC: spend what other keys left unused
 set -uo pipefail
 cd "$(dirname "$0")/.."
+# cron's PATH is /usr/bin:/bin; git-crypt (brew) must be found or git status/add fail on the encrypted paths
+export PATH="/home/linuxbrew/.linuxbrew/bin:$HOME/.local/bin:$PATH"
 # shellcheck disable=SC1091
 . .venv/bin/activate
 set -a
@@ -76,10 +78,14 @@ judge() {  # dir dataset mode split tag; returns non-zero when this run must sto
 python mission/judge_table.py >>"$LOG" 2>&1
 
 # publish: commit the refreshed ranking (judgment JSONL is git-crypted) and push, which redeploys the docs
-if [ "${PUBLISH:-1}" = "1" ] && [ -n "$(git status --porcelain -- results/judge)" ]; then
+if [ "${PUBLISH:-1}" = "1" ]; then
+  if ! CHANGED=$(git status --porcelain -- results/judge 2>>"$LOG"); then
+    echo "⚠️  publish failed: git status error (git-crypt on PATH?)" >>"$LOG"
+  elif [ -n "$CHANGED" ]; then
   {
     git add results/judge &&
     git commit -q -m "Judge queue $(date -u +%F): refresh ranking" &&
     git push -q origin main
   } >>"$LOG" 2>&1 || echo "⚠️  publish failed" >>"$LOG"
+  fi
 fi

@@ -4,7 +4,13 @@
 
 ## Admission rules
 
-1. **Size and task:** the model must have between **0.6B and 35B total parameters** (not active MoE parameters), and accept text-based Japanese→English translation tasks. Check base-model lineage and total weights.
+1. **Size and task — the hardware rule (2026-10-23):** the question is *the best Japanese translation you can get from one consumer 24 GB GPU (RTX 3090 class, or Radeon / Apple Silicon equivalents), fast enough to use while playing*. The original 0.6–35B total-parameter range was a proxy for that, and is now applied in spirit, not as a hard limit. A larger model, typically a MoE with few active parameters, is eligible as a normal candidate if all of the following hold:
+   - it loads **fully GPU-resident on one 24 GB card**: no CPU layer offload, no multi-GPU;
+   - it uses a **recommended, quality-oriented quant** from the origin lab or Bartowski/Unsloth, never a degraded quant picked only to squeeze it in;
+   - it runs at the **2k-context screen profile**;
+   - it passes the **same latency gate** (median ≤ 2 s, p90 ≤ 3 s at 6 lines of history).
+
+   Fit is measured at load, not estimated: a model that runs out of memory is deferred, not excluded on paper. The model must also accept text-based Japanese→English translation tasks. Check base-model lineage and total weights. First admission under this rule: Flint 40B-A2.5B at IQ4_XS (rank 51).
 2. **Publisher and provenance:** a first-party model from an identifiable lab/organisation is eligible. Original weights are separate from their GGUF *conversions*, even when a converter owns the Hugging Face quant repo. Exact quant files are never inferred from a naming convention; they need to appear in the repo tree and then be verified via HF metadata/SHA.
 3. **Substantial adaptions:** laboratory/organisation Japanese CPT plus SFT/RL, or substantial, described bilingual SFT/DPO/RL or distillation, qualify as independent model candidates. For undisclosed token counts, require both documentation of training and published relative evaluation against the base. Dataset source and size are evidence, not a fixed threshold. A merge may be one stage of a broader training pipeline, but an untrained merge-only release is excluded.
 4. **Domain exception:** models explicitly trained for Japanese→English **VN/game dialogue translation** can qualify without billions of training tokens, if the publisher provides its own model card, training purpose/dataset description, and a runnable public weight or GGUF. Distinctly mark these `domain_exception`, including incomplete training/licence provenance. Exceptions must be narrow, reproducible and capped (v4 contains only VNTL and Sugoi families).
