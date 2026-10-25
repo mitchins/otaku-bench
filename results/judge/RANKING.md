@@ -10,7 +10,7 @@
 | 6 | **Qwen3.6-35B-A3B** | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
 | 7 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
 
-Being judged: Flint 40B-A2.5B (empty-think) (0/200 lines).
+Being judged: Flint 40B-A2.5B (empty-think) (27/200 lines).
 
 ## By category
 
