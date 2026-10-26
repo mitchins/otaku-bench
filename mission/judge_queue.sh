@@ -60,6 +60,7 @@ QUEUE=(
   screen/31_Qwen3.5-4B
   screen/44_Qwen3.5-2B
   # screen/52_Qwen3-1.7B   # dropped from paid judging: 4 failed + 22 untranslated; kept as diagnostic evidence
+  screen/53_Ling-3.0-tiny   # last: low-active MoE comparison point for LFM/Flint; eyeball says same league or worse
 )
 
 judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)
