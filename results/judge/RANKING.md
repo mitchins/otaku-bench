@@ -12,7 +12,7 @@
 | 8 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
 | 9 | **Flint 40B-A2.5B (empty-think)** | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
 
-Being judged: TranslateGemma 27B IT (0/200 lines).
+Being judged: TranslateGemma 27B IT (45/200 lines).
 
 ## By category
 
