@@ -52,6 +52,8 @@ QUEUE=(
   screen_variants/empty-think/51_Flint_40B-A2.5B   # single-block empty-think prefill (studies/flint_adapter.py)
   screen/21_Sugoi-14B-Ultra
   screen/32_TranslateGemma_27B_IT
+  # edge pick moved up: Gemma 4 E2B (3.2 GB, 0.11 s/line, clean outputs) is the realistic Deck-class candidate
+  screen/42_Gemma_4_E2B_IT
   screen/33_TranslateGemma_12B_IT
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
