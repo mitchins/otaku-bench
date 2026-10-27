@@ -67,6 +67,9 @@ VARIANTS = {
     # two blocks and made Flint reason in its visible reply on 11/93 scene items (studies/flint_adapter.py).
     'empty-think': {'prefill': '\n'},
     'primed': {'style': {'base_completion': 'base_primed'}},  # base models: closed answer frame + stop
+    # Omni models pick the output modality from the system prompt; without this LFM3-Omni answers in interleaved
+    # text+speech, and the hidden audio tokens run to the cap mid-sentence. Suffix documented on the model card.
+    'respond-in-text': {'system_suffix': ' Respond in text.'},
 }
 VARIANT: dict = {}
 HISTORY_STYLES = {'chat', 'hunyuan', 'sugoi'}  # cat has no context channel
@@ -217,6 +220,8 @@ def build_payload(case: dict, style: str, dataset: str, mode: str) -> tuple[dict
     if 'messages' in payload:
         # Belt and braces with the server flag: templates that support it switch thinking off.
         payload['chat_template_kwargs'] = {'enable_thinking': False, **VARIANT.get('kwargs', {})}
+        if VARIANT.get('system_suffix') and payload['messages'][0]['role'] == 'system':
+            payload['messages'][0]['content'] += VARIANT['system_suffix']
         if VARIANT.get('prefill'):
             payload['messages'].append({'role': 'assistant', 'content': VARIANT['prefill']})
     return payload, style in COMPLETION_STYLES

@@ -65,6 +65,15 @@ QUEUE=(
   screen/31_Qwen3.5-4B
   screen/44_Qwen3.5-2B
   # screen/52_Qwen3-1.7B   # dropped from paid judging: 4 failed + 22 untranslated; kept as diagnostic evidence
+  # current-gen LFM sweep (2.5 + 3), newest first. Not paid-judged: 350M (returns the Japanese on 200/200),
+  # 230M (chatty/echo), 8B-A1B (42 echoes even with empty-think, latency gate FAIL), 1.2B-Thinking (can't stop thinking)
+  screen/60_LFM3-1.7B
+  screen/61_LFM3-VL-2B
+  screen_variants/respond-in-text/62_LFM3-Omni-2B
+  screen_variants/empty-think/57_LFM2.5-2.6B
+  screen/59_LFM2.5-VL-3B
+  screen/19_LFM2.5-1.2B-JP-202606
+  screen/45_LFM2.5-1.2B_Instruct
   screen/53_Ling-3.0-tiny   # last: low-active MoE comparison point for LFM/Flint; eyeball says same league or worse
 )
 
