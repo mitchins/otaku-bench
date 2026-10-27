@@ -55,6 +55,8 @@ QUEUE=(
   # edge picks moved up: Gemma 4 E2B / E4B (3.2 / 5.1 GB, clean outputs) are the realistic Deck-class candidates, and take images
   screen/42_Gemma_4_E2B_IT
   screen/41_Gemma_4_E4B_IT
+  # the 12B pair, back to back: general Gemma 4 12B vs the TranslateGemma 12B fine-tune
+  screen/08_Gemma_4_12B_IT
   screen/33_TranslateGemma_12B_IT
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
