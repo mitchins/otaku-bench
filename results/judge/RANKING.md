@@ -14,7 +14,7 @@
 | 10 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
 | 11 | **Flint 40B-A2.5B (empty-think)** | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
 
-Being judged: Gemma 4 E4B IT (99/200 lines).
+Being judged: Gemma 4 E4B IT (134/200 lines).
 
 ## By category
 
