@@ -87,6 +87,11 @@ def test_native_prompts_and_templates_are_not_equivalent():
     assert len(p['messages'])==1 and p['messages'][0]['content'].startswith('Translate the following Japanese text')
     args.prompt_style='hunyuan';p=run_translations.make_payload(r,args)
     assert len(p['messages'])==1 and p['messages'][0]['role']=='user'
+    args.prompt_style='hymt2';p=run_translations.make_payload(r,args)
+    assert len(p['messages'])==1 and p['messages'][0]['content'].endswith('explanation:\n\n風の便り')
+    c={'japanese':'行こう。','preceding_lines':['【A】「待って」']}
+    p=run_translations.make_payload(c,SimpleNamespace(prompt_style='hymt2',model='a',dataset='scenes',mode='context',max_tokens=256))
+    assert p['messages'][0]['content'].startswith('[Background Information]\n【A】「待って」') and p['messages'][0]['content'].endswith('[Source Text]\n行こう。')
     args.prompt_style='chat';p=run_translations.make_payload(r,args)
     assert p['messages'][0]['role']=='system'
     args.prompt_style='translategemma';p=run_translations.make_payload(r,args)

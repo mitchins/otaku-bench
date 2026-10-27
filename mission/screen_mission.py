@@ -51,6 +51,7 @@ LATENCY_SCENES = 12
 STYLE_ARMS = {
     'chat': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'hunyuan': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
+    'hymt2': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'cat': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'sugoi': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'vntl': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'full')},
@@ -72,7 +73,7 @@ VARIANTS = {
     'respond-in-text': {'system_suffix': ' Respond in text.'},
 }
 VARIANT: dict = {}
-HISTORY_STYLES = {'chat', 'hunyuan', 'sugoi'}  # cat has no context channel
+HISTORY_STYLES = {'chat', 'hunyuan', 'hymt2', 'sugoi'}  # cat has no context channel
 COMPLETION_STYLES = {'seedx', 'vntl', 'base_completion', 'base_primed', 'translategemma_text'}
 ARM_ORDER = (('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full'))
 OOM_PATTERNS = re.compile(r'out of memory|cudaMalloc failed|failed to allocate|CUDA error|unable to load model|ggml_backend_cuda_buffer_type_alloc_buffer', re.I)

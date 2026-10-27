@@ -55,9 +55,12 @@ QUEUE=(
   # edge picks moved up: Gemma 4 E2B / E4B (3.2 / 5.1 GB, clean outputs) are the realistic Deck-class candidates, and take images
   screen/42_Gemma_4_E2B_IT
   screen/41_Gemma_4_E4B_IT
+  # community request: Hy-MT2 30B-A3B looked Gemma-26B-class on idioms in the informal review (0.17 s/line, 18 GB)
+  screen/64_Hy-MT2-30B-A3B
   # the 12B pair, back to back: general Gemma 4 12B vs the TranslateGemma 12B fine-tune
   screen/08_Gemma_4_12B_IT
   screen/33_TranslateGemma_12B_IT
+  screen/63_Hy-MT2-7B   # community request: dedicated-translator group; HY-MT1.5-7B successor
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
   # edge-size comparisons (Deck-class and below)
@@ -65,7 +68,8 @@ QUEUE=(
   screen/31_Qwen3.5-4B
   screen/44_Qwen3.5-2B
   # screen/52_Qwen3-1.7B   # dropped from paid judging: 4 failed + 22 untranslated; kept as diagnostic evidence
-  # current-gen LFM sweep (2.5 + 3), newest first. Not paid-judged: 350M (returns the Japanese on 200/200),
+  screen/53_Ling-3.0-tiny   # low-active MoE comparison point for LFM/Flint; eyeball says same league or worse
+  # current-gen LFM sweep (2.5 + 3), newest first; last on purpose: confirms the family is weak at this task. Not paid-judged: 350M (returns the Japanese on 200/200),
   # 230M (chatty/echo), 8B-A1B (42 echoes even with empty-think, latency gate FAIL), 1.2B-Thinking (can't stop thinking)
   screen/60_LFM3-1.7B
   screen/61_LFM3-VL-2B
@@ -74,7 +78,6 @@ QUEUE=(
   screen/59_LFM2.5-VL-3B
   screen/19_LFM2.5-1.2B-JP-202606
   screen/45_LFM2.5-1.2B_Instruct
-  screen/53_Ling-3.0-tiny   # last: low-active MoE comparison point for LFM/Flint; eyeball says same league or worse
 )
 
 judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)

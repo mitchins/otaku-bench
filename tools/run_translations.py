@@ -101,6 +101,15 @@ def make_payload(r,args):
   else:
    content='Translate the following segment into English, without additional explanation.\n\n'+ja
   messages=[{'role':'user','content':content}]
+ elif args.prompt_style=='hymt2':
+  # Hy-MT2 card: English 'Default Translation' prompt, no system prompt; history goes through its documented
+  # 'Background Information' template, so the context is never inside the text to translate.
+  if args.mode=='context' and r.get('preceding_lines'):
+   content=('[Background Information]\n'+'\n'.join(r['preceding_lines'])+'\n\nPlease translate the following text into English, '
+            'taking the provided background information into consideration.\n\n[Source Text]\n'+ja)
+  else:
+   content='Translate the following text into English. Note that you should only output the translated result without any additional explanation:\n\n'+ja
+  messages=[{'role':'user','content':content}]
  elif args.prompt_style=='cat':
   # CyberAgent first-party prompt. llama-server applies the model-specific GGUF chat template.
   # The card documents no context channel, so context mode sends the target line alone (history is unusable).
@@ -124,7 +133,7 @@ def main():
  p.add_argument('--dataset',choices=['lines','scenes'],default='lines')
  p.add_argument('--mode',choices=['bare','context','full'],default='bare')
  p.add_argument('--base-url',default='http://127.0.0.1:8125/v1')
- p.add_argument('--prompt-style',choices=['chat','hunyuan','cat','seedx','translategemma','translategemma_text','vntl','sugoi','base_completion','base_primed'],default='chat')
+ p.add_argument('--prompt-style',choices=['chat','hunyuan','hymt2','cat','seedx','translategemma','translategemma_text','vntl','sugoi','base_completion','base_primed'],default='chat')
  p.add_argument('--experimental-native-template',action='store_true',help='Native TranslateGemma schema is NOT proven compatible with llama-server; canary first')
  p.add_argument('--model',required=True,help='Actual model identity; not shared alias')
  p.add_argument('--run-id',default=None,help='Reproducible unique inference arm, including quant and reasoning; defaults to model/style')
