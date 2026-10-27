@@ -61,6 +61,7 @@ QUEUE=(
   screen/08_Gemma_4_12B_IT
   screen/33_TranslateGemma_12B_IT
   screen/63_Hy-MT2-7B   # community request: dedicated-translator group; HY-MT1.5-7B successor
+  screen/65_Hy-MT2-1.8B   # Deck-class edge translator (1.1 GB, 0.08 s/line); HY-MT1.5-1.8B successor
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
   # edge-size comparisons (Deck-class and below)
