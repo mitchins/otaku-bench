@@ -96,8 +96,8 @@ def summaries() -> dict[str, dict]:
     return out
 
 
-# Judged for qualification but kept off the published board until the user decides (e.g. other engine/hardware).
-OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm'}
+# Judged for qualification or as a cloud reference, but kept off the published board until the user decides (e.g. other engine/hardware).
+OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm', 'C01_Gemini-3.5-Flash-Lite'}
 
 
 def main() -> int:

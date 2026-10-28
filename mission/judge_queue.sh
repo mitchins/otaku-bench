@@ -57,6 +57,10 @@ QUEUE=(
   screen/41_Gemma_4_E4B_IT
   # qualification only (off the board): Gemma 4 31B NVFP4 on vLLM / RTX 5090; 139/200 lines reuse Q4/Q5 judgments
   screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
+  # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy at 1 req/s
+  screen/C01_Gemini-3.5-Flash-Lite
+  # user pick: Ornith-1.5 (self-improvement RL on the Qwen3.5/3.6-35B-A3B MoE, coding/agentic); does it beat its Qwen3.6 base? 0.41 s/line, 66/200 lines reuse
+  screen/66_Ornith-1.5-35B-A3B
   # community request: Hy-MT2 30B-A3B looked Gemma-26B-class on idioms in the informal review (0.17 s/line, 18 GB)
   screen/64_Hy-MT2-30B-A3B
   # the 12B pair, back to back: general Gemma 4 12B vs the TranslateGemma 12B fine-tune

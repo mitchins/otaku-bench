@@ -9,7 +9,7 @@ timings from other hardware or engines are recorded but are not comparable with 
       --label 'Gemma 4 31B IT' --run-tag NVFP4-vllm --revision <hf sha> --out results/screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
 """
 from __future__ import annotations
-import argparse, sys
+import argparse, sys, threading, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -27,6 +27,9 @@ def main() -> int:
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--workers', type=int, default=8)
     p.add_argument('--timeout', type=float, default=120)
+    p.add_argument('--retries', type=int, default=6, help='retries on HTTP 429, each after --backoff seconds')
+    p.add_argument('--backoff', type=float, default=20)
+    p.add_argument('--interval', type=float, default=0, help='minimum seconds between request starts (rate-limited APIs)')
     args = p.parse_args()
 
     build = sm.build_payload
@@ -40,6 +43,13 @@ def main() -> int:
     common = {'model': args.label, 'run_id': run_id, 'quant_repo_sha': args.revision, 'quant_attested': False,
               'prompt_style': args.style, 'profile': sm.PROFILE, 'engine': args.run_tag, 'served_model': args.served_model}
     args.out.mkdir(parents=True, exist_ok=True)
+    gate, next_start = threading.Lock(), [0.0]
+    def pace():
+        with gate:
+            wait = next_start[0] - time.monotonic()
+            if wait > 0:
+                time.sleep(wait)
+            next_start[0] = time.monotonic() + args.interval
     for dataset, mode in sm.ARM_ORDER:
         if (dataset, mode) not in sm.STYLE_ARMS[args.style]:
             continue
@@ -51,7 +61,12 @@ def main() -> int:
         cases = [c for c in sm.load_jsonl(src) if c['id'] not in done]
 
         def one(c):
-            rec = sm.translate(args.base, c, args.style, dataset, mode, args.timeout)
+            for attempt in range(args.retries + 1):
+                pace()
+                rec = sm.translate(args.base, c, args.style, dataset, mode, args.timeout)
+                if '429' not in (rec['error'] or '') or attempt == args.retries:
+                    break
+                time.sleep(args.backoff)
             rec.update(id=c['id'], dataset=dataset, mode=mode, source_sha256=src_sha, split=c.get('split'), **common)
             return rec
         with ThreadPoolExecutor(args.workers) as ex:
