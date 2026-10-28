@@ -57,7 +57,7 @@ QUEUE=(
   screen/41_Gemma_4_E4B_IT
   # qualification only (off the board): Gemma 4 31B NVFP4 on vLLM / RTX 5090; 139/200 lines reuse Q4/Q5 judgments
   screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
-  # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy at 1 req/s
+  # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy, paced to the key's ~5 req/min
   screen/C01_Gemini-3.5-Flash-Lite
   # user pick: Ornith-1.5 (self-improvement RL on the Qwen3.5/3.6-35B-A3B MoE, coding/agentic); does it beat its Qwen3.6 base? 0.41 s/line, 66/200 lines reuse
   screen/66_Ornith-1.5-35B-A3B
