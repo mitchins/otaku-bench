@@ -96,10 +96,14 @@ def summaries() -> dict[str, dict]:
     return out
 
 
+# Judged for qualification but kept off the published board until the user decides (e.g. other engine/hardware).
+OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm'}
+
+
 def main() -> int:
     summ = summaries()
     rows = []
-    names = sorted({p.name[:-len('.jsonl')].rsplit('.', 1)[0] for p in JUDGE.glob('*.jsonl')})  # model names contain dots
+    names = sorted({p.name[:-len('.jsonl')].rsplit('.', 1)[0] for p in JUDGE.glob('*.jsonl')} - OFF_BOARD)  # model names contain dots
     for name in names:
         row = {'name': name}
         flags = Counter()

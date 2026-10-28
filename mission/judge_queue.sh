@@ -55,6 +55,8 @@ QUEUE=(
   # edge picks moved up: Gemma 4 E2B / E4B (3.2 / 5.1 GB, clean outputs) are the realistic Deck-class candidates, and take images
   screen/42_Gemma_4_E2B_IT
   screen/41_Gemma_4_E4B_IT
+  # qualification only (off the board): Gemma 4 31B NVFP4 on vLLM / RTX 5090; 139/200 lines reuse Q4/Q5 judgments
+  screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
   # community request: Hy-MT2 30B-A3B looked Gemma-26B-class on idioms in the informal review (0.17 s/line, 18 GB)
   screen/64_Hy-MT2-30B-A3B
   # the 12B pair, back to back: general Gemma 4 12B vs the TranslateGemma 12B fine-tune
