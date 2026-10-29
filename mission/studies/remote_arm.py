@@ -14,6 +14,8 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import screen_mission as sm
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
+import mechanical as mech
 
 
 def main() -> int:
@@ -29,6 +31,9 @@ def main() -> int:
     p.add_argument('--timeout', type=float, default=120)
     p.add_argument('--retries', type=int, default=6, help='retries on HTTP 429, each after --backoff seconds')
     p.add_argument('--backoff', type=float, default=20)
+    p.add_argument('--retry-echo', type=int, default=0,
+                   help='re-request up to N times when the reply is the source returned untranslated (flaky cloud endpoints); '
+                        'existing echoed records are redone and each record keeps echo_retries for the footnote')
     p.add_argument('--interval', type=float, default=0, help='minimum seconds between request starts (rate-limited APIs)')
     args = p.parse_args()
 
@@ -56,17 +61,31 @@ def main() -> int:
         src = sm.DATA / ('lines_bare.jsonl' if dataset == 'lines' else f'scenes_{mode}.jsonl')
         src_sha = sm.sha_file(src)
         path = args.out / f'{dataset}_{mode}.jsonl'
+        source = sm.load_jsonl(src)
+        jp = {c['id']: c['japanese'] for c in source}
+        echoed = lambda r: mech.zero_reason(jp.get(r['id'], ''), r['translation'], None) == 'exact_echo'
         done = {r['id'] for r in sm.load_jsonl(path)
-                if r.get('translation') and not r.get('error') and r.get('run_id') == run_id and r.get('source_sha256') == src_sha}
-        cases = [c for c in sm.load_jsonl(src) if c['id'] not in done]
+                if r.get('translation') and not r.get('error') and r.get('run_id') == run_id and r.get('source_sha256') == src_sha
+                and not (args.retry_echo and echoed(r))}
+        cases = [c for c in source if c['id'] not in done]
+        if args.retry_echo and cases and path.exists():  # drop the echoed rows being redone, so each id keeps one record
+            keep = [r for r in sm.load_jsonl(path) if r['id'] in done]
+            path.write_text(''.join(sm.json.dumps(r, ensure_ascii=False) + '\n' for r in keep), encoding='utf-8')
 
         def one(c):
-            for attempt in range(args.retries + 1):
+            limited = echoes = 0
+            while True:  # 429s wait and retry (bounded by --retries); echoes re-ask (bounded by --retry-echo)
                 pace()
                 rec = sm.translate(args.base, c, args.style, dataset, mode, args.timeout)
-                if '429' not in (rec['error'] or '') or attempt == args.retries:
+                if '429' in (rec['error'] or '') and limited < args.retries:
+                    limited += 1
+                    time.sleep(args.backoff)
+                elif args.retry_echo and rec['translation'] and echoed(dict(rec, id=c['id'])) and echoes < args.retry_echo:
+                    echoes += 1
+                else:
                     break
-                time.sleep(args.backoff)
+            if args.retry_echo:
+                rec['echo_retries'] = echoes
             rec.update(id=c['id'], dataset=dataset, mode=mode, source_sha256=src_sha, split=c.get('split'), **common)
             return rec
         with ThreadPoolExecutor(args.workers) as ex:
