@@ -71,6 +71,12 @@ VARIANTS = {
     # Omni models pick the output modality from the system prompt; without this LFM3-Omni answers in interleaved
     # text+speech, and the hidden audio tokens run to the cap mid-sentence. Suffix documented on the model card.
     'respond-in-text': {'system_suffix': ' Respond in text.'},
+    # The chat user messages never name the target language (only the system prompt does). Gemini 3.5 Flash-Lite echoes
+    # the Japanese on some scenes even with the system prompt in place, and translates once the user turn says it.
+    # Candidate fix for the next prompt version for every model; until then it's a variant arm.
+    'explicit-target': {'user_rewrite': (('Translate only this Japanese line:', 'Translate only this Japanese line into English:'),
+                                         ('Translate ONLY this new line:', 'Translate ONLY this new line from Japanese to English:'),
+                                         ('Translate this WHOLE scene,', 'Translate this WHOLE scene from Japanese to English,'))},
 }
 VARIANT: dict = {}
 HISTORY_STYLES = {'chat', 'hunyuan', 'hymt2', 'sugoi'}  # cat has no context channel
@@ -223,6 +229,10 @@ def build_payload(case: dict, style: str, dataset: str, mode: str) -> tuple[dict
         payload['chat_template_kwargs'] = {'enable_thinking': False, **VARIANT.get('kwargs', {})}
         if VARIANT.get('system_suffix') and payload['messages'][0]['role'] == 'system':
             payload['messages'][0]['content'] += VARIANT['system_suffix']
+        user = payload['messages'][-1]
+        for old, new in VARIANT.get('user_rewrite', ()):
+            if user['role'] == 'user' and isinstance(user['content'], str) and old in user['content']:
+                user['content'] = user['content'].replace(old, new, 1)
         if VARIANT.get('prefill'):
             payload['messages'].append({'role': 'assistant', 'content': VARIANT['prefill']})
     return payload, style in COMPLETION_STYLES

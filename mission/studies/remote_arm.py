@@ -26,6 +26,7 @@ def main() -> int:
     p.add_argument('--run-tag', required=True, help='quant/engine tag, e.g. NVFP4-vllm')
     p.add_argument('--revision', required=True, help='HF revision of the served weights')
     p.add_argument('--style', default='chat')
+    p.add_argument('--variant', choices=sorted(sm.VARIANTS), help='screen_mission variant (payload changes only)')
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--workers', type=int, default=8)
     p.add_argument('--timeout', type=float, default=120)
@@ -37,6 +38,8 @@ def main() -> int:
     p.add_argument('--interval', type=float, default=0, help='minimum seconds between request starts (rate-limited APIs)')
     args = p.parse_args()
 
+    if args.variant:
+        sm.VARIANT.update(sm.VARIANTS[args.variant])
     build = sm.build_payload
     def build_named(*a, **k):
         payload, comp = build(*a, **k)
@@ -44,7 +47,7 @@ def main() -> int:
         return payload, comp
     sm.build_payload = build_named
 
-    run_id = f'{args.label}:{args.run_tag}:off:{args.revision[:12]}:{sm.PROFILE}'
+    run_id = f'{args.label}:{args.run_tag}{":" + args.variant if args.variant else ""}:off:{args.revision[:12]}:{sm.PROFILE}'
     common = {'model': args.label, 'run_id': run_id, 'quant_repo_sha': args.revision, 'quant_attested': False,
               'prompt_style': args.style, 'profile': sm.PROFILE, 'engine': args.run_tag, 'served_model': args.served_model}
     args.out.mkdir(parents=True, exist_ok=True)
