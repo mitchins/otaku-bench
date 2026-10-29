@@ -26,3 +26,9 @@ prompt echoed nearly every time; no system prompt translated 3/3; only "Translat
 translated 3/3; adding "Output only the translation with no commentary." translated 1/3; "Preserve nuance, speaker tags, line breaks, …"
 echoed 3/3. Temperature (0, 1.0, default) and streaming make no difference. Local models get the same prompt and don't echo, so the
 benchmark prompt stays as it is.
+
+**Indicative arm: `short-system` (user decision 2026-10-29; not parity).** The scenes were re-run with only the first sentence of the
+system prompt plus the explicit-target user turn (results/screen_variants/short-system/). Lines are copied from the shared-prompt run
+(they never echoed), so all 200 line judgments are reused. Result: 0/93 echoes with no retries needed, but compliance slips appear without
+"Output only the translation": in full scenes, 1 commentary item (P007: a preamble, and the Japanese interleaved line by line) and 2 format
+items (e.g. P003 invents `**Grandmother:**` speaker labels on narration). They're judged as they are.

@@ -28,6 +28,7 @@ def main() -> int:
     p.add_argument('--style', default='chat')
     p.add_argument('--variant', choices=sorted(sm.VARIANTS), help='screen_mission variant (payload changes only)')
     p.add_argument('--out', type=Path, required=True)
+    p.add_argument('--arms', default='lines,scenes', help='datasets to run: lines, scenes or both')
     p.add_argument('--workers', type=int, default=8)
     p.add_argument('--timeout', type=float, default=120)
     p.add_argument('--retries', type=int, default=6, help='retries on HTTP 429, each after --backoff seconds')
@@ -59,7 +60,7 @@ def main() -> int:
                 time.sleep(wait)
             next_start[0] = time.monotonic() + args.interval
     for dataset, mode in sm.ARM_ORDER:
-        if (dataset, mode) not in sm.STYLE_ARMS[args.style]:
+        if (dataset, mode) not in sm.STYLE_ARMS[args.style] or dataset not in args.arms.split(','):
             continue
         src = sm.DATA / ('lines_bare.jsonl' if dataset == 'lines' else f'scenes_{mode}.jsonl')
         src_sha = sm.sha_file(src)

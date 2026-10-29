@@ -77,7 +77,11 @@ VARIANTS = {
     'explicit-target': {'user_rewrite': (('Translate only this Japanese line:', 'Translate only this Japanese line into English:'),
                                          ('Translate ONLY this new line:', 'Translate ONLY this new line from Japanese to English:'),
                                          ('Translate this WHOLE scene,', 'Translate this WHOLE scene from Japanese to English,'))},
+    # Gemini 3.5 Flash-Lite only (indicative, not parity): the shared system prompt's 'Preserve ... speaker tags, line breaks'
+    # makes it return some scenes in Japanese; its first sentence alone translates (ablation in the Gemini NOTES.md).
+    'short-system': {'system_replace': 'Translate the supplied Japanese into faithful, natural English.'},  # + explicit-target user turn, as ablated
 }
+VARIANTS['short-system']['user_rewrite'] = VARIANTS['explicit-target']['user_rewrite']
 VARIANT: dict = {}
 HISTORY_STYLES = {'chat', 'hunyuan', 'hymt2', 'sugoi'}  # cat has no context channel
 COMPLETION_STYLES = {'seedx', 'vntl', 'base_completion', 'base_primed', 'translategemma_text'}
@@ -227,6 +231,8 @@ def build_payload(case: dict, style: str, dataset: str, mode: str) -> tuple[dict
     if 'messages' in payload:
         # Belt and braces with the server flag: templates that support it switch thinking off.
         payload['chat_template_kwargs'] = {'enable_thinking': False, **VARIANT.get('kwargs', {})}
+        if VARIANT.get('system_replace') and payload['messages'][0]['role'] == 'system':
+            payload['messages'][0]['content'] = VARIANT['system_replace']
         if VARIANT.get('system_suffix') and payload['messages'][0]['role'] == 'system':
             payload['messages'][0]['content'] += VARIANT['system_suffix']
         user = payload['messages'][-1]

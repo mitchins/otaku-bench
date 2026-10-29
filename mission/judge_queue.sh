@@ -59,6 +59,7 @@ QUEUE=(
   screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
   # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy, paced to the key's ~5 req/min
   screen/C01_Gemini-3.5-Flash-Lite
+  screen_variants/short-system/C01_Gemini-3.5-Flash-Lite   # indicative, not parity: short system prompt for scenes (the shared one makes Lite echo); lines copied from the shared-prompt run
   # user pick: Ornith-1.5 (self-improvement RL on the Qwen3.5/3.6-35B-A3B MoE, coding/agentic); does it beat its Qwen3.6 base? 0.41 s/line, 66/200 lines reuse
   screen/66_Ornith-1.5-35B-A3B
   # community request: Hy-MT2 30B-A3B looked Gemma-26B-class on idioms in the informal review (0.17 s/line, 18 GB)
