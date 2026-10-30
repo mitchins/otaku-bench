@@ -13,12 +13,14 @@
 | 9 | **Qwen3.6-35B-A3B** | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
 | 10 | **TranslateGemma 27B IT** | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
 | 11 | **Gemma 4 E4B IT** | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
-| 12 | **Sugoi-14B-Ultra** | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
-| 13 | **Gemma 4 E2B IT** | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
-| 14 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
-| 15 | **Flint 40B-A2.5B (empty-think)** | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 12 | **Hy-MT2-7B** | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
+| 13 | **TranslateGemma 12B IT** | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
+| 14 | **Sugoi-14B-Ultra** | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
+| 15 | **Gemma 4 E2B IT** | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
+| 16 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| 17 | **Flint 40B-A2.5B (empty-think)** | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
 
-Being judged: TranslateGemma 12B IT (0/200 lines).
+Being judged: Hy-MT2-1.8B (0/200 lines).
 
 ## By category
 
@@ -37,6 +39,8 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Qwen3.6-35B-A3B | 60% | 70% | 80% | 95% | 95% | 90% | 90% | 80% | 80% | 95% |
 | TranslateGemma 27B IT | 65% | 65% | 75% | 90% | 85% | 85% | 80% | 85% | 85% | 90% |
 | Gemma 4 E4B IT | 60% | 70% | 75% | 90% | 90% | 85% | 85% | 80% | 90% | 90% |
+| Hy-MT2-7B | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
+| TranslateGemma 12B IT | 55% | 60% | 60% | 100% | 80% | 75% | 80% | 70% | 95% | 85% |
 | Sugoi-14B-Ultra | 55% | 65% | 65% | 90% | 85% | 80% | 75% | 85% | 70% | 85% |
 | Gemma 4 E2B IT | 25% | 70% | 55% | 90% | 80% | 75% | 60% | 60% | 80% | 65% |
 | LFM2.5-24B-A2B (empty-think) | 15% | 45% | 55% | 60% | 60% | 60% | 70% | 35% | 70% | 75% |
@@ -59,6 +63,8 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Qwen3.6-35B-A3B | 0 | 0 | 0 | 2 |
 | TranslateGemma 27B IT | 0 | 0 | 0 | 0 |
 | Gemma 4 E4B IT | 0 | 0 | 0 | 0 |
+| Hy-MT2-7B | 0 | 0 | 0 | 0 |
+| TranslateGemma 12B IT | 0 | 0 | 0 | 1 |
 | Sugoi-14B-Ultra | 0 | 0 | 1 | 0 |
 | Gemma 4 E2B IT | 0 | 0 | 0 | 0 |
 | LFM2.5-24B-A2B (empty-think) | 1 | 0 | 0 | 2 |
