@@ -98,25 +98,31 @@ def summaries() -> dict[str, dict]:
 
 # Judged for qualification or as a cloud reference, but kept off the published board until the user decides (e.g. other engine/hardware).
 OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm', 'C01_Gemini-3.5-Flash-Lite', 'C01_Gemini-3.5-Flash-Lite+explicit-target', 'C01_Gemini-3.5-Flash-Lite+short-system'}
+# One board entry assembled from per-arm runs (entry -> judged name per arm), shown with an asterisk and FOOTNOTES.
+COMPOSITE = {'C01_Gemini-3.5-Flash-Lite*': {'lines_eval': 'C01_Gemini-3.5-Flash-Lite', 'scenes_full': 'C01_Gemini-3.5-Flash-Lite+short-system'}}
+LABELS = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini 3.5 Flash-Lite (cloud)*'}
+FOOTNOTES = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini: full scenes use only the first sentence of the system prompt; '
+             'with the full prompt it returns some scenes untranslated.'}
 
 
 def main() -> int:
     summ = summaries()
     rows = []
-    names = sorted({p.name[:-len('.jsonl')].rsplit('.', 1)[0] for p in JUDGE.glob('*.jsonl')} - OFF_BOARD)  # model names contain dots
+    names = sorted({p.name[:-len('.jsonl')].rsplit('.', 1)[0] for p in JUDGE.glob('*.jsonl')} - OFF_BOARD) + list(COMPOSITE)  # model names contain dots
     for name in names:
         row = {'name': name}
         flags = Counter()
         for arm, (gf, split) in ARMS.items():
+            src_name = COMPOSITE.get(name, {}).get(arm, name)
             want = arm_ids(gf, split)
             cur = gold_shas(gf)
-            scored = {j['id']: j['score'] for j in load(JUDGE / f'{name}.{arm}.jsonl')
+            scored = {j['id']: j['score'] for j in load(JUDGE / f'{src_name}.{arm}.jsonl')
                       if 'score' in j and j.get('gold_sha256') == cur.get(j['id'])}
             if not scored:
                 row[arm] = None
                 continue
             # mechanical zeros (failed, echoed, not run) override any judgment and count toward completion
-            zeros, fl = mechanical(name, arm, want)
+            zeros, fl = mechanical(src_name, arm, want)
             scored = {i: sc for i, sc in scored.items() if i in want and i not in zeros}
             total = sum(s['adequacy'] + s['pragmatics'] + s['fluency'] for s in scored.values())
             row[arm] = (total / len(want), len(scored) + len(zeros), len(want))
@@ -133,6 +139,8 @@ def main() -> int:
         row['vram'] = s.get('vram_used_mib_loaded')
         row['slips'] = ', '.join(SLIPS.get(f, f.lower()) for f, _ in flags.most_common(3))
         row['label'] = (s.get('model') or name.split('_', 1)[-1].replace('_', ' ')) + (f' ({variant})' if variant else '')
+        row['label'] = LABELS.get(name, row['label'])
+        row['note'] = FOOTNOTES.get(name)
         rows.append(row)
 
     def key(r):  # complete lines arm first, then lines mean
@@ -142,13 +150,15 @@ def main() -> int:
     rows.sort(key=key)
     done = [r for r in rows if all(r.get(a) and r[a][1] == r[a][2] for a in ARMS)]
     queued = [r for r in rows if r not in done]
+    md = lambda s: s.replace('*', '\\*')
     gb = lambda r: f"{r['vram'] / 1024:.1f}" if r['vram'] else '—'
     out = ['# Ranking', '',
            '| # | Model | Hard lines /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |',
            '|---:|---|---:|---:|---:|---:|---:|---|']
     for n, r in enumerate(done, 1):
-        out.append(f"| {n} | **{r['label']}** | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
+        out.append(f"| {n} | **{md(r['label'])}** | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
                    f"| {f'{r["lat"]:.2f}' if r['lat'] else '—'} | {gb(r)} | {r['slips']} |")
+    out += [''] + [f"\\* {r['note']}" for r in done if r['note']] if any(r['note'] for r in done) else []
     if queued:
         out += ['', 'Being judged: ' + ', '.join(
             f"{r['label']} ({(r.get('lines_eval') or (0, 0, 200))[1]}/200 lines)" for r in queued) + '.']
@@ -157,7 +167,7 @@ def main() -> int:
                 'With 20 lines per cell, differences under about 20 points are noise.', '',
                 '| Model | ' + ' | '.join(label for _, label in CATS) + ' |', '|---|' + '---:|' * len(CATS)]
         for r in done:
-            out.append(f"| {r['label']} | " + ' | '.join(f"{100 * g / n:.0f}%" for c, _ in CATS for g, n in [r['cats'][c]]) + ' |')
+            out.append(f"| {md(r['label'])} | " + ' | '.join(f"{100 * g / n:.0f}%" for c, _ in CATS for g, n in [r['cats'][c]]) + ' |')
     if done:
         out += ['', '## Output compliance', '',
                 'Decided mechanically, identically for every model. **Automatic zeros** are already in the scores above: no usable '
@@ -168,7 +178,7 @@ def main() -> int:
         for r in done:
             z = r['lines_eval_zero'] + r['scenes_full_zero']
             f = r['lines_eval_flags'] + r['scenes_full_flags']
-            out.append(f"| {r['label']} | {z['inference_failure'] + z['not_run']} | {z['exact_echo']} | {f['commentary']} | {f['format']} |")
+            out.append(f"| {md(r['label'])} | {z['inference_failure'] + z['not_run']} | {z['exact_echo']} | {f['commentary']} | {f['format']} |")
     out += ['', 'Scores are out of 10: adequacy 0–4, pragmatics and voice 0–4, fluency 0–2, judged by GPT-6.1 Sol. '
             'A line the model failed to produce scores 0. Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
     (RES / 'judge/RANKING.md').write_text('\n'.join(out) + '\n', encoding='utf8')
@@ -222,6 +232,7 @@ def board(done: list[dict], queued: list[dict]) -> str:
         qual = ' · '.join(x for x in (f"{r['lat']:.2f} s/line" if r['lat'] else '', fits(r['vram'])) if x)
         tip = f"{r['label']}: {score:.2f}/10 on hard lines, {scenes:.2f}/10 on full scenes"
         vram = f"{r['vram'] / 1024:.1f} GB VRAM loaded" if r['vram'] else ''
+        note = f'<span>* {e(r["note"])}</span>' if r['note'] else ''
         rows.append(
             f'<details class="ob-row"><summary title="{e(tip)}">'
             f'<span class="ob-rank">{n}</span><span class="ob-name">{e(r["label"])}</span>'
@@ -230,7 +241,7 @@ def board(done: list[dict], queued: list[dict]) -> str:
             f'<div class="ob-more"><span><b>{scenes:.2f}</b>/10 on 31 full scenes</span>'
             f'<span><b>{r["lines_eval_low"]}</b> of 200 lines scored 5 or less</span>'
             f'<span>Most common slips: {e(r["slips"] or "none")}</span>'
-            f'<span>{e(vram)}</span>{cat_bars(r.get("cats"))}</div></details>')
+            f'<span>{e(vram)}</span>{note}{cat_bars(r.get("cats"))}</div></details>')
     for r in queued:
         got = (r.get('lines_eval') or (0, 0, 200))[1]
         rows.append(f'<div class="ob-row ob-queued"><span class="ob-rank">·</span><span class="ob-name">{e(r["label"])}</span>'
