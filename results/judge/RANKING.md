@@ -23,7 +23,7 @@
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Hy-MT2-1.8B (0/200 lines).
+Being judged: Hy-MT2-1.8B (65/200 lines).
 
 ## By category
 
