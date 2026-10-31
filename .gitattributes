@@ -9,3 +9,7 @@ tools/patch_corpus_v4.py filter=git-crypt diff=git-crypt
 # raw model outputs and judge evidence quote or paraphrase the references
 results/**/*.jsonl filter=git-crypt diff=git-crypt
 results/**/SKIM.md filter=git-crypt diff=git-crypt
+# ero slice: unreleased, never public. Everything is encrypted except the README, since the protocol,
+# ledger, manifest and tests name the tested words and items.
+benchmark/otakubench_ero/** filter=git-crypt diff=git-crypt
+benchmark/otakubench_ero/README.md !filter !diff

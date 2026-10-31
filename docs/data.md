@@ -13,4 +13,6 @@ A benchmark whose answers are public ends up in training data, and then it measu
 
 The Japanese text is original, written in the style of the genres. It isn't taken from any published title. Some scenes deliberately include intense but legal fiction (explicit adult content between adults, graphic violence, heavy profanity) to detect over-refusal and censoring.
 
+`benchmark/otakubench_ero/` is a separate, unreleased adult-register slice (currently v0.3.1). It is git-crypted except the README, and it is not part of the 200-line ranking.
+
 To work with the encrypted files you need the repository key: `git-crypt unlock /path/to/otakubench-git-crypt.key`.
