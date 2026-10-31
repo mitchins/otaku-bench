@@ -110,6 +110,12 @@ def make_payload(r,args):
   else:
    content='Translate the following text into English. Note that you should only output the translated result without any additional explanation:\n\n'+ja
   messages=[{'role':'user','content':content}]
+ elif args.prompt_style=='hymt2_manga':
+  # fumetodev manga finetune: its card's instruction (the optional terminology block left out: no glossary here), no
+  # system prompt. The card documents no context channel and says one line at a time, so context mode sends the line alone.
+  messages=[{'role':'user','content':'Translate the following text from Japanese into English as natural, concise manga dialogue. '
+           'Preserve specific nouns, exact meaning, speaker intent, tone, punctuation, and sound effects. Output only the '
+           'translated result without any explanation:\n\n'+ja}]
  elif args.prompt_style=='cat':
   # CyberAgent first-party prompt. llama-server applies the model-specific GGUF chat template.
   # The card documents no context channel, so context mode sends the target line alone (history is unusable).
@@ -133,7 +139,7 @@ def main():
  p.add_argument('--dataset',choices=['lines','scenes'],default='lines')
  p.add_argument('--mode',choices=['bare','context','full'],default='bare')
  p.add_argument('--base-url',default='http://127.0.0.1:8125/v1')
- p.add_argument('--prompt-style',choices=['chat','hunyuan','hymt2','cat','seedx','translategemma','translategemma_text','vntl','sugoi','base_completion','base_primed'],default='chat')
+ p.add_argument('--prompt-style',choices=['chat','hunyuan','hymt2','hymt2_manga','cat','seedx','translategemma','translategemma_text','vntl','sugoi','base_completion','base_primed'],default='chat')
  p.add_argument('--experimental-native-template',action='store_true',help='Native TranslateGemma schema is NOT proven compatible with llama-server; canary first')
  p.add_argument('--model',required=True,help='Actual model identity; not shared alias')
  p.add_argument('--run-id',default=None,help='Reproducible unique inference arm, including quant and reasoning; defaults to model/style')

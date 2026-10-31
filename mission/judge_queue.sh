@@ -69,6 +69,11 @@ QUEUE=(
   screen/33_TranslateGemma_12B_IT
   screen/63_Hy-MT2-7B   # community request: dedicated-translator group; HY-MT1.5-7B successor
   screen/65_Hy-MT2-1.8B   # Deck-class edge translator (1.1 GB, 0.08 s/line); HY-MT1.5-1.8B successor
+  screen/67_Hy-MT2-1.8B-JP-Manga-v5   # community request (Reddit): manga finetune of 65, card prompt; clean lines, merges scene lines on 6-7/31
+  # community request (Reddit): heretic (abliterated) QAT Q4_0 26B with experts pruned on Japanese; clean, 13.6 / 9.0 GB vs 17.0 GB for 05.
+  # 96e screened too (results/screen_quants/96e, 11.3 GB), not queued: judge it only if 120e and 72e land far apart
+  screen/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e
+  screen_quants/72e/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
   # edge-size comparisons (Deck-class and below)

@@ -100,7 +100,10 @@ def summaries() -> dict[str, dict]:
 OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm', 'C01_Gemini-3.5-Flash-Lite', 'C01_Gemini-3.5-Flash-Lite+explicit-target', 'C01_Gemini-3.5-Flash-Lite+short-system'}
 # One board entry assembled from per-arm runs (entry -> judged name per arm), shown with an asterisk and FOOTNOTES.
 COMPOSITE = {'C01_Gemini-3.5-Flash-Lite*': {'lines_eval': 'C01_Gemini-3.5-Flash-Lite', 'scenes_full': 'C01_Gemini-3.5-Flash-Lite+short-system'}}
-LABELS = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini 3.5 Flash-Lite (cloud)*'}
+LABELS = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini 3.5 Flash-Lite (cloud)*',
+          # expert-count prunes of one model: the base entry is the 120e file, the smaller prunes are screen_quants tags
+          '68_Gemma_4_26B-A4B_heretic_JP-pruned_120e+72e': 'Gemma 4 26B-A4B heretic JP-pruned 72e',
+          '68_Gemma_4_26B-A4B_heretic_JP-pruned_120e+96e': 'Gemma 4 26B-A4B heretic JP-pruned 96e'}
 FOOTNOTES = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini: full scenes use only the first sentence of the system prompt; '
              'with the full prompt it returns some scenes untranslated.'}
 

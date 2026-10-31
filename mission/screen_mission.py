@@ -52,6 +52,7 @@ STYLE_ARMS = {
     'chat': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'hunyuan': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'hymt2': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
+    'hymt2_manga': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},  # context sends the line alone
     'cat': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'sugoi': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full')},
     'vntl': {('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'full')},
@@ -83,7 +84,7 @@ VARIANTS = {
 }
 VARIANTS['short-system']['user_rewrite'] = VARIANTS['explicit-target']['user_rewrite']
 VARIANT: dict = {}
-HISTORY_STYLES = {'chat', 'hunyuan', 'hymt2', 'sugoi'}  # cat has no context channel
+HISTORY_STYLES = {'chat', 'hunyuan', 'hymt2', 'sugoi'}  # cat and hymt2_manga have no context channel
 COMPLETION_STYLES = {'seedx', 'vntl', 'base_completion', 'base_primed', 'translategemma_text'}
 ARM_ORDER = (('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full'))
 OOM_PATTERNS = re.compile(r'out of memory|cudaMalloc failed|failed to allocate|CUDA error|unable to load model|ggml_backend_cuda_buffer_type_alloc_buffer', re.I)
