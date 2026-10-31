@@ -25,7 +25,7 @@
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Gemma 4 26B-A4B heretic JP-pruned 120e (120/200 lines).
+Being judged: Gemma 4 26B-A4B heretic JP-pruned 120e (155/200 lines).
 
 ## By category
 
