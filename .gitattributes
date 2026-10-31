@@ -13,3 +13,6 @@ results/**/SKIM.md filter=git-crypt diff=git-crypt
 # ledger, manifest and tests name the tested words and items.
 benchmark/otakubench_ero/** filter=git-crypt diff=git-crypt
 benchmark/otakubench_ero/README.md !filter !diff
+# hard slice: unreleased, never public. Everything is encrypted except the README.
+benchmark/otakubench_hard/** filter=git-crypt diff=git-crypt
+benchmark/otakubench_hard/README.md !filter !diff
