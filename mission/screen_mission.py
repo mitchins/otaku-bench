@@ -87,6 +87,11 @@ VARIANT: dict = {}
 HISTORY_STYLES = {'chat', 'hunyuan', 'hymt2', 'sugoi'}  # cat and hymt2_manga have no context channel
 COMPLETION_STYLES = {'seedx', 'vntl', 'base_completion', 'base_primed', 'translategemma_text'}
 ARM_ORDER = (('lines', 'bare'), ('scenes', 'bare'), ('scenes', 'context'), ('scenes', 'full'))
+# Unreleased slices (git-crypted, --slices): one record per line, the current Japanese plus up to six earlier lines.
+SLICES = {
+    'hard': ROOT / 'benchmark/otakubench_hard/data/hard57_targets_blind.jsonl',  # scored target turns only
+    'ero': ROOT / 'benchmark/otakubench_ero/data/ero24_turns_blind.jsonl',       # every main-scene turn
+}
 OOM_PATTERNS = re.compile(r'out of memory|cudaMalloc failed|failed to allocate|CUDA error|unable to load model|ggml_backend_cuda_buffer_type_alloc_buffer', re.I)
 
 
@@ -323,6 +328,38 @@ def latency_cases() -> list[dict]:
     return cases
 
 
+# ---------------------------------------------------------------- unreleased slices
+def run_slices(base: str, style: str, mdir: Path, common: dict, timeout: float) -> dict:
+    """Slice turns through the scenes prompt path: history goes in the context prompt where the style has one,
+    otherwise the line is sent alone, as the scenes/context arm does for those styles."""
+    arms = {}
+    with_history = style in HISTORY_STYLES and ('scenes', 'context') in STYLE_ARMS[style]
+    for name, src in SLICES.items():
+        src_sha = sha_file(src)
+        path = mdir / f'{name}_turns.jsonl'
+        ok_ids = lambda: {r['id'] for r in load_jsonl(path) if r.get('translation') and not r.get('error')
+                          and r.get('run_id') == common['run_id'] and r.get('source_sha256') == src_sha}
+        done = ok_ids()
+        turns = load_jsonl(src)
+        consecutive = 0
+        for t in turns:
+            if t['id'] in done:
+                continue
+            hist = t['history_japanese'] if with_history else []
+            mode = 'context' if hist else 'bare'
+            rec = translate(base, {'japanese': t['current_japanese'], 'preceding_lines': hist}, style, 'scenes', mode, timeout)
+            rec.update(id=t['id'], scene_id=t['scene_id'], slice=name, mode=mode, history_lines=len(hist),
+                       turn_sha256=t.get('turn_sha256'), source_sha256=src_sha, **common)
+            append_jsonl(path, rec)
+            consecutive = consecutive + 1 if rec['error'] else 0
+            if consecutive >= 3:
+                log(f'⚠️  {name}: 3 consecutive errors, abandoning slice')
+                break
+        arms[name] = f'{len(ok_ids())}/{len(turns)}'
+        log(f'📝 {name}: {arms[name]}')
+    return arms
+
+
 # ---------------------------------------------------------------- per-model run
 def run_model(row: dict, args, caps: dict, out_dir: Path, summary_path: Path) -> dict:
     style = style_for(row)
@@ -428,6 +465,9 @@ def run_model(row: dict, args, caps: dict, out_dir: Path, summary_path: Path) ->
         if canary_ok < len(CANARY_INDICES):
             return finish('CANARY_FAILED', canary_ok=canary_ok, reason=first_err)
         common['canary_passed'] = True
+        if args.slices:  # latency is already measured by the screen run
+            arms = run_slices(base, style, mdir, common, args.timeout)
+            return finish('COMPLETE' if all(v.split('/')[0] == v.split('/')[1] for v in arms.values()) else 'PARTIAL', arms=arms)
 
         # --- latency gate + history-depth sweep
         lat_path = mdir / 'latency.jsonl'
@@ -537,9 +577,12 @@ def main() -> int:
     p.add_argument('--output-dir', type=Path, default=ROOT / 'results/screen')
     p.add_argument('--dry-run', action='store_true', help='print the plan; no downloads, no server')
     p.add_argument('--variant', choices=sorted(VARIANTS), help='follow-up arm; writes to results/screen_variants/<variant>')
+    p.add_argument('--slices', action='store_true', help='run the unreleased hard and ero slices instead of the screen arms; writes to results/screen_slices[/<variant>]')
     p.add_argument('extra_server_args', nargs='*', help='after --, extra llama-server flags (e.g. -- -fa on)')
     args = p.parse_args()
     global PROFILE, MAX_TOKENS
+    if args.slices and args.output_dir == ROOT / 'results/screen':
+        args.output_dir = ROOT / 'results/screen_slices' / (args.variant or '')
     if args.variant:
         VARIANT.update(VARIANTS[args.variant])
         PROFILE = f'{PROFILE}+{args.variant}'
