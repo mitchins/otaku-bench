@@ -30,6 +30,8 @@ GPT-6.1 Sol scores each translation against a reference, which is treated as *on
 
 It also returns flags (`IDIOM`, `NEG`, `AGENT`, `KEIGO`, `OMIT`, `ADD`, `REFUSAL` and others) and a one-line justification. It never sees the model's name. Items a model failed to produce score 0, so dropping hard lines can't help a model's rank.
 
+**Planned:** once the board and both unreleased slices are fully scored, GPT-6 Astra (in the same free tier) will be compared as a judge on the stored outputs. The judge only changes if that comparison favours it.
+
 The context-scene arm is too easy for the top models (Qwen3.6-35B-A3B scored 10/10 on 28 of 31), so ranking uses the **200 eval lines** and the **31 full scenes**.
 
 ## Output compliance
