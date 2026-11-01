@@ -52,6 +52,8 @@ def strip_answer(text,reasoning):
   return text,'visible refusal'
  return text,None
 
+# Raw-prompt styles go to /completions (screen_mission.py routes the same set).
+COMPLETION_STYLES=('seedx','vntl','base_completion','base_primed','translategemma_text')
 def make_payload(r,args):
  ja=r['japanese']
  if args.prompt_style=='vntl':
@@ -180,9 +182,9 @@ def main():
    payload=make_payload(r,args)
    t=time.perf_counter();rec={'id':r['id'],'dataset':args.dataset,'mode':args.mode,'model':args.model,'run_id':run_id,'source_sha256':digest,'prompt_style':args.prompt_style,'quant_repo_sha':args.quant_revision,'quant_attested':args.quant_attested,'canary_passed':args.canary_passed}
    try:
-    req=Request(args.base_url.rstrip('/')+('/completions' if args.prompt_style in ('seedx','vntl','base_completion') else '/chat/completions'),data=json.dumps(payload,ensure_ascii=False).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer '+args.api_key},method='POST')
+    req=Request(args.base_url.rstrip('/')+('/completions' if args.prompt_style in COMPLETION_STYLES else '/chat/completions'),data=json.dumps(payload,ensure_ascii=False).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer '+args.api_key},method='POST')
     with urlopen(req,timeout=args.timeout) as resp:data=json.load(resp)
-    if args.prompt_style in ('seedx','vntl','base_completion'):
+    if args.prompt_style in COMPLETION_STYLES:
      c=data['choices'][0];reason=c.get('finish_reason');msg={};raw=c.get('text','')
     else:
      c=data['choices'][0];reason=c.get('finish_reason');msg=c['message'];raw=msg.get('content') or ''
