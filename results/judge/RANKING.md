@@ -27,7 +27,7 @@
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: gpt-oss-20b (effort-low) (148/200 lines).
+Being judged: gpt-oss-20b (effort-low) (180/200 lines).
 
 ## By category
 
