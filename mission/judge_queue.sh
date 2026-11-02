@@ -74,6 +74,7 @@ QUEUE=(
   # 96e screened too (results/screen_quants/96e, 11.3 GB), not queued: judge it only if 120e and 72e land far apart
   screen/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e
   screen_quants/72e/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e
+  screen/69_Ternary-Bonsai-2-27B   # PrismML ternary Qwen3.8-27B (PQ2_0, ~/llama.cpp-prism); PTQ1_0 screened too (screen_quants/PTQ1_0), 95% identical outputs, not queued
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
   # edge-size comparisons (Deck-class and below)
