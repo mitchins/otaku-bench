@@ -18,16 +18,18 @@
 | 14 | **Hy-MT2-7B** | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
 | 15 | **TranslateGemma 12B IT** | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
 | 16 | **Sugoi-14B-Ultra** | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
-| 17 | **Gemma 4 26B-A4B heretic JP-pruned 72e** | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
-| 18 | **Gemma 4 E2B IT** | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
-| 19 | **Hy-MT2-1.8B-JP-Manga-v5** | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
-| 20 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
-| 21 | **Hy-MT2-1.8B** | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
-| 22 | **Flint 40B-A2.5B (empty-think)** | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 17 | **Shisa-v2.1-qwen3-8B** | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
+| 18 | **Gemma 4 26B-A4B heretic JP-pruned 72e** | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
+| 19 | **Gemma 4 E2B IT** | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
+| 20 | **Hy-MT2-1.8B-JP-Manga-v5** | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
+| 21 | **LFM2.5-24B-A2B (empty-think)** | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| 22 | **Hy-MT2-1.8B** | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| 23 | **Flint 40B-A2.5B (empty-think)** | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 24 | **gpt-oss-20b (effort-low)** | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: gpt-oss-20b (effort-low) (180/200 lines).
+Being judged: Qwen3-4B-Instruct-2507 (178/200 lines).
 
 ## By category
 
@@ -51,12 +53,14 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Hy-MT2-7B | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
 | TranslateGemma 12B IT | 55% | 60% | 60% | 100% | 80% | 75% | 80% | 70% | 95% | 85% |
 | Sugoi-14B-Ultra | 55% | 65% | 65% | 90% | 85% | 80% | 75% | 85% | 70% | 85% |
+| Shisa-v2.1-qwen3-8B | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
 | Gemma 4 26B-A4B heretic JP-pruned 72e | 60% | 65% | 50% | 80% | 85% | 80% | 80% | 80% | 80% | 80% |
 | Gemma 4 E2B IT | 25% | 70% | 55% | 90% | 80% | 75% | 60% | 60% | 80% | 65% |
 | Hy-MT2-1.8B-JP-Manga-v5 | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
 | LFM2.5-24B-A2B (empty-think) | 15% | 45% | 55% | 60% | 60% | 60% | 70% | 35% | 70% | 75% |
 | Hy-MT2-1.8B | 15% | 35% | 55% | 60% | 50% | 65% | 70% | 40% | 60% | 70% |
 | Flint 40B-A2.5B (empty-think) | 20% | 35% | 55% | 60% | 55% | 55% | 70% | 40% | 55% | 60% |
+| gpt-oss-20b (effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
 
 ## Output compliance
 
@@ -80,11 +84,13 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Hy-MT2-7B | 0 | 0 | 0 | 0 |
 | TranslateGemma 12B IT | 0 | 0 | 0 | 1 |
 | Sugoi-14B-Ultra | 0 | 0 | 1 | 0 |
+| Shisa-v2.1-qwen3-8B | 0 | 0 | 0 | 33 |
 | Gemma 4 26B-A4B heretic JP-pruned 72e | 0 | 0 | 0 | 1 |
 | Gemma 4 E2B IT | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B-JP-Manga-v5 | 0 | 0 | 0 | 6 |
 | LFM2.5-24B-A2B (empty-think) | 1 | 0 | 0 | 2 |
 | Hy-MT2-1.8B | 0 | 0 | 0 | 0 |
 | Flint 40B-A2.5B (empty-think) | 2 | 0 | 1 | 0 |
+| gpt-oss-20b (effort-low) | 1 | 0 | 0 | 2 |
 
 Scores are out of 10: adequacy 0–4, pragmatics and voice 0–4, fluency 0–2, judged by GPT-6.1 Sol. A line the model failed to produce scores 0. Speed is the median time to finish a line with 6 lines of history on an RTX 3090.
