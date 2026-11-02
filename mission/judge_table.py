@@ -141,8 +141,11 @@ def main() -> int:
         row['lat'] = ((s.get('latency') or {}).get(str(s.get('gate_depth', 6))) or {}).get('median_s')
         row['vram'] = s.get('vram_used_mib_loaded')
         row['slips'] = ', '.join(SLIPS.get(f, f.lower()) for f, _ in flags.most_common(3))
-        row['label'] = (s.get('model') or name.split('_', 1)[-1].replace('_', ' ')) + (f' ({variant})' if variant else '')
-        row['label'] = LABELS.get(name, row['label'])
+        # Always name the quant, so a bare "Gemma 4 31B IT" is never mistaken for its Q5_K_M row; prompt variants follow it.
+        tags = [t for t in (s.get('quant'), variant if name not in LABELS else '') if t]
+        tags = list(dict.fromkeys(tags))  # a screen_quants tag usually is the quant
+        base = LABELS.get(name) or s.get('model') or name.split('_', 1)[-1].replace('_', ' ')
+        row['label'] = base + (f" ({', '.join(tags)})" if tags else '')
         row['note'] = FOOTNOTES.get(name)
         rows.append(row)
 
