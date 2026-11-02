@@ -24,7 +24,7 @@ QUEUE=(
   02_Gemma_4_31B_IT 05_Gemma_4_26B-A4B_IT 01_Qwen3.8-27B 03_Qwen3.6-35B-A3B 08_Gemma_4_12B_IT
   66_Ornith-1.5-35B-A3B 68_Gemma_4_26B-A4B_heretic_JP-pruned_120e 64_Hy-MT2-30B-A3B 63_Hy-MT2-7B
   32_TranslateGemma_27B_IT 33_TranslateGemma_12B_IT 21_Sugoi-14B-Ultra 42_Gemma_4_E2B_IT 41_Gemma_4_E4B_IT
-  65_Hy-MT2-1.8B 67_Hy-MT2-1.8B-JP-Manga-v5 empty-think/36_LFM2.5-24B-A2B empty-think/51_Flint_40B-A2.5B 69_Ternary-Bonsai-2-27B
+  65_Hy-MT2-1.8B 67_Hy-MT2-1.8B-JP-Manga-v5 empty-think/36_LFM2.5-24B-A2B empty-think/51_Flint_40B-A2.5B 69_Ternary-Bonsai-2-27B 70_Nemotron_3.5_Bolt_74B-A9B_24GB
 )
 
 {

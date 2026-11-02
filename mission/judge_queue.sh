@@ -75,6 +75,7 @@ QUEUE=(
   screen/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e
   screen_quants/72e/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e
   screen/69_Ternary-Bonsai-2-27B   # PrismML ternary Qwen3.8-27B (PQ2_0, ~/llama.cpp-prism); PTQ1_0 screened too (screen_quants/PTQ1_0), 95% identical outputs, not queued
+  screen/70_Nemotron_3.5_Bolt_74B-A9B_24GB   # NVIDIA 74B-A9B 24GB GGUF (IQ2_XXS/NVFP4 mix), text only, stock llama.cpp; context arm echoes 3/31
   screen_variants/effort-low/39_gpt-oss-20b
   screen/15_Shisa-v2.1-qwen3-8B
   # edge-size comparisons (Deck-class and below)
