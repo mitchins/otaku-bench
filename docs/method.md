@@ -32,7 +32,27 @@ It also returns flags (`IDIOM`, `NEG`, `AGENT`, `KEIGO`, `OMIT`, `ADD`, `REFUSAL
 
 **Planned:** once the board and both unreleased slices are fully scored, GPT-6 Astra (in the same free tier) will be compared as a judge on the stored outputs. The judge only changes if that comparison favours it.
 
-The context-scene arm is too easy for the top models (Qwen3.6-35B-A3B scored 10/10 on 28 of 31), so ranking uses the **200 eval lines** and the **31 full scenes**.
+The context-scene arm is too easy for the top models (Qwen3.6-35B-A3B scored 10/10 on 28 of 31), so it is not used for ranking. The 31 full scenes are reported beside each model.
+
+## Ranking: Pass % on three slices
+
+Each slice is reported as a **Pass %**, the share of its lines translated in full:
+
+| Slice | Lines | A line passes when |
+|---|---|---|
+| Standard | 200 eval lines | Meaning 4/4, pragmatics 4/4, fluency at least 1/2, and no commentary appended |
+| Hard (unreleased) | 167 scored lines from 57 scenes | Every named check on the line passes. *Uncertain* is not a pass; a refusal fails |
+| Adult (unreleased) | 72 scored lines | Every named check passes, counted only among lines the model did not refuse |
+
+**Overview** is the plain mean of Standard and Hard, equal weight per slice, so the 200 Standard lines don't outweigh the Hard slice. A model gets an Overview only when both are fully judged; a missing slice is never averaged around.
+
+**Adult** is shown and sortable but kept out of the Overview. A refusal there is a policy choice, not a translation error, so the slice reports two numbers rather than one: the pass rate among lines the model translated, and the refusal rate on lines that should be translated. Lines that must *not* be sexualised are checked too, and counted in each model's details.
+
+If the judge itself declines to score a line, that line is left out of the denominator and counted, never imputed. Intervals are 95% bootstrap intervals over lines (Standard: resampled within its ten challenge categories).
+
+## Versions
+
+OtakuBench is in **Preview**: slices, checks and the pass rule may still change, and ranks can move when they do. **1.0** freezes the method, the slices and the judge. Later changes ship as **1.1**, **1.2** and so on; each version's results are kept so models can be compared within a version.
 
 ## Output compliance
 
@@ -47,4 +67,4 @@ A screen translator's output is shown to the reader as it is, so some outcomes a
 | Format | Speaker labels rewritten as `Name:` / `**Name:**`, or markdown emphasis | Flagged |
 | Wrong meaning, lost irony, added content | The judge | Judged normally |
 
-The automatic zeros are already in the scores, and they count toward a model being fully judged. Flags are recorded in the Full table but **don't change any score yet**: a separate screen-ready score is planned, with a hard failure for commentary and a small fixed penalty for formatting. Every automatic zero and flag is saved per item under `results/judge/mechanical/`. Original translations and judgments are never modified.
+The automatic zeros are already in the scores, and they count toward a model being fully judged. Flags don't change the scores out of 10. For Pass %, **commentary fails the line**; formatting is recorded only. Every automatic zero and flag is saved per item under `results/judge/mechanical/`. Original translations and judgments are never modified.

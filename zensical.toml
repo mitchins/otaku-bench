@@ -1,10 +1,11 @@
 [project]
-site_name = "OtakuBench"
+site_name = "OtakuBench (Preview)"
 site_description = "Which local GGUF model translates the visual-novel line on screen well enough, fast enough?"
 site_url = "https://mitchins.github.io/otaku-bench/"
 repo_url = "https://github.com/mitchins/otaku-bench"
 repo_name = "mitchins/otaku-bench"
 extra_css = ["stylesheets/board.css"]
+extra_javascript = ["javascripts/board.js"]
 nav = [
   { "Leaderboard" = "index.md" },
   { "Full table" = "ranking.md" },

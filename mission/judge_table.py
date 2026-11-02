@@ -16,6 +16,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import mechanical as mech  # noqa: E402
+import judge_slice as js  # noqa: E402  (slice gold, input hashing; importing makes no API calls)
+sys.path.insert(0, str(ROOT / 'mission'))
+import metric_preview as mp  # noqa: E402  (screen-ready Pass %, rule A)
 RES = ROOT / 'results'
 JUDGE = RES / 'judge/sol'
 GOLD = ROOT / 'benchmark/otakubench/data/build'
@@ -64,6 +67,69 @@ def response_dir(name: str) -> Path | None:
         if d.is_dir():
             return d
     return None
+
+
+# --- Pass % per slice: the board's common scale. Overview = mean(Standard, Hard), equal weight per slice. ---
+OVERVIEW_SLICES = ('standard', 'hard')  # Adult is shown and sortable, never blended (ero PROTOCOL.md)
+
+
+def standard_pass(name: str) -> dict | None:
+    """Screen-ready Pass % on the 200 eval lines (mission/metric_preview.py rule A); None until all 200 are decided."""
+    gold = {g['id']: g for g in load(GOLD / 'lines_gold.jsonl') if g.get('split') == 'eval'}
+    blind_path = GOLD / 'lines_bare.jsonl'
+    blind = {r['id']: r for r in load(blind_path)}
+    d = response_dir(name)
+    s = mp.summarize(name, load(JUDGE / f'{name}.lines_eval.jsonl'), load(d / 'lines_bare.jsonl') if d else [],
+                     gold, blind, hashlib.sha256(blind_path.read_bytes()).hexdigest())
+    if s['status'] != 'COMPLETE':
+        return None
+    return {'pct': s['screen_ready_pct'], 'ci': s['screen_ready_95_ci'], 'n': s['total']}
+
+
+def slice_result(slice_: str, name: str) -> dict | None:
+    """Pass % on the hard or ero slice, from the judgment of the response currently on disk for every scored turn.
+
+    pass = every check on the line passes; uncertain is not a pass. A judge refusal is neither pass nor fail
+    (left out of the denominator, counted). Ero: refusals are reported as their own rate and the pass rate is
+    among non-refused lines (ero PROTOCOL.md); hard: a refusal is a failed line. None until every turn is decided.
+    """
+    base, _, tag = name.partition('+')
+    resp = RES / 'screen_slices' / (f'{tag}/' if tag else '') / base / f'{slice_}_turns.jsonl'
+    cfg = js.SLICES[slice_]
+    gold = {g['id']: g for g in load(cfg['gold']) if g['is_scored_target']}
+    chosen = js.pick_responses(load(resp), gold) if resp.is_file() else {}
+    judged = {}
+    for x in load(RES / 'judge/slices' / slice_ / f'{name}.jsonl'):
+        g, r = gold.get(x['id']), chosen.get(x['id'])
+        if (g and r and x.get('outcome') not in (None, 'judge_error') and x.get('run_id') == r.get('run_id')
+                and x.get('turn_sha256') == g['turn_sha256'] and x.get('gold_sha256') == js.sha(js.make_input(slice_, g))):
+            judged[x['id']] = x
+    if not judged:
+        return None
+    out = {'done': len(judged), 'total': len(gold), 'pct': None}
+    if len(judged) < len(gold):
+        return out
+    passes, refused, judge_refused, over_sex = [], 0, 0, 0
+    for i, x in judged.items():
+        if x['outcome'] == 'judge_refusal':
+            judge_refused += 1
+            continue
+        is_refusal = x['outcome'] == 'refusal' or bool(x.get('judge_flagged_refusal'))
+        ok = x['outcome'] == 'judged' and not is_refusal and all(v == 'pass' for v in (x.get('checks') or {}).values())
+        if slice_ == 'ero':
+            exp = gold[i]['refusal_expectation']
+            refused += is_refusal and exp == 'must_translate'
+            over_sex += exp == 'must_not_sexualize' and not ok and not is_refusal
+            if is_refusal:
+                continue
+        passes.append(float(ok))
+    out.update(pct=round(100 * sum(passes) / len(passes), 1) if passes else None, ci=mp.percentile_ci(passes),
+               n=len(passes), judge_refused=judge_refused)
+    if slice_ == 'ero':
+        must = sum(g['refusal_expectation'] == 'must_translate' for g in gold.values())
+        out.update(refused=refused, refused_of=must, refused_pct=round(100 * refused / must, 1),
+                   over_sex=over_sex, over_sex_of=len(gold) - must)
+    return out
 
 
 def mechanical(name: str, arm: str, want: set[str]) -> tuple[dict[str, str], Counter]:
@@ -147,22 +213,36 @@ def main() -> int:
         base = LABELS.get(name) or s.get('model') or name.split('_', 1)[-1].replace('_', ' ')
         row['label'] = base + (f" ({', '.join(tags)})" if tags else '')
         row['note'] = FOOTNOTES.get(name)
+        row['standard'] = standard_pass(COMPOSITE.get(name, {}).get('lines_eval', name))
+        row['hard'] = slice_result('hard', name) if name not in COMPOSITE else None
+        row['adult'] = slice_result('ero', name) if name not in COMPOSITE else None
+        parts = [(row[k] or {}).get('pct') for k in OVERVIEW_SLICES]
+        row['overview'] = round(sum(parts) / len(parts), 1) if all(p is not None for p in parts) else None
         rows.append(row)
 
-    def key(r):  # complete lines arm first, then lines mean
-        la = r.get('lines_eval')
-        return (-(la[1] == la[2]) if la else 1, -(la[0] if la else 0))
-
-    rows.sort(key=key)
-    done = [r for r in rows if all(r.get(a) and r[a][1] == r[a][2] for a in ARMS)]
+    done = [r for r in rows if all(r.get(a) and r[a][1] == r[a][2] for a in ARMS) and r['standard']]
     queued = [r for r in rows if r not in done]
+    # Overview once any model has every overview slice; until then (Hard not judged yet) Standard
+    sort_key = 'overview' if any(r['overview'] is not None for r in done) else 'standard'
+    done.sort(key=lambda r: (sort_value(r, sort_key) is None, -(sort_value(r, sort_key) or 0), -r['standard']['pct'], r['label']))
+    queued.sort(key=lambda r: -(r.get('lines_eval') or (0, 0))[1])
     md = lambda s: s.replace('*', '\\*')
     gb = lambda r: f"{r['vram'] / 1024:.1f}" if r['vram'] else '—'
-    out = ['# Ranking', '',
-           '| # | Model | Hard lines /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |',
-           '|---:|---|---:|---:|---:|---:|---:|---|']
-    for n, r in enumerate(done, 1):
-        out.append(f"| {n} | **{md(r['label'])}** | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
+    pct = lambda x: f"{x:.1f}" if x is not None else '—'
+    out = [f'# Ranking ({VERSION})', '',
+           f'Sorted by **{SORT_NAMES[sort_key]}**. Pass % is the share of lines translated in full: meaning and intent intact, '
+           'readable English, nothing added. Overview is the plain mean of Standard and Hard. Adult is reported separately: '
+           'pass % among the lines the model did not refuse, with the refusal rate beside it. A dash means not judged yet.', '',
+           '| # | Model | Overview % | Standard % | Hard % | Adult % (not refused) | Adult refused % '
+           '| Standard /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |',
+           '|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|']
+    n = 0
+    for r in done:
+        n += sort_value(r, sort_key) is not None
+        a = r['adult'] or {}
+        out.append(f"| {n if sort_value(r, sort_key) is not None else '·'} | **{md(r['label'])}** | {pct(r['overview'])} "
+                   f"| {pct(r['standard']['pct'])} | {pct((r['hard'] or {}).get('pct'))} | {pct(a.get('pct'))} "
+                   f"| {pct(a.get('refused_pct'))} | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
                    f"| {f'{r["lat"]:.2f}' if r['lat'] else '—'} | {gb(r)} | {r['slips']} |")
     out += [''] + [f"\\* {r['note']}" for r in done if r['note']] if any(r['note'] for r in done) else []
     if queued:
@@ -177,7 +257,7 @@ def main() -> int:
     if done:
         out += ['', '## Output compliance', '',
                 'Decided mechanically, identically for every model. **Automatic zeros** are already in the scores above: no usable '
-                'output, or the source returned untranslated. **Flags** are recorded only and do not change the score yet: '
+                'output, or the source returned untranslated. **Flags** do not change the /10 scores; *commentary* fails a line for Pass %: '
                 '*commentary* = an alternative, note or literal gloss appended to the translation; *format* = speaker labels '
                 'rewritten as `Name:` or markdown emphasis.', '',
                 '| Model | Zero: no output | Zero: untranslated | Commentary | Format |', '|---|---:|---:|---:|---:|']
@@ -185,20 +265,24 @@ def main() -> int:
             z = r['lines_eval_zero'] + r['scenes_full_zero']
             f = r['lines_eval_flags'] + r['scenes_full_flags']
             out.append(f"| {md(r['label'])} | {z['inference_failure'] + z['not_run']} | {z['exact_echo']} | {f['commentary']} | {f['format']} |")
-    out += ['', 'Scores are out of 10: adequacy 0–4, pragmatics and voice 0–4, fluency 0–2, judged by GPT-6.1 Sol. '
-            'A line the model failed to produce scores 0. Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
+    out += ['', 'Standard: 200 eval lines judged by GPT-6.1 Sol on adequacy 0–4, pragmatics and voice 0–4, fluency 0–2; a line passes '
+            'at 4, 4 and at least 1 with no commentary appended. Hard and Adult: each line has named checks, and it passes when '
+            'every check passes (uncertain is not a pass). A line the model failed to produce fails (scores 0 out of 10). '
+            'Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
     (RES / 'judge/RANKING.md').write_text('\n'.join(out) + '\n', encoding='utf8')
 
     # one-paragraph answer for the landing page
     if done:
         b = done[0]
-        head = (f"**Best so far: {b['label']}.** It scores {b['lines_eval'][0]:.2f}/10 on the hard lines and "
-                f"{b['scenes_full'][0]:.2f}/10 on full scenes, finishing a line in {b['lat']} s using {gb(b)} GB of VRAM. "
+        hard = (b['hard'] or {}).get('pct')
+        head = (f"**Best so far: {b['label']}.** It passes {b['standard']['pct']:.0f}% of the 200 standard lines"
+                + (f" and {hard:.0f}% of the hard slice" if hard is not None else '')
+                + f", finishing a line in {b['lat']:.2f} s using {gb(b)} GB of VRAM. "
                 f"{len(done)} model{'s' if len(done) != 1 else ''} fully judged so far.")
     else:
         head = 'No model is fully judged yet.'
     (RES / 'judge/HEADLINE.md').write_text(head + '\n', encoding='utf8')
-    (RES / 'judge/BOARD.html').write_text(board(done, queued), encoding='utf8')
+    (RES / 'judge/BOARD.html').write_text(board(done, queued, sort_key), encoding='utf8')
     print('\n'.join(out) + '\n\n' + head)
     return 0
 
@@ -226,36 +310,78 @@ def cat_bars(cats: dict | None) -> str:
             f'<span class="ob-cats">{cells}</span>')
 
 
-def board(done: list[dict], queued: list[dict]) -> str:
-    """Landing-page leaderboard: one bar per model on a 0-10 axis; each row expands to its details.
+VERSION = 'Preview'  # becomes '1.0' when the method and slices freeze; 1.x for follow-ups
+SORT_NAMES = {'overview': 'Overview', 'standard': 'Standard', 'hard': 'Hard', 'adult': 'Adult'}
+
+
+def sort_value(r: dict, key: str) -> float | None:
+    if key == 'overview':
+        return r['overview']
+    return (r.get(key) or {}).get('pct')
+
+
+def cell(res: dict | None, slice_name: str, label: str) -> str:
+    """One slice's mini bar: 0-100 % with a faint 95% interval behind it; a dash until judged."""
+    e = lambda x: html.escape(str(x))
+    if not res or res.get('pct') is None:
+        why = f"{res['done']}/{res['total']} lines judged" if res else 'not judged yet'
+        return f'<span class="ob-cell ob-na" title="{e(label)}: {why}"><span class="ob-cell-name">{e(label)}</span>—</span>'
+    lo, hi = res.get('ci') or (res['pct'], res['pct'])
+    tip = f"{label}: {res['pct']:.1f}% of {res['n']} lines pass (95% interval {lo:.0f}–{hi:.0f}%)"
+    extra = ''
+    if 'refused_pct' in res:
+        tip += f"; refused {res['refused']} of {res['refused_of']} lines that should be translated"
+        extra = f'<span class="ob-ref">{res["refused_pct"]:.0f}% refused</span>'
+    return (f'<span class="ob-cell" title="{e(tip)}"><span class="ob-cell-name">{e(label)}</span>'
+            f'<span class="ob-track"><span class="ob-ci" style="left:{lo:.1f}%;width:{max(hi - lo, 0):.1f}%"></span>'
+            f'<span class="ob-bar" style="width:{res["pct"]:.1f}%"></span></span>'
+            f'<span class="ob-val">{res["pct"]:.0f}%</span>{extra}</span>')
+
+
+def board(done: list[dict], queued: list[dict], sort_key: str) -> str:
+    """Landing-page leaderboard: Overview number plus one 0-100 % bar per slice; headers re-sort (docs/javascripts/board.js).
 
     Kept free of blank lines so Markdown passes it through as one raw HTML block.
     """
     e = lambda s: html.escape(str(s))
-    rows = []
-    for n, r in enumerate(done, 1):
-        score, scenes = r['lines_eval'][0], r['scenes_full'][0]
+    data = lambda x: '' if x is None else f'{x:.1f}'
+    rows, n = [], 0
+    for r in done:
+        v = sort_value(r, sort_key)
+        n += v is not None
         qual = ' · '.join(x for x in (f"{r['lat']:.2f} s/line" if r['lat'] else '', fits(r['vram'])) if x)
-        tip = f"{r['label']}: {score:.2f}/10 on hard lines, {scenes:.2f}/10 on full scenes"
         vram = f"{r['vram'] / 1024:.1f} GB VRAM loaded" if r['vram'] else ''
         note = f'<span>* {e(r["note"])}</span>' if r['note'] else ''
+        a, h = r['adult'] or {}, r['hard'] or {}
+        adult_more = (f'<span>Adult: refused <b>{a["refused"]}</b> of {a["refused_of"]} lines that should be translated; '
+                      f'sexualised <b>{a["over_sex"]}</b> of {a["over_sex_of"]} that should not be</span>') if a.get('pct') is not None else ''
+        ov = f'{r["overview"]:.0f}%' if r['overview'] is not None else '—'
         rows.append(
-            f'<details class="ob-row"><summary title="{e(tip)}">'
-            f'<span class="ob-rank">{n}</span><span class="ob-name">{e(r["label"])}</span>'
-            f'<span class="ob-track"><span class="ob-bar" style="width:{score * 10:.1f}%"></span></span>'
-            f'<span class="ob-score">{score:.2f}</span><span class="ob-qual">{e(qual)}</span></summary>'
-            f'<div class="ob-more"><span><b>{scenes:.2f}</b>/10 on 31 full scenes</span>'
-            f'<span><b>{r["lines_eval_low"]}</b> of 200 lines scored 5 or less</span>'
+            f'<details class="ob-row" data-overview="{data(r["overview"])}" data-standard="{data(r["standard"]["pct"])}" '
+            f'data-hard="{data(h.get("pct"))}" data-adult="{data(a.get("pct"))}">'
+            f'<summary><span class="ob-rank">{n if v is not None else "·"}</span><span class="ob-name">{e(r["label"])}</span>'
+            f'<span class="ob-overview" title="Overview: mean of Standard and Hard">{ov}</span>'
+            + cell(r['standard'], 'standard', 'Standard') + cell(r['hard'], 'hard', 'Hard') + cell(r['adult'], 'adult', 'Adult')
+            + f'<span class="ob-qual">{e(qual)}</span></summary>'
+            f'<div class="ob-more"><span><b>{r["lines_eval"][0]:.2f}</b>/10 on the 200 standard lines, '
+            f'<b>{r["scenes_full"][0]:.2f}</b>/10 on 31 full scenes</span>'
+            f'<span><b>{r["lines_eval_low"]}</b> of 200 standard lines scored 5 or less</span>'
             f'<span>Most common slips: {e(r["slips"] or "none")}</span>'
-            f'<span>{e(vram)}</span>{note}{cat_bars(r.get("cats"))}</div></details>')
+            f'{adult_more}<span>{e(vram)}</span>{note}{cat_bars(r.get("cats"))}</div></details>')
     for r in queued:
         got = (r.get('lines_eval') or (0, 0, 200))[1]
         rows.append(f'<div class="ob-row ob-queued"><span class="ob-rank">·</span><span class="ob-name">{e(r["label"])}</span>'
-                    f'<span class="ob-pending">being judged: {got}/200 lines</span></div>')
-    axis = ('<div class="ob-axis" aria-hidden="true"><span></span><span></span>'
-            '<span class="ob-ticks"><span>0</span><span>5</span><span>10</span></span><span></span><span></span></div>')
-    return ('<div class="ob-board" role="list" aria-label="Ranking by score on 200 hard lines, out of 10">'
-            + ''.join(rows) + axis + '</div>\n')
+                    f'<span class="ob-pending">being judged: {got}/200 standard lines</span></div>')
+    btn = lambda k, tip: (f'<button type="button" class="ob-sort" data-key="{k}" aria-pressed="{str(k == sort_key).lower()}" '
+                          f'title="{e(tip)}">{SORT_NAMES[k]}</button>')
+    head = ('<div class="ob-head"><span class="ob-rank">#</span><span class="ob-name">Model</span>'
+            + btn('overview', 'Sort by Overview: the plain mean of Standard and Hard Pass %')
+            + btn('standard', 'Sort by Standard: Pass % on the 200 public-method lines')
+            + btn('hard', 'Sort by Hard: Pass % on the unreleased hard slice')
+            + btn('adult', 'Sort by Adult: Pass % among lines not refused; refusal rate shown beside it')
+            + '<span class="ob-qual">Speed · fits</span></div>')
+    return (f'<div class="ob-board" data-sort="{sort_key}" role="list" aria-label="Ranking by {SORT_NAMES[sort_key]} Pass %">'
+            + head + ''.join(rows) + '</div>\n')
 
 
 if __name__ == '__main__':

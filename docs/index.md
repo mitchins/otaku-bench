@@ -4,13 +4,21 @@ hide:
   - toc
 ---
 
-# OtakuBench
+# OtakuBench <small>Preview</small>
 
-Which local model should translate the visual-novel line on your screen? Ranked on **200 hard Japanese lines** (idioms, keigo, negation, dialect, ellipsis). Only models fast enough to read along with are included: under 2 s per line on an RTX 3090.
+!!! note "Preview"
+    The method and test sets are still changing, so scores and ranks may move. Version 1.0 will freeze them; later changes ship as 1.1, 1.2 and so on, with old results kept for comparison.
+
+Which local model should translate the visual-novel line on your screen? Ranked by **Pass %**, the share of lines translated in full: meaning and intent intact, readable English, nothing added. Only models fast enough to read along with are included: under 2 s per line on an RTX 3090.
+
+- **Standard**: 200 Japanese lines built around idioms, keigo, negation, dialect and ellipsis.
+- **Hard**: an unreleased slice of 167 lines from 57 scenes, each line with named checks a careless translation fails.
+- **Adult**: an unreleased slice of 72 lines from adult scenes. Shown as the pass rate among lines the model didn't refuse, with the refusal rate beside it. It isn't part of the Overview.
+- **Overview**: the plain mean of Standard and Hard.
 
 --8<-- "results/judge/BOARD.html"
 
-<small>Score out of 10, judged by GPT-6.1 Sol. Click a model for its full-scene score and typical mistakes. New models are added as the daily judging run finishes them.</small>
+<small>Judged by GPT-6.1 Sol. Click a column name to sort by it, or a model for its full-scene score and typical mistakes. Faint lines behind the bars are 95% intervals: bars whose lines overlap are not clearly different. A dash means not judged yet; until the Hard slice is judged, the board is sorted by Standard. New models are added as the daily judging run finishes them.</small>
 
 ??? question "What's being tested?"
     Each model runs the way a screen translator would: a short instruction, a few lines of dialogue history, and the line on screen. That means a 2k context window, a 256-token output cap, and thinking switched off. Nobody waits 40 seconds for a line.
@@ -18,7 +26,7 @@ Which local model should translate the visual-novel line on your screen? Ranked 
     The 200 lines are written to catch the mistakes that ruin a scene: 油を売る read literally as "selling oil", 猫をかぶる as "pretends to be a cat", or a negation or a who-did-what reversed. Separately, the 31 full scenes test whether names, speakers and tone hold up across a conversation.
 
 ??? question "How is it scored?"
-    The judge gives each translation 0–4 for meaning, 0–4 for intent and voice, and 0–2 for natural English. It treats the reference as one valid reading, not the only one, so creative equivalents aren't penalised. It doesn't know which model it's judging. A line the model failed to produce scores 0.
+    On the Standard lines the judge gives each translation 0–4 for meaning, 0–4 for intent and voice, and 0–2 for natural English. A line passes at 4, 4 and at least 1, with no note or alternative appended. On the Hard and Adult slices each line has named checks (who did it, what was negated, what was left unsaid), and it passes when all of them pass. The judge treats the reference as one valid reading, not the only one, so creative equivalents aren't penalised. It doesn't know which model it's judging. A line the model failed to produce fails.
 
     One judge and one run per model: differences of a few tenths between neighbours are within noise. More in **[Method](method.md)**.
 

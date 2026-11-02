@@ -1,1 +1,1 @@
-**Best so far: Gemma 4 31B IT (Q5_K_M).** It scores 9.85/10 on the hard lines and 9.29/10 on full scenes, finishing a line in 1.21 s using 22.9 GB of VRAM. 24 models fully judged so far.
+**Best so far: Gemma 4 31B IT (Q4_K_M).** It passes 91% of the 200 standard lines, finishing a line in 1.09 s using 20.0 GB of VRAM. 24 models fully judged so far.
