@@ -34,7 +34,7 @@ Sorted by **Standard**. Pass % is the share of lines translated in full: meaning
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Qwen3.5-4B (Q4_K_M) (131/200 lines).
+Being judged: Qwen3.5-4B (Q4_K_M) (131/200 lines), Claude-Haiku-5.5 (0/200 lines).
 
 ## By category
 
