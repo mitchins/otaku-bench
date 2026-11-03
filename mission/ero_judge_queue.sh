@@ -28,6 +28,7 @@ QUEUE=(
   short-system/C01_Gemini-3.5-Flash-Lite   # cloud reference: ero turns via OpenRouter (same model, default payload), not the direct Google key;
                                            # vendor-recommended short system prompt, as on its scenes and hard slice
   C02_Claude-Haiku-5.5   # cloud reference via OpenRouter, shared prompt, thinking off
+  C03_Claude-Sonnet-5.5  # cloud reference via OpenRouter, shared prompt, thinking off (8/97 turns refused by the model)
 )
 
 {
