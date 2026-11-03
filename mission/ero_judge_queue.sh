@@ -27,6 +27,7 @@ QUEUE=(
   65_Hy-MT2-1.8B 67_Hy-MT2-1.8B-JP-Manga-v5 empty-think/36_LFM2.5-24B-A2B empty-think/51_Flint_40B-A2.5B 69_Ternary-Bonsai-2-27B 70_Nemotron_3.5_Bolt_74B-A9B_24GB
   short-system/C01_Gemini-3.5-Flash-Lite   # cloud reference: ero turns via OpenRouter (same model, default payload), not the direct Google key;
                                            # vendor-recommended short system prompt, as on its scenes and hard slice
+  C02_Claude-Haiku-5.5   # cloud reference via OpenRouter, shared prompt, thinking off
 )
 
 {
