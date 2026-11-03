@@ -17,6 +17,9 @@ Every model family gets the prompt format its model card documents. Building the
 - **HY-MT1.5**'s official contextual template is Chinese-only. With 英语 as the target, the 1.8B answered in Chinese on 12 of 31 scenes. An English version of the same instruction gives 0 of 31.
 - **TranslateGemma**'s chat template takes language codes in structured content parts, which llama-server drops, so it rendered "English (en-GB) to English (en-GB)". The harness renders the template's text branch by hand for `ja` → `en` and uses raw completion.
 - **Gemini 3.5 Flash-Lite** (cloud reference) is run with its vendor-recommended short system prompt, "Translate the supplied Japanese into faithful, natural English.", plus an explicit "from Japanese to English" in the request, for scenes and both slices. With the shared system prompt it hands back some lines in Japanese, unchanged: 30 of the 167 hard-slice lines after five re-asks each. Its bare lines use the shared prompt.
+- **Gemini 3.8 Flash** (cloud reference) uses the shared prompt everywhere: it returns no lines untranslated with it, and the short prompt makes it add translator's notes. Its reasoning can't be switched off through OpenRouter, so it runs at effort `minimal`, which still thinks on the odd line; a line that runs into the token cap is re-asked, up to five times.
+- The short vendor prompt is used only where the shared prompt breaks a model.
+- **Claude Haiku 5.5 and Sonnet 5.5** (cloud references, via OpenRouter) use the shared prompt with thinking off: reasoning disabled for Haiku, `thinking: between_tools` for Sonnet.
 - **Third-party GGUFs** sometimes don't mark EOS as a special token, so a literal `</s>` ends every output. The harness strips it from translations and keeps it in the raw response.
 
 ## Judge

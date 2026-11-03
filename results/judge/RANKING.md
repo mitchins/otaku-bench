@@ -9,19 +9,19 @@ Sorted by **Standard**. Pass % is the share of lines translated in full: meaning
 | 3 | **Gemma 4 26B-A4B IT (UD-Q4_K_M)** | — | 86.5 | — | 75.0 | 0.0 | 9.73 | 9.55 | 1 | 0.28 | 16.6 | voice, who did what, idioms |
 | 4 | **Gemma 4 12B IT (UD-Q4_K_XL)** | — | 85.5 | — | 75.0 | 0.0 | 9.65 | 9.45 | 2 | 0.42 | 7.8 | idioms, voice, omissions |
 | 5 | **Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0)** | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
-| 6 | **Gemini 3.5 Flash-Lite (cloud)\*** | — | 84.5 | — | — | — | 9.72 | 9.48 | 0 | — | — | additions, ambiguity, idioms |
+| 6 | **Gemini 3.5 Flash-Lite (cloud)\*** | — | 84.5 | — | 77.8 | 0.0 | 9.72 | 9.48 | 0 | — | — | additions, ambiguity, idioms |
 | 7 | **Qwen3.8-27B (UD-Q6_K_L)** | — | 83.5 | — | — | — | 9.62 | 9.19 | 2 | 1.33 | 22.0 | voice, idioms, omissions |
 | 8 | **Qwen3.8-27B (UD-Q4_K_M)** | — | 81.0 | — | 75.0 | 0.0 | 9.57 | 9.29 | 3 | 1.17 | 15.1 | voice, idioms, implication |
 | 9 | **Hy-MT2-30B-A3B (Q4_K_M)** | — | 76.5 | — | 72.2 | 0.0 | 9.52 | 9.29 | 2 | 0.17 | 17.4 | voice, ambiguity, idioms |
 | 10 | **Ornith-1.5-35B-A3B (Q4_K_M)** | — | 76.0 | — | 73.6 | 0.0 | 9.40 | 9.29 | 6 | 0.41 | 20.2 | idioms, additions, voice |
 | 11 | **Gemma 4 E4B IT (UD-Q4_K_XL)** | — | 75.5 | — | 68.1 | 0.0 | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
 | 12 | **Qwen3.6-35B-A3B (Q4_K_M)** | — | 75.0 | — | 75.0 | 0.0 | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
-| 13 | **Ternary-Bonsai-2-27B (PQ2_0)** | — | 72.0 | — | — | — | 9.18 | 8.87 | 8 | 0.98 | 7.1 | idioms, terms, voice |
+| 13 | **Ternary-Bonsai-2-27B (PQ2_0)** | — | 72.0 | — | 58.3 | 0.0 | 9.18 | 8.87 | 8 | 0.98 | 7.1 | idioms, terms, voice |
 | 14 | **TranslateGemma 27B IT (Q4_K_M)** | — | 71.0 | — | 44.4 | 0.0 | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
 | 15 | **TranslateGemma 12B IT (Q4_K_M)** | — | 67.5 | — | 47.2 | 0.0 | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
 | 16 | **Gemma 4 26B-A4B heretic JP-pruned 72e (Q4_0)** | — | 66.5 | — | — | — | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
 | 17 | **Hy-MT2-7B (Q4_K_M)** | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
-| 18 | **Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS)** | — | 66.5 | — | — | — | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
+| 18 | **Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS)** | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | 19 | **Sugoi-14B-Ultra (Q4_K_M)** | — | 66.5 | — | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
 | 20 | **Shisa-v2.1-qwen3-8B (Q4_K_M)** | — | 65.0 | — | — | — | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
 | 21 | **Gemma 4 E2B IT (UD-Q4_K_XL)** | — | 59.0 | — | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |

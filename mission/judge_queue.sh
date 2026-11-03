@@ -64,6 +64,8 @@ QUEUE=(
   screen/C02_Claude-Haiku-5.5
   # cloud reference: Claude Sonnet 5.5 via OpenRouter, shared prompt, thinking off (thinking between_tools; 0 reasoning tokens)
   screen/C03_Claude-Sonnet-5.5
+  # cloud reference: Gemini 3.8 Flash via OpenRouter, shared prompt, reasoning effort minimal (cannot be switched off)
+  screen/C04_Gemini-3.8-Flash
   # user pick: Ornith-1.5 (self-improvement RL on the Qwen3.5/3.6-35B-A3B MoE, coding/agentic); does it beat its Qwen3.6 base? 0.41 s/line, 66/200 lines reuse
   screen/66_Ornith-1.5-35B-A3B
   # community request: Hy-MT2 30B-A3B looked Gemma-26B-class on idioms in the informal review (0.17 s/line, 18 GB)
