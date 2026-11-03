@@ -42,6 +42,7 @@ DATA = ROOT / 'benchmark/otakubench/data/build'
 PROFILE = 'screen-v1'
 CTX = 2048
 MAX_TOKENS = 256
+API_KEY = 'local'  # llama-server ignores it; remote_arm.py sets a real key from --key-env
 DEPTHS = (0, 3, 6, 12, 24)
 GATE_DEPTH = 6
 CANARY_INDICES = (0, 30, 88, 150, 211)
@@ -253,7 +254,7 @@ def build_payload(case: dict, style: str, dataset: str, mode: str) -> tuple[dict
 def stream_once(base: str, payload: dict, completions: bool, timeout: float) -> dict:
     url = base + ('/completions' if completions else '/chat/completions')
     req = Request(url, data=json.dumps(payload, ensure_ascii=False).encode(),
-                  headers={'Content-Type': 'application/json', 'Authorization': 'Bearer local'}, method='POST')
+                  headers={'Content-Type': 'application/json', 'Authorization': f'Bearer {API_KEY}'}, method='POST')
     t0 = time.perf_counter()
     ttft = None
     text, reasoning = [], []

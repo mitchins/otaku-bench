@@ -165,7 +165,8 @@ def summaries() -> dict[str, dict]:
 # Judged for qualification or as a cloud reference, but kept off the published board until the user decides (e.g. other engine/hardware).
 OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm', 'C01_Gemini-3.5-Flash-Lite', 'C01_Gemini-3.5-Flash-Lite+explicit-target', 'C01_Gemini-3.5-Flash-Lite+short-system'}
 # One board entry assembled from per-arm runs (entry -> judged name per arm), shown with an asterisk and FOOTNOTES.
-COMPOSITE = {'C01_Gemini-3.5-Flash-Lite*': {'lines_eval': 'C01_Gemini-3.5-Flash-Lite', 'scenes_full': 'C01_Gemini-3.5-Flash-Lite+short-system'}}
+COMPOSITE = {'C01_Gemini-3.5-Flash-Lite*': {'lines_eval': 'C01_Gemini-3.5-Flash-Lite', 'scenes_full': 'C01_Gemini-3.5-Flash-Lite+short-system',
+                                            'hard': 'C01_Gemini-3.5-Flash-Lite', 'ero': 'C01_Gemini-3.5-Flash-Lite'}}
 LABELS = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini 3.5 Flash-Lite (cloud)*',
           # expert-count prunes of one model: the base entry is the 120e file, the smaller prunes are screen_quants tags
           '68_Gemma_4_26B-A4B_heretic_JP-pruned_120e+72e': 'Gemma 4 26B-A4B heretic JP-pruned 72e',
@@ -214,8 +215,8 @@ def main() -> int:
         row['label'] = base + (f" ({', '.join(tags)})" if tags else '')
         row['note'] = FOOTNOTES.get(name)
         row['standard'] = standard_pass(COMPOSITE.get(name, {}).get('lines_eval', name))
-        row['hard'] = slice_result('hard', name) if name not in COMPOSITE else None
-        row['adult'] = slice_result('ero', name) if name not in COMPOSITE else None
+        row['hard'] = slice_result('hard', COMPOSITE.get(name, {}).get('hard', name))
+        row['adult'] = slice_result('ero', COMPOSITE.get(name, {}).get('ero', name))
         parts = [(row[k] or {}).get('pct') for k in OVERVIEW_SLICES]
         row['overview'] = round(sum(parts) / len(parts), 1) if all(p is not None for p in parts) else None
         rows.append(row)

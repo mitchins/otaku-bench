@@ -7,9 +7,15 @@ timings from other hardware or engines are recorded but are not comparable with 
 
   python mission/studies/remote_arm.py --base http://192.168.2.14:8000/v1 --served-model LilaRest/gemma-4-31B-it-NVFP4-turbo \
       --label 'Gemma 4 31B IT' --run-tag NVFP4-vllm --revision <hf sha> --out results/screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
+
+Slices (--arms hard,ero; output <out>/<slice>_turns.jsonl, as screen_mission.py --slices writes them):
+  python mission/studies/remote_arm.py --base https://openrouter.ai/api/v1 --key-env OPENROUTER_API_KEY \
+      --served-model google/gemini-3.5-flash-lite --extra-json '{"reasoning": {"effort": "minimal"}}' \
+      --label 'Gemini 3.5 Flash-Lite (cloud)' --run-tag openrouter --revision api-2026-11-03 --arms ero \
+      --workers 1 --interval 3 --out results/screen_slices/C01_Gemini-3.5-Flash-Lite
 """
 from __future__ import annotations
-import argparse, sys, threading, time
+import argparse, json, os, sys, threading, time
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -28,7 +34,10 @@ def main() -> int:
     p.add_argument('--style', default='chat')
     p.add_argument('--variant', choices=sorted(sm.VARIANTS), help='screen_mission variant (payload changes only)')
     p.add_argument('--out', type=Path, required=True)
-    p.add_argument('--arms', default='lines,scenes', help='datasets to run: lines, scenes or both')
+    p.add_argument('--arms', default='lines,scenes',
+                   help=f"comma list of: lines, scenes, and the unreleased slices {', '.join(sm.SLICES)} (one record per turn)")
+    p.add_argument('--key-env', help='env var holding the API key (sent as Bearer); default sends the dummy local key')
+    p.add_argument('--extra-json', default='', help='JSON object merged into every request payload, e.g. a provider reasoning switch')
     p.add_argument('--workers', type=int, default=8)
     p.add_argument('--timeout', type=float, default=120)
     p.add_argument('--retries', type=int, default=6, help='retries on HTTP 429, each after --backoff seconds')
@@ -39,18 +48,27 @@ def main() -> int:
     p.add_argument('--interval', type=float, default=0, help='minimum seconds between request starts (rate-limited APIs)')
     args = p.parse_args()
 
+    arms = set(args.arms.split(','))
+    if bad := arms - {'lines', 'scenes', *sm.SLICES}:
+        p.error(f'unknown arms: {sorted(bad)}')
+    if args.key_env:
+        sm.API_KEY = os.environ.get(args.key_env) or p.error(f'{args.key_env} is not set')
+    extra = json.loads(args.extra_json) if args.extra_json else {}
     if args.variant:
         sm.VARIANT.update(sm.VARIANTS[args.variant])
     build = sm.build_payload
     def build_named(*a, **k):
         payload, comp = build(*a, **k)
         payload['model'] = args.served_model
+        payload.update(extra)
         return payload, comp
     sm.build_payload = build_named
 
     run_id = f'{args.label}:{args.run_tag}{":" + args.variant if args.variant else ""}:off:{args.revision[:12]}:{sm.PROFILE}'
     common = {'model': args.label, 'run_id': run_id, 'quant_repo_sha': args.revision, 'quant_attested': False,
               'prompt_style': args.style, 'profile': sm.PROFILE, 'engine': args.run_tag, 'served_model': args.served_model}
+    if extra:
+        common['extra_payload'] = extra
     args.out.mkdir(parents=True, exist_ok=True)
     gate, next_start = threading.Lock(), [0.0]
     def pace():
@@ -59,13 +77,18 @@ def main() -> int:
             if wait > 0:
                 time.sleep(wait)
             next_start[0] = time.monotonic() + args.interval
-    for dataset, mode in sm.ARM_ORDER:
-        if (dataset, mode) not in sm.STYLE_ARMS[args.style] or dataset not in args.arms.split(','):
-            continue
-        src = sm.DATA / ('lines_bare.jsonl' if dataset == 'lines' else f'scenes_{mode}.jsonl')
+    jobs = [(dataset, mode, sm.DATA / ('lines_bare.jsonl' if dataset == 'lines' else f'scenes_{mode}.jsonl'),
+             args.out / f'{dataset}_{mode}.jsonl', None)
+            for dataset, mode in sm.ARM_ORDER if (dataset, mode) in sm.STYLE_ARMS[args.style] and dataset in arms]
+    jobs += [(name, None, sm.SLICES[name], args.out / f'{name}_turns.jsonl', name) for name in sm.SLICES if name in arms]
+    # slice turns go through the scenes prompt path, with history only where the style has a context channel
+    with_history = args.style in sm.HISTORY_STYLES and ('scenes', 'context') in sm.STYLE_ARMS[args.style]
+    for dataset, mode, src, path, slice_name in jobs:
         src_sha = sm.sha_file(src)
-        path = args.out / f'{dataset}_{mode}.jsonl'
         source = sm.load_jsonl(src)
+        if slice_name:  # normalise a turn to the case shape translate() takes; keep its fields for the record
+            source = [dict(t, japanese=t['current_japanese'],
+                           preceding_lines=t['history_japanese'] if with_history else []) for t in source]
         jp = {c['id']: c['japanese'] for c in source}
         echoed = lambda r: mech.zero_reason(jp.get(r['id'], ''), r['translation'], None) == 'exact_echo'
         done = {r['id'] for r in sm.load_jsonl(path)
@@ -78,9 +101,13 @@ def main() -> int:
 
         def one(c):
             limited = echoes = 0
+            if slice_name:
+                case_mode = 'context' if c['preceding_lines'] else 'bare'
+                case = {'japanese': c['japanese'], 'preceding_lines': c['preceding_lines']}
             while True:  # 429s wait and retry (bounded by --retries); echoes re-ask (bounded by --retry-echo)
                 pace()
-                rec = sm.translate(args.base, c, args.style, dataset, mode, args.timeout)
+                rec = (sm.translate(args.base, case, args.style, 'scenes', case_mode, args.timeout) if slice_name
+                       else sm.translate(args.base, c, args.style, dataset, mode, args.timeout))
                 if '429' in (rec['error'] or '') and limited < args.retries:
                     limited += 1
                     time.sleep(args.backoff)
@@ -90,14 +117,19 @@ def main() -> int:
                     break
             if args.retry_echo:
                 rec['echo_retries'] = echoes
-            rec.update(id=c['id'], dataset=dataset, mode=mode, source_sha256=src_sha, split=c.get('split'), **common)
+            if slice_name:  # same fields as screen_mission.run_slices
+                rec.update(id=c['id'], scene_id=c['scene_id'], slice=slice_name, mode=case_mode,
+                           history_lines=len(c['preceding_lines']), turn_sha256=c.get('turn_sha256'),
+                           source_sha256=src_sha, **common)
+            else:
+                rec.update(id=c['id'], dataset=dataset, mode=mode, source_sha256=src_sha, split=c.get('split'), **common)
             return rec
         with ThreadPoolExecutor(args.workers) as ex:
             recs = list(ex.map(one, cases))
         for rec in recs:  # written in source order after the arm, so a file never interleaves arms mid-write
             sm.append_jsonl(path, rec)
         ok = sum(bool(r['translation'] and not r['error']) for r in recs) + len(done)
-        sm.log(f'📝 {dataset}/{mode}: {ok}/{ok + sum(bool(r["error"]) for r in recs)}')
+        sm.log(f'📝 {dataset}{"/" + mode if mode else ""}: {ok}/{ok + sum(bool(r["error"]) for r in recs)}')
     return 0
 
 
