@@ -45,6 +45,9 @@ def main() -> int:
     p.add_argument('--retry-echo', type=int, default=0,
                    help='re-request up to N times when the reply is the source returned untranslated (flaky cloud endpoints); '
                         'existing echoed records are redone and each record keeps echo_retries for the footnote')
+    p.add_argument('--retry-cap', type=int, default=0,
+                   help='re-request up to N times when a reply hits the token cap (a provider whose thinking cannot be switched off and '
+                        'occasionally thinks anyway); each record keeps cap_retries')
     p.add_argument('--interval', type=float, default=0, help='minimum seconds between request starts (rate-limited APIs)')
     args = p.parse_args()
 
@@ -100,7 +103,7 @@ def main() -> int:
             path.write_text(''.join(sm.json.dumps(r, ensure_ascii=False) + '\n' for r in keep), encoding='utf-8')
 
         def one(c):
-            limited = echoes = 0
+            limited = echoes = capped = 0
             if slice_name:
                 case_mode = 'context' if c['preceding_lines'] else 'bare'
                 case = {'japanese': c['japanese'], 'preceding_lines': c['preceding_lines']}
@@ -113,10 +116,14 @@ def main() -> int:
                     time.sleep(args.backoff)
                 elif args.retry_echo and rec['translation'] and echoed(dict(rec, id=c['id'])) and echoes < args.retry_echo:
                     echoes += 1
+                elif args.retry_cap and 'token cap' in (rec['error'] or '') and capped < args.retry_cap:
+                    capped += 1
                 else:
                     break
             if args.retry_echo:
                 rec['echo_retries'] = echoes
+            if args.retry_cap:
+                rec['cap_retries'] = capped
             if slice_name:  # same fields as screen_mission.run_slices
                 rec.update(id=c['id'], scene_id=c['scene_id'], slice=slice_name, mode=case_mode,
                            history_lines=len(c['preceding_lines']), turn_sha256=c.get('turn_sha256'),
