@@ -34,7 +34,7 @@ fi
 unset OPENAI_ADMIN_API_KEY   # only the usage monitor needs it; keep it out of the judge
 OUT=results/judge/sol
 LOG="results/judge/queue_$(date -u +%Y%m%d).log"
-mkdir -p "$OUT"
+mkdir -p "$OUT" results/judge/slices/hard
 
 # priority order: complete, deployable, fast. Paths are response dirs relative to results/.
 QUEUE=(
@@ -101,6 +101,9 @@ QUEUE=(
   screen/45_LFM2.5-1.2B_Instruct
 )
 
+# hard-slice runs that are not the board's: Gemini Lite's board hard result is the short-system run
+HARD_SKIP=(screen/C01_Gemini-3.5-Flash-Lite)
+
 judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)
   local dir=$1 name out; name=$(basename "$1")
   [ -n "${5:-}" ] && name="$name+$5"
@@ -114,12 +117,28 @@ judge() {  # dir dataset mode split tag; returns non-zero when this run must sto
 {
   echo "=== $(date -u +%FT%TZ) judge queue, cap $CAP, reserve ${RESERVE:-20000}${STOP:+, stop $STOP UTC}"
   python tools/openai_usage.py --reserve "${RESERVE:-20000}" 2>&1 || true
+  std_ok=1
   for dir in "${QUEUE[@]}"; do
     tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
     echo "--- $dir"
-    judge "$dir" scenes full all "$tag" || break
-    judge "$dir" lines bare eval "$tag" || break
+    judge "$dir" scenes full all "$tag" || { std_ok=0; break; }
+    judge "$dir" lines bare eval "$tag" || { std_ok=0; break; }
   done
+  # hard slice, only once every standard arm above is judged (user, 2026-11-04): same order, key, ledger and cap.
+  # Responses live in results/screen_slices/[tag/]base; models without a hard run (quants, small models) are skipped.
+  if [ "$std_ok" = 1 ]; then
+    for dir in "${QUEUE[@]}"; do
+      case $dir in "${HARD_SKIP[@]}") continue;; esac
+      base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
+      resp="results/screen_slices/${tag:+$tag/}$base/hard_turns.jsonl"
+      [ -f "$resp" ] || continue
+      echo "--- hard $dir"
+      out=$(python tools/judge_slice.py --slice hard --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
+        --daily-token-cap "$CAP" ${STOP:+--stop-before-utc "$STOP"} --budget-usd 5 --execute 2>&1)
+      grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
+      grep -qE 'Daily token cap reached|Stop time .* reached|Cost limit reached' <<<"$out" && break
+    done
+  fi
 } >>"$LOG" 2>&1
 python mission/judge_table.py >>"$LOG" 2>&1
 
