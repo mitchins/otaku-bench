@@ -17,7 +17,7 @@ unset OPENAI_API_KEY OPENAI_ADMIN_API_KEY OTB_OPENAI_KEY_ID
 CAP=${CAP:-200000}
 OUT=results/judge/slices/ero
 LOG="results/judge/ero_queue_$(date -u +%Y%m%d).log"
-mkdir -p "$OUT"
+mkdir -p "$OUT" results/judge/slices/hard
 
 # board order, best first; response dirs relative to results/screen_slices
 QUEUE=(
@@ -36,23 +36,42 @@ QUEUE=(
 
 {
   echo "=== $(date -u +%FT%TZ) ero judge queue (OPENAI2_API_KEY), cap $CAP"
+  ero_ok=1
   for dir in "${QUEUE[@]}"; do
     name=$(basename "$dir"); case $dir in */*) name="$name+$(dirname "$dir")";; esac
     echo "--- $dir"
     out=$(python tools/judge_slice.py --slice ero --responses "results/screen_slices/$dir/ero_turns.jsonl" \
       --output "$OUT/$name.jsonl" --daily-token-cap "$CAP" --budget-usd 5 --execute 2>&1)
     grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
-    grep -qE 'Daily token cap reached|Cost limit reached' <<<"$out" && break
+    grep -qE 'Daily token cap reached|Cost limit reached' <<<"$out" && { ero_ok=0; break; }
   done
+  # spare capacity on this account goes to the hard slice (user, 2026-11-04: "either queue is fine for hard").
+  # Same models, order and output files as the main queue's hard phase; judging is idempotent, so the two queues
+  # just continue each other's files. Tokens count on this account's ledger.
+  if [ "$ero_ok" = 1 ]; then
+    eval "$(sed -n '/^QUEUE=(/,/^)/p; /^HARD_SKIP=/p' mission/judge_queue.sh | sed 's/^QUEUE=/MAIN_QUEUE=/')"
+    for dir in "${MAIN_QUEUE[@]}"; do
+      case $dir in "${HARD_SKIP[@]}") continue;; esac
+      base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
+      resp="results/screen_slices/${tag:+$tag/}$base/hard_turns.jsonl"
+      [ -f "$resp" ] || continue
+      echo "--- hard $dir"
+      out=$(python tools/judge_slice.py --slice hard --key-env OPENAI2_API_KEY --ledger "$PWD/results/judge/token_ledger_openai2.jsonl" \
+        --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
+        --daily-token-cap "$CAP" --budget-usd 5 --execute 2>&1)
+      grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
+      grep -qE 'Daily token cap reached|Cost limit reached' <<<"$out" && break
+    done
+  fi
 } >>"$LOG" 2>&1
 
 if [ "${PUBLISH:-1}" = "1" ]; then
-  if ! CHANGED=$(git status --porcelain -- "$OUT" results/judge/token_ledger_openai2.jsonl 2>>"$LOG"); then
+  if ! CHANGED=$(git status --porcelain -- "$OUT" results/judge/slices/hard results/judge/token_ledger_openai2.jsonl 2>>"$LOG"); then
     echo "⚠️  publish failed: git status error (git-crypt on PATH?)" >>"$LOG"
   elif [ -n "$CHANGED" ]; then
   {
-    git add "$OUT" results/judge/token_ledger_openai2.jsonl &&
-    git commit -q -m "Ero judge queue $(date -u +%F)" -- "$OUT" results/judge/token_ledger_openai2.jsonl &&
+    git add "$OUT" results/judge/slices/hard results/judge/token_ledger_openai2.jsonl &&
+    git commit -q -m "Ero judge queue $(date -u +%F)" -- "$OUT" results/judge/slices/hard results/judge/token_ledger_openai2.jsonl &&
     git push -q origin main
   } >>"$LOG" 2>&1 || echo "⚠️  publish failed" >>"$LOG"
   fi
