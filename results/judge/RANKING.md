@@ -4,10 +4,10 @@ Sorted by **Standard**. Pass % is the share of lines translated in full: meaning
 
 | # | Model | Overview % | Standard % | Hard % | Adult % (not refused) | Adult refused % | Standard /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
-| 1 | **Claude-Sonnet-5.5** | — | 91.5 | — | 86.4 | 9.5 | 9.84 | 9.84 | 0 | — | — | ambiguity, additions, voice |
+| 1 | **Claude Sonnet 5.5 (cloud)** | — | 91.5 | — | 86.4 | 9.5 | 9.84 | 9.84 | 0 | — | — | ambiguity, additions, voice |
 | 2 | **Gemma 4 31B IT (Q4_K_M)** | — | 91.0 | — | 81.9 | 0.0 | 9.82 | 9.23 | 1 | 1.09 | 20.0 | voice, implication, ambiguity |
 | 3 | **Gemma 4 31B IT (Q5_K_M)** | — | 91.0 | — | — | — | 9.85 | 9.29 | 0 | 1.21 | 22.9 | voice, ambiguity, terms |
-| 4 | **Claude-Haiku-5.5** | — | 89.0 | — | 83.3 | 0.0 | 9.77 | 9.26 | 0 | — | — | idioms, ambiguity, additions |
+| 4 | **Claude Haiku 5.5 (cloud)** | — | 89.0 | — | 83.3 | 0.0 | 9.77 | 9.26 | 0 | — | — | idioms, ambiguity, additions |
 | 5 | **Gemma 4 26B-A4B IT (UD-Q4_K_M)** | — | 86.5 | — | 75.0 | 0.0 | 9.73 | 9.55 | 1 | 0.28 | 16.6 | voice, who did what, idioms |
 | 6 | **Gemma 4 12B IT (UD-Q4_K_XL)** | — | 85.5 | — | 75.0 | 0.0 | 9.65 | 9.45 | 2 | 0.42 | 7.8 | idioms, voice, omissions |
 | 7 | **Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0)** | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
@@ -36,7 +36,7 @@ Sorted by **Standard**. Pass % is the share of lines translated in full: meaning
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Gemini-3.8-Flash (165/200 lines), Qwen3.5-4B (Q4_K_M) (131/200 lines).
+Being judged: Gemini 3.8 Flash (cloud) (165/200 lines), Qwen3.5-4B (Q4_K_M) (131/200 lines).
 
 ## By category
 
@@ -44,10 +44,10 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 
 | Model | Idioms & proverbs | Wordplay & irony | Dialect & voice | Politeness (keigo) | Indirect speech | Emotional subtext | Omitted subjects | Culture & institutions | Literary style | Onomatopoeia |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Claude-Sonnet-5.5 | 95% | 85% | 95% | 100% | 100% | 95% | 90% | 95% | 100% | 100% |
+| Claude Sonnet 5.5 (cloud) | 95% | 85% | 95% | 100% | 100% | 95% | 90% | 95% | 100% | 100% |
 | Gemma 4 31B IT (Q4_K_M) | 85% | 100% | 95% | 100% | 100% | 95% | 100% | 90% | 95% | 100% |
 | Gemma 4 31B IT (Q5_K_M) | 80% | 95% | 100% | 100% | 100% | 95% | 100% | 100% | 95% | 95% |
-| Claude-Haiku-5.5 | 90% | 95% | 95% | 95% | 100% | 85% | 90% | 90% | 100% | 90% |
+| Claude Haiku 5.5 (cloud) | 90% | 95% | 95% | 95% | 100% | 85% | 90% | 90% | 100% | 90% |
 | Gemma 4 26B-A4B IT (UD-Q4_K_M) | 75% | 75% | 95% | 100% | 100% | 100% | 95% | 95% | 100% | 90% |
 | Gemma 4 12B IT (UD-Q4_K_XL) | 90% | 75% | 90% | 100% | 100% | 100% | 95% | 80% | 90% | 95% |
 | Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0) | 75% | 80% | 100% | 95% | 100% | 90% | 95% | 90% | 85% | 95% |
@@ -80,10 +80,10 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 
 | Model | Zero: no output | Zero: untranslated | Commentary | Format |
 |---|---:|---:|---:|---:|
-| Claude-Sonnet-5.5 | 0 | 0 | 0 | 4 |
+| Claude Sonnet 5.5 (cloud) | 0 | 0 | 0 | 4 |
 | Gemma 4 31B IT (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 31B IT (Q5_K_M) | 0 | 0 | 0 | 0 |
-| Claude-Haiku-5.5 | 0 | 0 | 0 | 1 |
+| Claude Haiku 5.5 (cloud) | 0 | 0 | 0 | 1 |
 | Gemma 4 26B-A4B IT (UD-Q4_K_M) | 0 | 0 | 0 | 1 |
 | Gemma 4 12B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0) | 0 | 0 | 0 | 2 |

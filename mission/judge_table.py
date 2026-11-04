@@ -169,6 +169,8 @@ COMPOSITE = {'C01_Gemini-3.5-Flash-Lite*': {'lines_eval': 'C01_Gemini-3.5-Flash-
                                             # slices: the vendor-recommended short system prompt, as for scenes (user, 2026-11-03)
                                             'hard': 'C01_Gemini-3.5-Flash-Lite+short-system', 'ero': 'C01_Gemini-3.5-Flash-Lite+short-system'}}
 LABELS = {'C01_Gemini-3.5-Flash-Lite*': 'Gemini 3.5 Flash-Lite (cloud)*',
+          'C02_Claude-Haiku-5.5': 'Claude Haiku 5.5 (cloud)', 'C03_Claude-Sonnet-5.5': 'Claude Sonnet 5.5 (cloud)',
+          'C04_Gemini-3.8-Flash': 'Gemini 3.8 Flash (cloud)',
           # expert-count prunes of one model: the base entry is the 120e file, the smaller prunes are screen_quants tags
           '68_Gemma_4_26B-A4B_heretic_JP-pruned_120e+72e': 'Gemma 4 26B-A4B heretic JP-pruned 72e',
           '68_Gemma_4_26B-A4B_heretic_JP-pruned_120e+96e': 'Gemma 4 26B-A4B heretic JP-pruned 96e'}
@@ -279,8 +281,9 @@ def main() -> int:
         hard = (b['hard'] or {}).get('pct')
         head = (f"**Best so far: {b['label']}.** It passes {b['standard']['pct']:.0f}% of the 200 standard lines"
                 + (f" and {hard:.0f}% of the hard slice" if hard is not None else '')
-                + f", finishing a line in {b['lat']:.2f} s using {gb(b)} GB of VRAM. "
-                f"{len(done)} model{'s' if len(done) != 1 else ''} fully judged so far.")
+                + (f", finishing a line in {b['lat']:.2f} s using {gb(b)} GB of VRAM. " if b['lat'] is not None
+                   else ". It is a cloud model, so it has no local speed or VRAM figure. ")
+                + f"{len(done)} model{'s' if len(done) != 1 else ''} fully judged so far.")
     else:
         head = 'No model is fully judged yet.'
     (RES / 'judge/HEADLINE.md').write_text(head + '\n', encoding='utf8')
