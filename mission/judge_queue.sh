@@ -126,7 +126,9 @@ judge() {  # dir dataset mode split tag; returns non-zero when this run must sto
   done
   # hard slice, only once every standard arm above is judged (user, 2026-11-04): same order, key, ledger and cap.
   # Responses live in results/screen_slices/[tag/]base; models without a hard run (quants, small models) are skipped.
+  hard_ok=0
   if [ "$std_ok" = 1 ]; then
+    hard_ok=1
     for dir in "${QUEUE[@]}"; do
       case $dir in "${HARD_SKIP[@]}") continue;; esac
       base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
@@ -136,7 +138,16 @@ judge() {  # dir dataset mode split tag; returns non-zero when this run must sto
       out=$(python tools/judge_slice.py --slice hard --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
         --daily-token-cap "$CAP" ${STOP:+--stop-before-utc "$STOP"} --budget-usd 5 --execute 2>&1)
       grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
-      grep -qE 'Daily token cap reached|Stop time .* reached|Cost limit reached' <<<"$out" && break
+      grep -qE 'Daily token cap reached|Stop time .* reached|Cost limit reached' <<<"$out" && { hard_ok=0; break; }
+    done
+  fi
+  # lowest priority: the 50 public dev lines (off the board), so failures can later be shown with quotable examples
+  # (user, 2026-11-04). Every model already translated them in its screen run: judging only, no inference.
+  if [ "$hard_ok" = 1 ]; then
+    for dir in "${QUEUE[@]}"; do
+      tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
+      echo "--- dev $dir"
+      judge "$dir" lines bare dev "$tag" || break
     done
   fi
 } >>"$LOG" 2>&1
