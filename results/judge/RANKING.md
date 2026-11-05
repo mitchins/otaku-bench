@@ -27,17 +27,19 @@ Sorted by **Standard**. Pass % is the share of lines translated in full: meaning
 | 21 | **Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS)** | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | 22 | **Sugoi-14B-Ultra (Q4_K_M)** | — | 66.5 | — | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
 | 23 | **Shisa-v2.1-qwen3-8B (Q4_K_M)** | — | 65.0 | — | — | — | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
-| 24 | **Gemma 4 E2B IT (UD-Q4_K_XL)** | — | 59.0 | — | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
-| 25 | **Qwen3-4B-Instruct-2507 (Q4_K_M)** | — | 50.5 | — | — | — | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
-| 26 | **Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M)** | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
-| 27 | **Flint 40B-A2.5B (IQ4_XS, empty-think)** | — | 47.0 | — | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
-| 28 | **gpt-oss-20b (Q4_K_M, effort-low)** | — | 47.0 | — | — | — | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
-| 29 | **LFM2.5-24B-A2B (Q4_K_M, empty-think)** | — | 46.5 | — | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
-| 30 | **Hy-MT2-1.8B (Q4_K_M)** | — | 39.0 | — | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| 24 | **Qwen3.5-4B (Q4_K_M)** | — | 60.0 | — | — | — | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
+| 25 | **Gemma 4 E2B IT (UD-Q4_K_XL)** | — | 59.0 | — | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
+| 26 | **Qwen3-4B-Instruct-2507 (Q4_K_M)** | — | 50.5 | — | — | — | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
+| 27 | **Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M)** | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
+| 28 | **Flint 40B-A2.5B (IQ4_XS, empty-think)** | — | 47.0 | — | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 29 | **gpt-oss-20b (Q4_K_M, effort-low)** | — | 47.0 | — | — | — | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
+| 30 | **LFM2.5-24B-A2B (Q4_K_M, empty-think)** | — | 46.5 | — | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| 31 | **Hy-MT2-1.8B (Q4_K_M)** | — | 39.0 | — | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| 32 | **Qwen3.5-2B (Q4_K_M)** | — | 32.5 | — | — | — | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Qwen3.5-4B (Q4_K_M) (133/200 lines).
+Being judged: Ling-3.0-tiny (Q4_K_M) (110/200 lines).
 
 ## By category
 
@@ -68,6 +70,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
 | Sugoi-14B-Ultra (Q4_K_M) | 55% | 65% | 65% | 90% | 85% | 80% | 75% | 85% | 70% | 85% |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
+| Qwen3.5-4B (Q4_K_M) | 20% | 65% | 55% | 70% | 80% | 70% | 85% | 70% | 85% | 60% |
 | Gemma 4 E2B IT (UD-Q4_K_XL) | 25% | 70% | 55% | 90% | 80% | 75% | 60% | 60% | 80% | 65% |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 20% | 50% | 55% | 65% | 60% | 55% | 70% | 70% | 75% | 70% |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
@@ -75,6 +78,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 15% | 45% | 55% | 60% | 60% | 60% | 70% | 35% | 70% | 75% |
 | Hy-MT2-1.8B (Q4_K_M) | 15% | 35% | 55% | 60% | 50% | 65% | 70% | 40% | 60% | 70% |
+| Qwen3.5-2B (Q4_K_M) | 5% | 15% | 40% | 60% | 30% | 40% | 55% | 30% | 55% | 60% |
 
 ## Output compliance
 
@@ -105,6 +109,7 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
 | Sugoi-14B-Ultra (Q4_K_M) | 0 | 0 | 1 | 0 |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 0 | 0 | 0 | 33 |
+| Qwen3.5-4B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 E2B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 0 | 0 | 0 | 6 |
@@ -112,5 +117,6 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 1 | 0 | 0 | 2 |
 | Hy-MT2-1.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
+| Qwen3.5-2B (Q4_K_M) | 0 | 0 | 0 | 1 |
 
 Standard: 200 eval lines judged by GPT-6.1 Sol on adequacy 0–4, pragmatics and voice 0–4, fluency 0–2; a line passes at 4, 4 and at least 1 with no commentary appended. Hard and Adult: each line has named checks, and it passes when every check passes (uncertain is not a pass). A line the model failed to produce fails (scores 0 out of 10). Speed is the median time to finish a line with 6 lines of history on an RTX 3090.
