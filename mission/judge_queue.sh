@@ -103,6 +103,25 @@ QUEUE=(
 
 # hard-slice runs that are not the board's: Gemini Lite's board hard result is the short-system run
 HARD_SKIP=(screen/C01_Gemini-3.5-Flash-Lite)
+# Hard pilot (user, 2026-11-05: verify the hard slice spreads models before committing to it): a spread across
+# strength and family, strongest/weakest first, judged before anything else in both queues.
+HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Sonnet-5.5 screen/41_Gemma_4_E4B_IT
+            screen/05_Gemma_4_26B-A4B_IT screen/01_Qwen3.8-27B screen/C04_Gemini-3.8-Flash)
+# 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
+HARD_FULL=0
+
+hard_one() {  # dir [extra judge_slice args]; returns non-zero when this run must stop
+  local dir=$1 base tag resp out; shift
+  case $dir in "${HARD_SKIP[@]}") return 0;; esac
+  base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
+  resp="results/screen_slices/${tag:+$tag/}$base/hard_turns.jsonl"
+  [ -f "$resp" ] || return 0
+  echo "--- hard $dir"
+  out=$(python tools/judge_slice.py --slice hard --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
+    --daily-token-cap "$CAP" ${STOP:+--stop-before-utc "$STOP"} --budget-usd 5 --execute "$@" 2>&1)
+  grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
+  ! grep -qE 'Daily token cap reached|Stop time .* reached|Cost limit reached' <<<"$out"
+}
 
 judge() {  # dir dataset mode split tag; returns non-zero when this run must stop (cap or stop time)
   local dir=$1 name out; name=$(basename "$1")
@@ -117,29 +136,23 @@ judge() {  # dir dataset mode split tag; returns non-zero when this run must sto
 {
   echo "=== $(date -u +%FT%TZ) judge queue, cap $CAP, reserve ${RESERVE:-20000}${STOP:+, stop $STOP UTC}"
   python tools/openai_usage.py --reserve "${RESERVE:-20000}" 2>&1 || true
-  std_ok=1
-  for dir in "${QUEUE[@]}"; do
-    tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
-    echo "--- $dir"
-    judge "$dir" scenes full all "$tag" || { std_ok=0; break; }
-    judge "$dir" lines bare eval "$tag" || { std_ok=0; break; }
-  done
-  # hard slice, only once every standard arm above is judged (user, 2026-11-04): same order, key, ledger and cap.
-  # Responses live in results/screen_slices/[tag/]base; models without a hard run (quants, small models) are skipped.
-  hard_ok=0
-  if [ "$std_ok" = 1 ]; then
-    hard_ok=1
+  go=1
+  for dir in "${HARD_PILOT[@]}"; do hard_one "$dir" || { go=0; break; }; done
+  std_ok=0
+  if [ "$go" = 1 ]; then
+    std_ok=1
     for dir in "${QUEUE[@]}"; do
-      case $dir in "${HARD_SKIP[@]}") continue;; esac
-      base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
-      resp="results/screen_slices/${tag:+$tag/}$base/hard_turns.jsonl"
-      [ -f "$resp" ] || continue
-      echo "--- hard $dir"
-      out=$(python tools/judge_slice.py --slice hard --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
-        --daily-token-cap "$CAP" ${STOP:+--stop-before-utc "$STOP"} --budget-usd 5 --execute 2>&1)
-      grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
-      grep -qE 'Daily token cap reached|Stop time .* reached|Cost limit reached' <<<"$out" && { hard_ok=0; break; }
+      tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
+      echo "--- $dir"
+      judge "$dir" scenes full all "$tag" || { std_ok=0; break; }
+      judge "$dir" lines bare eval "$tag" || { std_ok=0; break; }
     done
+  fi
+  # rest of the hard slice once every standard arm is judged and HARD_FULL=1 (same order, key, ledger and cap)
+  hard_ok=0
+  if [ "$std_ok" = 1 ] && [ "$HARD_FULL" = 1 ]; then
+    hard_ok=1
+    for dir in "${QUEUE[@]}"; do hard_one "$dir" || { hard_ok=0; break; }; done
   fi
   # lowest priority: the 50 public dev lines (off the board), so failures can later be shown with quotable examples
   # (user, 2026-11-04). Every model already translated them in its screen run: judging only, no inference.

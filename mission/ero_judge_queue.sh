@@ -49,18 +49,12 @@ QUEUE=(
   # Same models, order and output files as the main queue's hard phase; judging is idempotent, so the two queues
   # just continue each other's files. Tokens count on this account's ledger.
   if [ "$ero_ok" = 1 ]; then
-    eval "$(sed -n '/^QUEUE=(/,/^)/p; /^HARD_SKIP=/p' mission/judge_queue.sh | sed 's/^QUEUE=/MAIN_QUEUE=/')"
-    for dir in "${MAIN_QUEUE[@]}"; do
-      case $dir in "${HARD_SKIP[@]}") continue;; esac
-      base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
-      resp="results/screen_slices/${tag:+$tag/}$base/hard_turns.jsonl"
-      [ -f "$resp" ] || continue
-      echo "--- hard $dir"
-      out=$(python tools/judge_slice.py --slice hard --key-env OPENAI2_API_KEY --ledger "$PWD/results/judge/token_ledger_openai2.jsonl" \
-        --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
-        --daily-token-cap "$CAP" --budget-usd 5 --execute 2>&1)
-      grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
-      grep -qE 'Daily token cap reached|Cost limit reached' <<<"$out" && break
+    # HARD_PILOT, HARD_FULL, HARD_SKIP, QUEUE and hard_one() come from the main queue (one definition)
+    eval "$(sed -n '/^QUEUE=(/,/^)/p; /^HARD_SKIP=/p; /^HARD_PILOT=(/,/)$/p; /^HARD_FULL=/p; /^hard_one() {/,/^}/p' mission/judge_queue.sh)"
+    list=("${HARD_PILOT[@]}"); [ "$HARD_FULL" = 1 ] && list+=("${QUEUE[@]}")
+    STOP=""
+    for dir in "${list[@]}"; do
+      hard_one "$dir" --key-env OPENAI2_API_KEY --ledger "$PWD/results/judge/token_ledger_openai2.jsonl" || break
     done
   fi
 } >>"$LOG" 2>&1
