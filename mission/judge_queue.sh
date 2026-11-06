@@ -65,6 +65,10 @@ QUEUE=(
   screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT
   screen_quants/QAT-Q4_0/41_Gemma_4_E4B_IT
   screen_quants/QAT-Q4_0/42_Gemma_4_E2B_IT
+  # edge memory budget (Deck): bigger model at 2-bit vs smaller at 4-bit, Unsloth dynamic quants of the QAT weights
+  screen_quants/QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT
+  screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT
+  screen_quants/QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT
   # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy, paced to the key's ~5 req/min
   screen/C01_Gemini-3.5-Flash-Lite
   screen_variants/short-system/C01_Gemini-3.5-Flash-Lite   # indicative, not parity: short system prompt for scenes (the shared one makes Lite echo); lines copied from the shared-prompt run
@@ -117,7 +121,9 @@ HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Son
             screen/05_Gemma_4_26B-A4B_IT screen/01_Qwen3.8-27B screen/C04_Gemini-3.8-Flash
             screen_quants/W4A16-vllm/05_Gemma_4_26B-A4B_IT   # LAN workhorse, against its Q4 base (user, 2026-11-06)
             screen_quants/QAT-Q4_0/02_Gemma_4_31B_IT screen_quants/QAT-Q4_0/05_Gemma_4_26B-A4B_IT
-            screen_quants/QAT-Q4_0/41_Gemma_4_E4B_IT)   # official QAT builds of the pilot's Gemmas
+            screen_quants/QAT-Q4_0/41_Gemma_4_E4B_IT   # official QAT builds of the pilot's Gemmas
+            screen_quants/QAT-Q4_0/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT
+            screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT)   # edge budget
 # 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
 HARD_FULL=0
 

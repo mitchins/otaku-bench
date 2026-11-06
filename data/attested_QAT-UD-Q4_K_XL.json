@@ -1,0 +1,58 @@
+{
+ "version": "4.0",
+ "notes": "Unsloth UD-Q4_K_XL GGUFs of the official Gemma 4 QAT weights: edge memory-budget comparison (user, 2026-11-06)",
+ "models": [
+  {
+   "rank": 42,
+   "model": "Gemma 4 E2B IT",
+   "family": "Gemma",
+   "total_params_b": 5.1,
+   "active_params_b": null,
+   "quant_repo": "unsloth/gemma-4-E2B-it-qat-GGUF",
+   "preferred_quant": "UD-Q4_K_XL",
+   "original_repo": "google/gemma-4-E2B-it",
+   "inclusion_reason": "Effective 2B / larger total hybrid PLE edge reference",
+   "tier": "B",
+   "special_notes": "E2B 2.3B effective; 5.1B total including embeddings (Google model card)",
+   "lineage": "original_lab_release",
+   "quant_publisher": "unsloth",
+   "gguf_repo_url": "https://huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF",
+   "original_url": "https://huggingface.co/google/gemma-4-E2B-it",
+   "repro_status": "HUB_QUANT_ATTESTED",
+   "quant_file": "gemma-4-E2B-it-qat-UD-Q4_K_XL.gguf",
+   "quant_size_gb": 2.62,
+   "exact_file_url": "https://huggingface.co/unsloth/gemma-4-E2B-it-qat-GGUF/blob/66a399f68ddd113b06dff02fca9523e55465d11d/gemma-4-E2B-it-qat-UD-Q4_K_XL.gguf",
+   "listed_file_name": "gemma-4-E2B-it-qat-UD-Q4_K_XL.gguf",
+   "listed_size_gb": 2.62,
+   "listed_source_url": null,
+   "web_spotchecked": false,
+   "model_repo_sha": "66a399f68ddd113b06dff02fca9523e55465d11d",
+   "selected_quant_policy": "Bartowski publisher recommended Q4_K_M; Unsloth UD-Q4_K_XL/UD-Q4_K_M; publisher GGUF same 4-bit; gpt-oss Q4_K_M with native MXFP4_MOE experts preserved",
+   "deck_default_candidate": false,
+   "deck_note": "LAN / unknown memory requirements",
+   "small_model_high_quant_challenger": "Q6_K / Q8_0 only after exact variant and bytes attested",
+   "runtime_validated": false,
+   "translation_quality_measured": false,
+   "eligibility_lane": "lab_original_or_existing_v2_specialist",
+   "eligibility_evidence_url": "https://huggingface.co/google/gemma-4-E2B-it",
+   "prompt_style": "chat",
+   "canary_required": true,
+   "repo_declared_parents": [
+    "google/gemma-4-E2B-it"
+   ],
+   "lineage_attestation": "publisher_declared_from_official_qat",
+   "repository_downloads_30d": 423301,
+   "selected_quant": "UD-Q4_K_XL",
+   "non_default_fallback": false,
+   "quant_files_count": 1,
+   "hf_paths": [
+    "gemma-4-E2B-it-qat-UD-Q4_K_XL.gguf"
+   ],
+   "file_sizes_bytes": [
+    2620370976
+   ],
+   "quant_sha256": "e531007218dfab990486a5de7676a6932d6ea8dea233d1f698d7c21cf8a16889",
+   "quant_note": "Unsloth dynamic UD-Q4_K_XL of the official Google QAT weights (edge memory-budget comparison, user 2026-11-06)"
+  }
+ ]
+}

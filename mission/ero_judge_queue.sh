@@ -35,6 +35,7 @@ QUEUE=(
   W4A16-vllm/05_Gemma_4_26B-A4B_IT   # LAN workhorse on vLLM (qualification, off the board)
   # official Gemma 4 QAT q4_0 GGUFs
   QAT-Q4_0/02_Gemma_4_31B_IT QAT-Q4_0/05_Gemma_4_26B-A4B_IT QAT-Q4_0/08_Gemma_4_12B_IT QAT-Q4_0/41_Gemma_4_E4B_IT QAT-Q4_0/42_Gemma_4_E2B_IT
+  QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT   # edge budget
 )
 
 {
