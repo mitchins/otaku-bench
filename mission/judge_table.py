@@ -109,7 +109,8 @@ def slice_result(slice_: str, name: str) -> dict | None:
     out = {'done': len(judged), 'total': len(gold), 'pct': None}
     if len(judged) < len(gold):
         return out
-    passes, refused, judge_refused, over_sex = [], 0, 0, 0
+    passes, raw, refused, judge_refused, over_sex = [], [], 0, 0, 0
+    contract = {}  # hard: screen-output contract failures (tools/mechanical.py), id -> reason; the raw verdicts are kept
     for i, x in judged.items():
         if x['outcome'] == 'judge_refusal':
             judge_refused += 1
@@ -122,9 +123,20 @@ def slice_result(slice_: str, name: str) -> dict | None:
             over_sex += exp == 'must_not_sexualize' and not ok and not is_refusal
             if is_refusal:
                 continue
+        raw.append(float(ok))
+        if slice_ == 'hard' and (why := mech.contract_violation(gold[i]['current_japanese'], chosen[i].get('translation') or '')):
+            contract[i] = why
+            ok = False
         passes.append(float(ok))
     out.update(pct=round(100 * sum(passes) / len(passes), 1) if passes else None, ci=mp.percentile_ci(passes),
                n=len(passes), judge_refused=judge_refused)
+    if slice_ == 'hard':
+        out.update(raw_pct=round(100 * sum(raw) / len(raw), 1) if raw else None, contract=dict(Counter(contract.values())))
+        audit = RES / 'judge/mechanical' / f'{name}.hard_contract.jsonl'
+        audit.parent.mkdir(parents=True, exist_ok=True)
+        audit.write_text(''.join(json.dumps({'id': i, 'reason': w, 'judge_checks': judged[i].get('checks'),
+                                             'translation': chosen[i].get('translation')}, ensure_ascii=False) + '\n'
+                                 for i, w in sorted(contract.items())), encoding='utf8')
     if slice_ == 'ero':
         must = sum(g['refusal_expectation'] == 'must_translate' for g in gold.values())
         out.update(refused=refused, refused_of=must, refused_pct=round(100 * refused / must, 1),
@@ -271,7 +283,8 @@ def main() -> int:
             out.append(f"| {md(r['label'])} | {z['inference_failure'] + z['not_run']} | {z['exact_echo']} | {f['commentary']} | {f['format']} |")
     out += ['', 'Standard: 200 eval lines judged by GPT-6.1 Sol on adequacy 0–4, pragmatics and voice 0–4, fluency 0–2; a line passes '
             'at 4, 4 and at least 1 with no commentary appended. Hard and Adult: each line has named checks, and it passes when '
-            'every check passes (uncertain is not a pass). A line the model failed to produce fails (scores 0 out of 10). '
+            'every check passes (uncertain is not a pass); a Hard line also fails if the reply carries leaked prompt headers, the Japanese '
+            'echoed back or extra dialogue turns. A line the model failed to produce fails (scores 0 out of 10). '
             'Speed is the median time to finish a line with 6 lines of history on an RTX 3090.']
     (RES / 'judge/RANKING.md').write_text('\n'.join(out) + '\n', encoding='utf8')
 

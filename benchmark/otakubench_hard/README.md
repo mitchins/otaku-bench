@@ -1,4 +1,4 @@
-# OtakuBench hard slice (hard-v04.0.1)
+# OtakuBench hard slice (hard-v04.0.2)
 
 An unreleased line-by-line Japanese→English challenge set for the VN screen translator: one line at a time, with up to six earlier lines of history. It is reported as its own column beside the public 200-line set; the board's Overview is the plain mean of the two Pass % rates. Its lines are never pooled into the 200-line denominator.
 

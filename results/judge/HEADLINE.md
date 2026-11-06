@@ -1,1 +1,1 @@
-**Best so far: Claude Sonnet 5.5 (cloud).** It passes 92% of the 200 standard lines and 84% of the hard slice. It is a cloud model, so it has no local speed or VRAM figure. 32 models fully judged so far.
+**Best so far: Gemini 3.8 Flash (cloud).** It passes 93% of the 200 standard lines and 86% of the hard slice. It is a cloud model, so it has no local speed or VRAM figure. 32 models fully judged so far.

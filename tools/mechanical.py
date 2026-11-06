@@ -9,6 +9,12 @@
     format             speaker labels rewritten as Name: / **Name:**, or markdown emphasis
 
 Partial echoes and kept Japanese terms are left to the judge: the echo test is deliberately exact.
+
+  contract (hard slice: the line fails whatever the judge said; raw check verdicts are kept)
+    leaked_scaffold    a prompt section header returned as text ([Source Text], [Background Information], Translation:)
+    source_echo        the Japanese line returned beside its translation
+    extra_lines        more speaker turns than the source line holds: translated history or invented continuation
+  Ordinary wrapping, a speaker label on its own line and label-style differences are not violations.
 """
 from __future__ import annotations
 
@@ -26,6 +32,14 @@ COMMENTARY_LINE = re.compile(
 COMMENTARY_INLINE = re.compile(r'\((?:lit\.|literally|or:)[^)]*\)', re.I)
 MARKDOWN = re.compile(r'\*\*[^*\n]+\*\*|(?<![*\w])\*[^*\n]+\*(?![*\w])')
 NAME_LABEL = re.compile(r'^\s*\**[A-Z][\w .\'-]{0,24}\**\s*[:：]', re.M)
+
+
+SCAFFOLD_WORDS = r'(?:source(?: text)?|background(?: information)?|context|history|original(?: text)?|japanese|translation|english)'
+SCAFFOLD_LINE = re.compile(r'^\s*[\[(（【]?\s*' + SCAFFOLD_WORDS + r'\s*[:：]?\s*[\])）】]?\s*[:：]?\s*$', re.I)
+SCAFFOLD_LABEL = re.compile(r'^\s*(?:[\[(（【]\s*' + SCAFFOLD_WORDS + r'\s*[\])）】]|' + SCAFFOLD_WORDS + r'\s*[:：])', re.I)
+TURN_LABEL = re.compile(r'^\s*(?:\[[^\]]{1,40}\]|\**[A-Z][\w .\'-]{0,24}\**\s*[:：]\s*["“「])')
+BRACKET_NAME = re.compile(r'【[^】]{1,30}】')
+JP_BODY = re.compile(r'^\s*【[^】]*】\s*|[「」『』]')
 
 
 def _norm(s: str) -> str:
@@ -48,3 +62,17 @@ def flags(source: str, translation: str) -> list[str]:
     if MARKDOWN.search(translation) or ('【' in source and '【' not in translation and NAME_LABEL.search(translation)):
         out.append('format')
     return out
+
+
+def contract_violation(source: str, translation: str) -> str | None:
+    """Screen-output contract for one delivered line (hard slice). None when the reply is a clean single turn."""
+    lines = [l for l in (translation or '').splitlines() if l.strip()]
+    if any(SCAFFOLD_LINE.match(l) or SCAFFOLD_LABEL.match(l) for l in lines):
+        return 'leaked_scaffold'
+    body = _norm(JP_BODY.sub('', source))
+    if len(body) >= 4 and body in _norm(translation):
+        return 'source_echo'
+    turns = sum(len(BRACKET_NAME.findall(l)) + (0 if l.lstrip().startswith('【') else bool(TURN_LABEL.match(l))) for l in lines)
+    if turns > max(1, len(BRACKET_NAME.findall(source))):
+        return 'extra_lines'
+    return None
