@@ -33,6 +33,8 @@ QUEUE=(
   # board quant rows (slices run 2026-11-04, so their Adult and Hard columns fill like the Q4 rows)
   72e/68_Gemma_4_26B-A4B_heretic_JP-pruned_120e Q5_K_M/02_Gemma_4_31B_IT UD-Q6_K_L/01_Qwen3.8-27B
   W4A16-vllm/05_Gemma_4_26B-A4B_IT   # LAN workhorse on vLLM (qualification, off the board)
+  # official Gemma 4 QAT q4_0 GGUFs
+  QAT-Q4_0/02_Gemma_4_31B_IT QAT-Q4_0/05_Gemma_4_26B-A4B_IT QAT-Q4_0/08_Gemma_4_12B_IT QAT-Q4_0/41_Gemma_4_E4B_IT QAT-Q4_0/42_Gemma_4_E2B_IT
 )
 
 {

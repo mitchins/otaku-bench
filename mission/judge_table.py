@@ -226,6 +226,8 @@ def main() -> int:
         # Always name the quant, so a bare "Gemma 4 31B IT" is never mistaken for its Q5_K_M row; prompt variants follow it.
         tags = [t for t in (s.get('quant'), variant if name not in LABELS else '') if t]
         tags = list(dict.fromkeys(tags))  # a screen_quants tag usually is the quant
+        if len(tags) == 2 and tags[0] in tags[1]:  # e.g. Q4_0 + QAT-Q4_0: the tag already names the quant
+            tags = [tags[1]]
         base = LABELS.get(name) or s.get('model') or name.split('_', 1)[-1].replace('_', ' ')
         row['label'] = base + (f" ({', '.join(tags)})" if tags else '')
         row['note'] = FOOTNOTES.get(name)
