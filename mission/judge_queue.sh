@@ -57,6 +57,8 @@ QUEUE=(
   screen/41_Gemma_4_E4B_IT
   # qualification only (off the board): Gemma 4 31B NVFP4 on vLLM / RTX 5090; 139/200 lines reuse Q4/Q5 judgments
   screen_quants/NVFP4-vllm/02_Gemma_4_31B_IT
+  # qualification only (off the board): the LAN workhorse, Gemma 4 26B-A4B QAT W4A16 (compressed-tensors) on vLLM / local GPU 1
+  screen_quants/W4A16-vllm/05_Gemma_4_26B-A4B_IT
   # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy, paced to the key's ~5 req/min
   screen/C01_Gemini-3.5-Flash-Lite
   screen_variants/short-system/C01_Gemini-3.5-Flash-Lite   # indicative, not parity: short system prompt for scenes (the shared one makes Lite echo); lines copied from the shared-prompt run
@@ -106,7 +108,8 @@ HARD_SKIP=(screen/C01_Gemini-3.5-Flash-Lite)
 # Hard pilot (user, 2026-11-05: verify the hard slice spreads models before committing to it): a spread across
 # strength and family, strongest/weakest first, judged before anything else in both queues.
 HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Sonnet-5.5 screen/41_Gemma_4_E4B_IT
-            screen/05_Gemma_4_26B-A4B_IT screen/01_Qwen3.8-27B screen/C04_Gemini-3.8-Flash)
+            screen/05_Gemma_4_26B-A4B_IT screen/01_Qwen3.8-27B screen/C04_Gemini-3.8-Flash
+            screen_quants/W4A16-vllm/05_Gemma_4_26B-A4B_IT)   # LAN workhorse, against its Q4 base (user, 2026-11-06)
 # 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
 HARD_FULL=0
 

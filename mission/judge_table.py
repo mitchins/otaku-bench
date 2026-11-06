@@ -175,7 +175,7 @@ def summaries() -> dict[str, dict]:
 
 
 # Judged for qualification or as a cloud reference, but kept off the published board until the user decides (e.g. other engine/hardware).
-OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm', 'C01_Gemini-3.5-Flash-Lite', 'C01_Gemini-3.5-Flash-Lite+explicit-target', 'C01_Gemini-3.5-Flash-Lite+short-system'}
+OFF_BOARD = {'02_Gemma_4_31B_IT+NVFP4-vllm', '05_Gemma_4_26B-A4B_IT+W4A16-vllm', 'C01_Gemini-3.5-Flash-Lite', 'C01_Gemini-3.5-Flash-Lite+explicit-target', 'C01_Gemini-3.5-Flash-Lite+short-system'}
 # One board entry assembled from per-arm runs (entry -> judged name per arm), shown with an asterisk and FOOTNOTES.
 COMPOSITE = {'C01_Gemini-3.5-Flash-Lite*': {'lines_eval': 'C01_Gemini-3.5-Flash-Lite', 'scenes_full': 'C01_Gemini-3.5-Flash-Lite+short-system',
                                             # slices: the vendor-recommended short system prompt, as for scenes (user, 2026-11-03)
