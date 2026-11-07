@@ -58,19 +58,40 @@ QUEUE=(
     eval "$(sed -n '/^QUEUE=(/,/^)/p; /^HARD_SKIP=/p; /^HARD_PILOT=(/,/)$/p; /^HARD_FULL=/p; /^hard_one() {/,/^}/p' mission/judge_queue.sh)"
     list=("${HARD_PILOT[@]}"); [ "$HARD_FULL" = 1 ] && list+=("${QUEUE[@]}")
     STOP=""
+    hard_ok=1
     for dir in "${list[@]}"; do
-      hard_one "$dir" --key-env OPENAI2_API_KEY --ledger "$PWD/results/judge/token_ledger_openai2.jsonl" || break
+      hard_one "$dir" --key-env OPENAI2_API_KEY --ledger "$PWD/results/judge/token_ledger_openai2.jsonl" || { hard_ok=0; break; }
     done
+    # then spare allowance goes to Standard (user, 2026-11-07: "the second account can judge standard if it's got nothing
+    # better; the primary can't judge adult"). Same queue order and output files as the main queue, so the two continue
+    # each other's work. judge.py reads OPENAI_API_KEY, so it gets this account's key for this command only.
+    if [ "$hard_ok" = 1 ]; then
+      for dir in "${QUEUE[@]}"; do
+        tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
+        name=$(basename "$dir")${tag:++$tag}; stop=0
+        for arm in "scenes full all" "lines bare eval"; do
+          set -- $arm
+          echo "--- standard $dir $1"
+          out=$(OPENAI_API_KEY="$OPENAI2_API_KEY" python tools/judge.py \
+            --responses "results/$dir/$1_$([ "$1" = lines ] && echo bare || echo "$2").jsonl" --dataset "$1" --mode "$2" --split "$3" \
+            --budget-usd 5 --daily-token-cap "$CAP" --ledger "$PWD/results/judge/token_ledger_openai2.jsonl" \
+            --output "results/judge/sol/$name.$1_$([ "$1" = lines ] && echo "$3" || echo "$2").jsonl" --execute 2>&1)
+          grep -vE '^[0-9]+/[0-9]+ .* => ' <<<"$out"
+          grep -qE 'Daily token cap reached|Cost limit reached' <<<"$out" && { stop=1; break; }
+        done
+        [ "$stop" = 1 ] && break
+      done
+    fi
   fi
 } >>"$LOG" 2>&1
 
 if [ "${PUBLISH:-1}" = "1" ]; then
-  if ! CHANGED=$(git status --porcelain -- "$OUT" results/judge/slices/hard results/judge/token_ledger_openai2.jsonl 2>>"$LOG"); then
+  if ! CHANGED=$(git status --porcelain -- "$OUT" results/judge/slices/hard results/judge/sol results/judge/token_ledger_openai2.jsonl 2>>"$LOG"); then
     echo "⚠️  publish failed: git status error (git-crypt on PATH?)" >>"$LOG"
   elif [ -n "$CHANGED" ]; then
   {
-    git add "$OUT" results/judge/slices/hard results/judge/token_ledger_openai2.jsonl &&
-    git commit -q -m "Ero judge queue $(date -u +%F)" -- "$OUT" results/judge/slices/hard results/judge/token_ledger_openai2.jsonl &&
+    git add "$OUT" results/judge/slices/hard results/judge/sol results/judge/token_ledger_openai2.jsonl &&
+    git commit -q -m "Ero judge queue $(date -u +%F)" -- "$OUT" results/judge/slices/hard results/judge/sol results/judge/token_ledger_openai2.jsonl &&
     git push -q origin main
   } >>"$LOG" 2>&1 || echo "⚠️  publish failed" >>"$LOG"
   fi
