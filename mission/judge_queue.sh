@@ -115,6 +115,29 @@ QUEUE=(
   screen/59_LFM2.5-VL-3B
   screen/19_LFM2.5-1.2B-JP-202606
   screen/45_LFM2.5-1.2B_Instruct
+  # backlog tail (user, 2026-11-07: "if we have models ran but not judged then yes... low priority"): every COMPLETE screen run
+  # from the first 3090 sweep that was never shortlisted, most interesting first. Seed-X-PPO-7B is left out: no scenes arm.
+  screen/13_NVIDIA-Nemotron-Nano-9B-v2-Japanese   # NVIDIA first-party Japanese adaptation
+  screen/04_Qwen3.6-27B
+  screen/11_Qwen3-Swallow-32B-RL-v0.2
+  screen/22_Sugoi-32B-Ultra
+  screen/37_GLM-4.7-Flash
+  screen/20_VNTL-Llama3-8B-v2
+  screen/14_Shisa-v2.1-unphi4-14B   # 62/250 lines still contain kana
+  screen/10_CAT-Translate-7B
+  screen/23_HY-MT1.5-7B
+  screen/30_Qwen3.5-9B
+  screen/38_Qwen3-8B
+  screen/43_Ministral_3_8B_Instruct
+  screen/48_Qwen2.5-14B-Instruct
+  screen/49_Phi-4_14B
+  screen/34_TranslateGemma_4B_IT
+  screen/28_HY-MT1.5-1.8B
+  screen/16_Shisa-v2.1-llama3.2-3B
+  screen/18_TinySwallow-1.5B-Instruct
+  screen/17_Shisa-v2.1-lfm2-1.2B   # 21/250 lines still contain kana
+  screen/27_CAT-Translate-1.4B     # 21/250 lines still contain kana
+  screen/29_CAT-Translate-0.8B
 )
 
 # hard-slice runs that are not the board's: Gemini Lite's board hard result is the short-system run
