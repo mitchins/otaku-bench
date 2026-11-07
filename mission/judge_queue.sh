@@ -69,10 +69,9 @@ QUEUE=(
   screen_quants/QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT
   screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT
   screen_quants/QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT
-  # 12B QAT below 4-bit (unified vision; Deck candidates vs E4B), mradermacher imatrix quants
-  screen_quants/QAT-i1-IQ2_M/08_Gemma_4_12B_IT
+  # 12B QAT below 4-bit (unified vision; Deck candidates vs E4B), mradermacher imatrix quants.
+  # i1-IQ2_M (canary failed) and i1-IQ3_XXS (garbage runaways on 31/167 hard turns) emit garbage on CUDA b11836: not judged
   screen_quants/QAT-i1-Q2_K/08_Gemma_4_12B_IT
-  screen_quants/QAT-i1-IQ3_XXS/08_Gemma_4_12B_IT
   screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT
   # cloud reference (off the board): cheapest Google cloud model vs the home Gemmas; responses via the LAN proxy, paced to the key's ~5 req/min
   screen/C01_Gemini-3.5-Flash-Lite
@@ -129,8 +128,8 @@ HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Son
             screen_quants/QAT-Q4_0/41_Gemma_4_E4B_IT   # official QAT builds of the pilot's Gemmas
             screen_quants/QAT-Q4_0/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT
             screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT   # edge budget
-            screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT screen_quants/QAT-i1-IQ3_XXS/08_Gemma_4_12B_IT screen_quants/QAT-i1-IQ2_M/08_Gemma_4_12B_IT
-            screen_quants/QAT-i1-Q2_K/08_Gemma_4_12B_IT screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT)   # 12B unified-vision Deck candidates
+            screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT screen_quants/QAT-i1-Q2_K/08_Gemma_4_12B_IT
+            screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT)   # 12B unified-vision Deck candidates
 # 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
 HARD_FULL=0
 
