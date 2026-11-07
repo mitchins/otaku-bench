@@ -1,0 +1,58 @@
+{
+ "version": "4.0",
+ "notes": "QAT-i1-IQ3_M: sub-4-bit 12B QAT build for the Deck comparison",
+ "models": [
+  {
+   "rank": 8,
+   "model": "Gemma 4 12B IT",
+   "family": "Gemma",
+   "total_params_b": 12,
+   "active_params_b": null,
+   "quant_repo": "mradermacher/gemma-4-12B-it-qat-q4_0-unquantized-i1-GGUF",
+   "preferred_quant": "i1-IQ3_M",
+   "original_repo": "google/gemma-4-12b-it",
+   "inclusion_reason": "New 12B unified multilingual middle tier",
+   "tier": "A",
+   "special_notes": "",
+   "lineage": "original_lab_release",
+   "quant_publisher": "mradermacher",
+   "gguf_repo_url": "https://huggingface.co/mradermacher/gemma-4-12B-it-qat-q4_0-unquantized-i1-GGUF",
+   "original_url": "https://huggingface.co/google/gemma-4-12b-it",
+   "repro_status": "HUB_QUANT_ATTESTED",
+   "quant_file": "gemma-4-12B-it-qat-q4_0-unquantized.i1-IQ3_M.gguf",
+   "quant_size_gb": 5.734,
+   "exact_file_url": "https://huggingface.co/mradermacher/gemma-4-12B-it-qat-q4_0-unquantized-i1-GGUF/blob/2b88f4ba9c4cf2c2d46b2524719b76d26c059d51/gemma-4-12B-it-qat-q4_0-unquantized.i1-IQ3_M.gguf",
+   "listed_file_name": "gemma-4-12B-it-qat-q4_0-unquantized.i1-IQ3_M.gguf",
+   "listed_size_gb": 5.73,
+   "listed_source_url": null,
+   "web_spotchecked": false,
+   "model_repo_sha": "2b88f4ba9c4cf2c2d46b2524719b76d26c059d51",
+   "selected_quant_policy": "Bartowski publisher recommended Q4_K_M; Unsloth UD-Q4_K_XL/UD-Q4_K_M; publisher GGUF same 4-bit; gpt-oss Q4_K_M with native MXFP4_MOE experts preserved",
+   "deck_default_candidate": false,
+   "deck_note": "LAN / unknown memory requirements",
+   "small_model_high_quant_challenger": null,
+   "runtime_validated": false,
+   "translation_quality_measured": false,
+   "eligibility_lane": "lab_original_or_existing_v2_specialist",
+   "eligibility_evidence_url": "https://huggingface.co/google/gemma-4-12b-it",
+   "prompt_style": "chat",
+   "canary_required": true,
+   "repo_declared_parents": [
+    "google/gemma-4-12B-it"
+   ],
+   "lineage_attestation": "publisher_declared_from_official_qat",
+   "repository_downloads_30d": 1499393,
+   "selected_quant": "i1-IQ3_M",
+   "non_default_fallback": false,
+   "quant_files_count": 1,
+   "hf_paths": [
+    "gemma-4-12B-it-qat-q4_0-unquantized.i1-IQ3_M.gguf"
+   ],
+   "file_sizes_bytes": [
+    5733992256
+   ],
+   "quant_sha256": "3b3cc3f2874bcc7b9b76f7b454a14eb74fa854025f8a67cafb92f38531c34c7b",
+   "quant_note": "imatrix IQ3_M of the official Gemma 4 12B QAT weights: Deck-sized unified-vision candidate (user, 2026-11-07)"
+  }
+ ]
+}
