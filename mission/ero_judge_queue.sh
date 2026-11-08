@@ -37,6 +37,7 @@ QUEUE=(
   QAT-Q4_0/02_Gemma_4_31B_IT QAT-Q4_0/05_Gemma_4_26B-A4B_IT QAT-Q4_0/08_Gemma_4_12B_IT QAT-Q4_0/41_Gemma_4_E4B_IT QAT-Q4_0/42_Gemma_4_E2B_IT
   QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT   # edge budget
   QAT-i1-Q2_K/08_Gemma_4_12B_IT QAT-i1-IQ3_M/08_Gemma_4_12B_IT   # 12B Deck candidates
+  QAT-mobile-vllm/42_Gemma_4_E2B_IT   # Google mobile QAT E2B (vLLM, quality only)
 )
 
 {

@@ -65,6 +65,9 @@ QUEUE=(
   screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT
   screen_quants/QAT-Q4_0/41_Gemma_4_E4B_IT
   screen_quants/QAT-Q4_0/42_Gemma_4_E2B_IT
+  # Google's mobile QAT E2B (wNa8o8: 2-bit deep MLPs/embeddings, 4-bit attention, 8-bit vision, int8 activations; 2.6 GB),
+  # vLLM 0.32 on GPU 0 (quality only, off the board like W4A16); user 2026-11-08: quality verification before any Deck trial
+  screen_quants/QAT-mobile-vllm/42_Gemma_4_E2B_IT
   # edge memory budget (Deck): bigger model at 2-bit vs smaller at 4-bit, Unsloth dynamic quants of the QAT weights
   screen_quants/QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT
   screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT
@@ -153,6 +156,7 @@ HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Son
             screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT   # edge budget
             screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT screen_quants/QAT-i1-Q2_K/08_Gemma_4_12B_IT
             screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT   # 12B unified-vision Deck candidates
+            screen_quants/QAT-mobile-vllm/42_Gemma_4_E2B_IT   # Google mobile QAT E2B, vs QAT Q4_0
 )  # keep this ')' alone on its line: mission/ero_judge_queue.sh extracts the array up to '^)'
 # 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
 HARD_FULL=0
