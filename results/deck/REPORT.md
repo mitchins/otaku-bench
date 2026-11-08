@@ -14,3 +14,30 @@ not in the measurement. GGUF SHA-256 verified against Hugging Face. No other loa
 
 All four pass the 2.0 s gate. Vulkan/CUDA differences are cosmetic greedy-decoding divergences (a comma, Lisa/Risa, a bracketed vs
 Japanese speaker label), so the board's quality scores carry over to the Deck. Raw outputs (git-crypted) are in `vulkan-b11836/`.
+
+## Google's mobile QAT E2B on LiteRT-LM 0.19.1 (2026-11-09)
+
+`litert-community/gemma-4-E2B-it-litert-lm` @ 3d48132a (`gemma-4-E2B-it.litertlm`, 2.59 GB; Google's mobile QAT
+scheme: 2/4/8-bit weights, embeddings memory-mapped). LiteRT-LM from PyPI in a user venv; no system changes. GPU runs
+go through LiteRT's WebGPU path on RADV (VANGOGH). Same 60 timing cases as the llama.cpp gate (dev scene OTB-P007
+etc. at 0–24 history lines), greedy, thinking off, one engine kept loaded (the Python API, as a plugin would embed it).
+
+| Runtime / build | s/line p50, 6 lines history | TTFT p50 (d6) | 24 lines history | Memory |
+|---|---|---|---|---|
+| llama.cpp b11836 Vulkan, Google QAT Q4_0 GGUF (3.35 GB) | 0.82 | 0.39 | 1.36 | whole file on the GPU |
+| **LiteRT-LM GPU, mobile QAT (2.59 GB)** | **0.53** | **0.25** | **0.72** | +0.84 GB VRAM, +0.5 GB GTT, 1.0 GB RSS |
+| LiteRT-LM GPU, speculative decoding on | 0.52 | 0.32 | 0.69 | about the same |
+| LiteRT-LM CPU (4 threads) | 2.22 (fails the 2 s gate) | 1.38 | 3.42 | 1.8 GB RSS |
+
+- Engine start-up: 1.3 s (GPU) with the compiled-program cache on disk (about 1.6 GB of cache files next to the
+  model); the first ever start compiles for longer.
+- `litert-lm serve` (its OpenAI-compatible server) adds about 1.2 s per request (TTFT 1.4 s even at depth 0), so
+  1.8 s/line; use the API, not the server.
+- Synthetic `litert-lm benchmark` (512 prefill / 128 decode): prefill about 800 tok/s and decode 47 tok/s, against
+  llama.cpp Q4_0's 503 and 38.7. Speculative decoding raises synthetic decode to 67 tok/s but does not help
+  translation-length outputs.
+- The smaller `gemma-4-E2B-it-gpu.litertlm` (2.0 GB, text) decodes slower on the Deck (29 tok/s); the full build is
+  the one to use.
+- `litert-lm describe`: function calling NO, thinking NO, vision budgets 70/140/280, max 4,096 context tokens.
+- Output parity on the 50 dev lines: LiteRT = vLLM (the build being judged) on 25/50, LiteRT = transformers 25/50,
+  vLLM = transformers 29/50; the rest are same-meaning rewordings. The judged vLLM scores should transfer.
