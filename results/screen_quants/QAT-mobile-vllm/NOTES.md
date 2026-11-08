@@ -17,3 +17,24 @@ the llama.cpp gate (different engine and batching), so the row stays off the boa
 - Kernel check: vLLM vs Google's transformers reference (`google/gemma-4-E2B-it-qat-mobile-transformers` @ dd693ff4,
   transformers 5.19, greedy) on the 50 dev lines: 29/50 identical, the rest same-meaning rewordings with no
   direction. The vLLM wNa8o8 kernels implement the scheme; outputs are valid for judging.
+
+## Prompt-wording probe (2026-11-08, DEV items and own lines only; mission/studies/e2b_prompt_probe.py)
+
+Question (user): does E2B, like Gemini 3.5 Flash-Lite, echo the Japanese back and benefit from naming the target
+language? Context items: 12 from the 6 dev scenes split by line, 49 from the 50 dev lines chained as history, 19 from
+20 hand-written lines (no benchmark data). Sampled 4x per item (temperature 1.0, top-p 0.95, top-k 64), since greedy
+echoes flip between runs. Source echo = the screen-output contract's `source_echo`.
+
+| Variant | Mobile (vLLM) ctx echo | Google Q4_0 (llama.cpp) ctx echo | Lines with Japanese/meta left |
+|---|---|---|---|
+| shared prompt (board) | 5/320 | 24/320 | 0/200 both |
+| explicit-target (user turn names "from Japanese to English") | 0/320 | 0/320 | 0/200 both |
+| short-system (Flash-Lite's fix) | 2/320 | 0/320 | mobile 21/200: "Here are a few ways to translate..." |
+| caps system ("FROM JAPANESE TO ENGLISH ... English only") + explicit | 0/320 | 0/320 | 0/200 |
+| caps + "(Reply in English only.)" suffix | 0/320 (2 extra-line) | 0/320 (1 extra-line) | 0/200 |
+
+Both E2B builds echo the source on some context turns with the shared prompt (Q4_0 more than mobile on this set;
+the eval-arm 10/31 vs 3/31 the other way round is single greedy runs, so treat build differences as noise). Naming
+the target language in the user turn removes it on both; stronger caps wording adds nothing, the suffix makes it
+translate the context too, and Flash-Lite's short system prompt breaks E2B lines (the "output only" clause matters).
+Greedy wording changes with explicit-target look neutral (go back -> go home, cat -> cat's paw; a pun quote dropped).
