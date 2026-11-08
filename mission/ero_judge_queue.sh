@@ -55,7 +55,7 @@ QUEUE=(
   # just continue each other's files. Tokens count on this account's ledger.
   if [ "$ero_ok" = 1 ]; then
     # HARD_PILOT, HARD_FULL, HARD_SKIP, QUEUE and hard_one() come from the main queue (one definition)
-    eval "$(sed -n '/^QUEUE=(/,/^)/p; /^HARD_SKIP=/p; /^HARD_PILOT=(/,/)$/p; /^HARD_FULL=/p; /^hard_one() {/,/^}/p' mission/judge_queue.sh)"
+    eval "$(sed -n '/^QUEUE=(/,/^)/p; /^HARD_SKIP=/p; /^HARD_PILOT=(/,/^)/p; /^HARD_FULL=/p; /^hard_one() {/,/^}/p' mission/judge_queue.sh)"
     list=("${HARD_PILOT[@]}"); [ "$HARD_FULL" = 1 ] && list+=("${QUEUE[@]}")
     STOP=""
     hard_ok=1

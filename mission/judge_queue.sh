@@ -146,13 +146,14 @@ HARD_SKIP=(screen/C01_Gemini-3.5-Flash-Lite)
 # strength and family, strongest/weakest first, judged before anything else in both queues.
 HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Sonnet-5.5 screen/41_Gemma_4_E4B_IT
             screen/05_Gemma_4_26B-A4B_IT screen/01_Qwen3.8-27B screen/C04_Gemini-3.8-Flash
-            screen_quants/W4A16-vllm/05_Gemma_4_26B-A4B_IT   # LAN workhorse, against its Q4 base (user, 2026-11-06)
+            screen_quants/W4A16-vllm/05_Gemma_4_26B-A4B_IT   # LAN workhorse, against its Q4 base; user 2026-11-06
             screen_quants/QAT-Q4_0/02_Gemma_4_31B_IT screen_quants/QAT-Q4_0/05_Gemma_4_26B-A4B_IT
             screen_quants/QAT-Q4_0/41_Gemma_4_E4B_IT   # official QAT builds of the pilot's Gemmas
             screen_quants/QAT-Q4_0/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/41_Gemma_4_E4B_IT
             screen_quants/QAT-UD-Q4_K_XL/42_Gemma_4_E2B_IT screen_quants/QAT-UD-Q2_K_XL/42_Gemma_4_E2B_IT   # edge budget
             screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT screen_quants/QAT-i1-Q2_K/08_Gemma_4_12B_IT
-            screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT)   # 12B unified-vision Deck candidates
+            screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT   # 12B unified-vision Deck candidates
+)  # keep this ')' alone on its line: mission/ero_judge_queue.sh extracts the array up to '^)'
 # 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
 HARD_FULL=0
 
