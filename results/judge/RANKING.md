@@ -6,11 +6,13 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
 | 1 | **Gemini 3.8 Flash (cloud)** | 89.3 | 93.0 | 85.6 | 90.3 | 0.0 | 9.86 | 9.77 | 1 | — | — | voice, ambiguity, idioms |
 | 2 | **Claude Sonnet 5.5 (cloud)** | 87.7 | 91.5 | 83.8 | 86.4 | 9.5 | 9.84 | 9.84 | 0 | — | — | ambiguity, additions, voice |
-| 3 | **Gemma 4 31B IT (Q4_K_M)** | 85.9 | 91.0 | 80.8 | 81.9 | 0.0 | 9.82 | 9.23 | 1 | 1.09 | 20.0 | voice, implication, ambiguity |
-| 4 | **Gemma 4 26B-A4B IT (UD-Q4_K_M)** | 84.0 | 86.5 | 81.4 | 75.0 | 0.0 | 9.73 | 9.55 | 1 | 0.28 | 16.6 | voice, who did what, idioms |
-| 5 | **Qwen3.8-27B (UD-Q4_K_M)** | 80.6 | 81.0 | 80.2 | 75.0 | 0.0 | 9.57 | 9.29 | 3 | 1.17 | 15.1 | voice, idioms, implication |
-| 6 | **Gemma 4 E4B IT (UD-Q4_K_XL)** | 72.2 | 75.5 | 68.9 | 68.1 | 0.0 | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
-| 7 | **Hy-MT2-1.8B (Q4_K_M)** | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| 3 | **Gemma 4 31B IT (QAT-Q4_0)** | 86.6 | 90.0 | 83.2 | 79.2 | 0.0 | 9.78 | 9.55 | 2 | 0.91 | 18.2 | implication, wordplay, additions |
+| 4 | **Gemma 4 31B IT (Q4_K_M)** | 85.9 | 91.0 | 80.8 | 81.9 | 0.0 | 9.82 | 9.23 | 1 | 1.09 | 20.0 | voice, implication, ambiguity |
+| 5 | **Gemma 4 26B-A4B IT (UD-Q4_K_M)** | 84.0 | 86.5 | 81.4 | 75.0 | 0.0 | 9.73 | 9.55 | 1 | 0.28 | 16.6 | voice, who did what, idioms |
+| 6 | **Gemma 4 26B-A4B IT (QAT-Q4_0)** | 83.7 | 86.0 | 81.4 | 69.4 | 0.0 | 9.70 | 9.45 | 2 | 0.26 | 14.2 | idioms, ambiguity, who did what |
+| 7 | **Qwen3.8-27B (UD-Q4_K_M)** | 80.6 | 81.0 | 80.2 | 75.0 | 0.0 | 9.57 | 9.29 | 3 | 1.17 | 15.1 | voice, idioms, implication |
+| 8 | **Gemma 4 E4B IT (UD-Q4_K_XL)** | 72.2 | 75.5 | 68.9 | 68.1 | 0.0 | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
+| 9 | **Hy-MT2-1.8B (Q4_K_M)** | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
 | · | **Gemma 4 31B IT (Q5_K_M)** | — | 91.0 | — | 79.2 | 0.0 | 9.85 | 9.29 | 0 | 1.21 | 22.9 | voice, ambiguity, terms |
 | · | **Claude Haiku 5.5 (cloud)** | — | 89.0 | — | 83.3 | 0.0 | 9.77 | 9.26 | 0 | — | — | idioms, ambiguity, additions |
 | · | **Gemma 4 12B IT (UD-Q4_K_XL)** | — | 85.5 | — | 75.0 | 0.0 | 9.65 | 9.45 | 2 | 0.42 | 7.8 | idioms, voice, omissions |
@@ -39,7 +41,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Ling-3.0-tiny (Q4_K_M) (110/200 lines).
+Being judged: Gemma 4 12B IT (QAT-Q4_0) (168/200 lines), Ling-3.0-tiny (Q4_K_M) (110/200 lines).
 
 ## By category
 
@@ -49,8 +51,10 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | Gemini 3.8 Flash (cloud) | 85% | 90% | 100% | 95% | 100% | 100% | 90% | 100% | 100% | 100% |
 | Claude Sonnet 5.5 (cloud) | 95% | 85% | 95% | 100% | 100% | 95% | 90% | 95% | 100% | 100% |
+| Gemma 4 31B IT (QAT-Q4_0) | 80% | 90% | 95% | 100% | 100% | 95% | 100% | 100% | 90% | 95% |
 | Gemma 4 31B IT (Q4_K_M) | 85% | 100% | 95% | 100% | 100% | 95% | 100% | 90% | 95% | 100% |
 | Gemma 4 26B-A4B IT (UD-Q4_K_M) | 75% | 75% | 95% | 100% | 100% | 100% | 95% | 95% | 100% | 90% |
+| Gemma 4 26B-A4B IT (QAT-Q4_0) | 80% | 85% | 95% | 95% | 100% | 95% | 95% | 95% | 90% | 90% |
 | Qwen3.8-27B (UD-Q4_K_M) | 60% | 80% | 85% | 95% | 100% | 85% | 95% | 75% | 95% | 100% |
 | Gemma 4 E4B IT (UD-Q4_K_XL) | 60% | 70% | 75% | 90% | 90% | 85% | 85% | 80% | 90% | 90% |
 | Hy-MT2-1.8B (Q4_K_M) | 15% | 35% | 55% | 60% | 50% | 65% | 70% | 40% | 60% | 70% |
@@ -88,8 +92,10 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 |---|---:|---:|---:|---:|
 | Gemini 3.8 Flash (cloud) | 0 | 0 | 0 | 2 |
 | Claude Sonnet 5.5 (cloud) | 0 | 0 | 0 | 4 |
+| Gemma 4 31B IT (QAT-Q4_0) | 0 | 0 | 0 | 0 |
 | Gemma 4 31B IT (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B IT (UD-Q4_K_M) | 0 | 0 | 0 | 1 |
+| Gemma 4 26B-A4B IT (QAT-Q4_0) | 0 | 0 | 0 | 2 |
 | Qwen3.8-27B (UD-Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 E4B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
