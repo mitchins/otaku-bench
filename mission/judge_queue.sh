@@ -158,17 +158,22 @@ HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Son
             screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT   # 12B unified-vision Deck candidates
             screen_quants/QAT-mobile-vllm/42_Gemma_4_E2B_IT   # Google mobile QAT E2B, vs QAT Q4_0
 )  # keep this ')' alone on its line: mission/ero_judge_queue.sh extracts the array up to '^)'
+# Hard v0.5 pilot slice (opt-in 'hard05'; mission/studies/hard05_spread.py): the v0.4 pilot spread plus E2B and 12B
+HARD05_PILOT=(screen/C04_Gemini-3.8-Flash screen/C03_Claude-Sonnet-5.5 screen/02_Gemma_4_31B_IT screen/05_Gemma_4_26B-A4B_IT
+              screen/01_Qwen3.8-27B screen/08_Gemma_4_12B_IT screen/41_Gemma_4_E4B_IT screen/42_Gemma_4_E2B_IT screen/65_Hy-MT2-1.8B
+)
 # 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
 HARD_FULL=0
 
 hard_one() {  # dir [extra judge_slice args]; returns non-zero when this run must stop
-  local dir=$1 base tag resp out; shift
+  local dir=$1 base tag resp out sl=${SLICE:-hard}; shift  # SLICE=hard05 for the v0.5 pilot
   case $dir in "${HARD_SKIP[@]}") return 0;; esac
   base=$(basename "$dir"); tag=""; case $dir in screen_variants/*|screen_quants/*) tag=$(basename "$(dirname "$dir")");; esac
-  resp="results/screen_slices/${tag:+$tag/}$base/hard_turns.jsonl"
+  resp="results/screen_slices/${tag:+$tag/}$base/${sl}_turns.jsonl"
   [ -f "$resp" ] || return 0
-  echo "--- hard $dir"
-  out=$(python tools/judge_slice.py --slice hard --responses "$resp" --output "results/judge/slices/hard/$base${tag:++$tag}.jsonl" \
+  echo "--- $sl $dir"
+  mkdir -p "results/judge/slices/$sl"
+  out=$(python tools/judge_slice.py --slice "$sl" --responses "$resp" --output "results/judge/slices/$sl/$base${tag:++$tag}.jsonl" \
     --daily-token-cap "$CAP" ${STOP:+--stop-before-utc "$STOP"} --budget-usd 5 --execute "$@" 2>&1)
   grep -vE '^[0-9]+/[0-9]+ ' <<<"$out"
   ! grep -qE 'Daily token cap reached|Stop time .* reached|Cost limit reached' <<<"$out"
@@ -188,7 +193,9 @@ judge() {  # dir dataset mode split tag; returns non-zero when this run must sto
   echo "=== $(date -u +%FT%TZ) judge queue, cap $CAP, reserve ${RESERVE:-20000}${STOP:+, stop $STOP UTC}"
   python tools/openai_usage.py --reserve "${RESERVE:-20000}" 2>&1 || true
   go=1
-  for dir in "${HARD_PILOT[@]}"; do hard_one "$dir" || { go=0; break; }; done
+  # Hard v0.5 pilot (user 2026-11-09: "Let's see if it really spreads the field?"): first, until all 9 are judged
+  for dir in "${HARD05_PILOT[@]}"; do SLICE=hard05 hard_one "$dir" || { go=0; break; }; done
+  [ "$go" = 1 ] && for dir in "${HARD_PILOT[@]}"; do hard_one "$dir" || { go=0; break; }; done
   std_ok=0
   if [ "$go" = 1 ]; then
     std_ok=1
