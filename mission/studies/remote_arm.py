@@ -52,7 +52,7 @@ def main() -> int:
     args = p.parse_args()
 
     arms = set(args.arms.split(','))
-    if bad := arms - {'lines', 'scenes', *sm.SLICES}:
+    if bad := arms - {'lines', 'scenes', *sm.SLICES, *sm.PILOT_SLICES}:
         p.error(f'unknown arms: {sorted(bad)}')
     if args.key_env:
         sm.API_KEY = os.environ.get(args.key_env) or p.error(f'{args.key_env} is not set')
@@ -83,7 +83,8 @@ def main() -> int:
     jobs = [(dataset, mode, sm.DATA / ('lines_bare.jsonl' if dataset == 'lines' else f'scenes_{mode}.jsonl'),
              args.out / f'{dataset}_{mode}.jsonl', None)
             for dataset, mode in sm.ARM_ORDER if (dataset, mode) in sm.STYLE_ARMS[args.style] and dataset in arms]
-    jobs += [(name, None, sm.SLICES[name], args.out / f'{name}_turns.jsonl', name) for name in sm.SLICES if name in arms]
+    ALL = {**sm.SLICES, **sm.PILOT_SLICES}
+    jobs += [(name, None, ALL[name], args.out / f'{name}_turns.jsonl', name) for name in ALL if name in arms]
     # slice turns go through the scenes prompt path, with history only where the style has a context channel
     with_history = args.style in sm.HISTORY_STYLES and ('scenes', 'context') in sm.STYLE_ARMS[args.style]
     for dataset, mode, src, path, slice_name in jobs:

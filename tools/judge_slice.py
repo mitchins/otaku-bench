@@ -22,6 +22,8 @@ RUBRIC_VERSION='otakubench-slice-checks-v1'
 SLICES={
  'hard':dict(gold=ROOT/'benchmark/otakubench_hard/data/hard57_targets_gold.jsonl',ref='reference_english',preds='predicate_requirements',
              key_env='OPENAI_API_KEY',ledger=ROOT/'results/judge/token_ledger.jsonl'),
+ 'hard05':dict(gold=ROOT/'benchmark/otakubench_hard/data/hard05_targets_gold.jsonl',ref='reference_english',preds='predicate_requirements',
+             key_env='OPENAI_API_KEY',ledger=ROOT/'results/judge/token_ledger.jsonl'),  # Hard v0.5 pilot
  'ero':dict(gold=ROOT/'benchmark/otakubench_ero/data/ero24_turns_gold.jsonl',ref='reference_line',preds='decided_predicates',
             key_env='OPENAI2_API_KEY',ledger=ROOT/'results/judge/token_ledger_openai2.jsonl'),
 }

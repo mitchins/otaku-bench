@@ -93,6 +93,11 @@ SLICES = {
     'hard': ROOT / 'benchmark/otakubench_hard/data/hard57_targets_blind.jsonl',  # scored target turns only
     'ero': ROOT / 'benchmark/otakubench_ero/data/ero24_turns_blind.jsonl',       # every main-scene turn
 }
+# Opt-in pilot slices (--slice-names): not run by default and not on the board.
+PILOT_SLICES = {
+    'hard05': ROOT / 'benchmark/otakubench_hard/data/hard05_targets_blind.jsonl',  # Hard v0.5 pilot (2026-11-09)
+}
+SLICE_NAMES: list[str] = []  # empty = every SLICES entry
 OOM_PATTERNS = re.compile(r'out of memory|cudaMalloc failed|failed to allocate|CUDA error|unable to load model|ggml_backend_cuda_buffer_type_alloc_buffer', re.I)
 
 
@@ -335,7 +340,8 @@ def run_slices(base: str, style: str, mdir: Path, common: dict, timeout: float) 
     otherwise the line is sent alone, as the scenes/context arm does for those styles."""
     arms = {}
     with_history = style in HISTORY_STYLES and ('scenes', 'context') in STYLE_ARMS[style]
-    for name, src in SLICES.items():
+    chosen = {n: {**SLICES, **PILOT_SLICES}[n] for n in SLICE_NAMES} if SLICE_NAMES else SLICES
+    for name, src in chosen.items():
         src_sha = sha_file(src)
         path = mdir / f'{name}_turns.jsonl'
         ok_ids = lambda: {r['id'] for r in load_jsonl(path) if r.get('translation') and not r.get('error')
@@ -579,9 +585,14 @@ def main() -> int:
     p.add_argument('--dry-run', action='store_true', help='print the plan; no downloads, no server')
     p.add_argument('--variant', choices=sorted(VARIANTS), help='follow-up arm; writes to results/screen_variants/<variant>')
     p.add_argument('--slices', action='store_true', help='run the unreleased hard and ero slices instead of the screen arms; writes to results/screen_slices[/<variant>]')
+    p.add_argument('--slice-names', default='', help=f"with --slices: comma list to run instead of all (pilots: {', '.join(PILOT_SLICES)})")
     p.add_argument('extra_server_args', nargs='*', help='after --, extra llama-server flags (e.g. -- -fa on)')
     args = p.parse_args()
     global PROFILE, MAX_TOKENS
+    if args.slice_names:
+        SLICE_NAMES[:] = [n for n in args.slice_names.split(',') if n]
+        if bad := set(SLICE_NAMES) - set(SLICES) - set(PILOT_SLICES):
+            p.error(f'unknown slices: {sorted(bad)}')
     if args.slices and args.output_dir == ROOT / 'results/screen':
         args.output_dir = ROOT / 'results/screen_slices' / (args.variant or '')
     if args.variant:

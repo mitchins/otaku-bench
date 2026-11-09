@@ -124,15 +124,15 @@ def slice_result(slice_: str, name: str) -> dict | None:
             if is_refusal:
                 continue
         raw.append(float(ok))
-        if slice_ == 'hard' and (why := mech.contract_violation(gold[i]['current_japanese'], chosen[i].get('translation') or '')):
+        if slice_ in ('hard', 'hard05') and (why := mech.contract_violation(gold[i]['current_japanese'], chosen[i].get('translation') or '')):
             contract[i] = why
             ok = False
         passes.append(float(ok))
     out.update(pct=round(100 * sum(passes) / len(passes), 1) if passes else None, ci=mp.percentile_ci(passes),
                n=len(passes), judge_refused=judge_refused)
-    if slice_ == 'hard':
+    if slice_ in ('hard', 'hard05'):
         out.update(raw_pct=round(100 * sum(raw) / len(raw), 1) if raw else None, contract=dict(Counter(contract.values())))
-        audit = RES / 'judge/mechanical' / f'{name}.hard_contract.jsonl'
+        audit = RES / 'judge/mechanical' / f'{name}.{slice_}_contract.jsonl'
         audit.parent.mkdir(parents=True, exist_ok=True)
         audit.write_text(''.join(json.dumps({'id': i, 'reason': w, 'judge_checks': judged[i].get('checks'),
                                              'translation': chosen[i].get('translation')}, ensure_ascii=False) + '\n'
