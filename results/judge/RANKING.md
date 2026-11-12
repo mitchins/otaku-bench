@@ -45,11 +45,13 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Flint 40B-A2.5B (IQ4_XS, empty-think)** | — | 47.0 | — | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
 | · | **gpt-oss-20b (Q4_K_M, effort-low)** | — | 47.0 | — | — | — | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
 | · | **LFM2.5-24B-A2B (Q4_K_M, empty-think)** | — | 46.5 | — | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| · | **Ling-3.0-tiny (Q4_K_M)** | — | 34.5 | — | — | — | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
 | · | **Qwen3.5-2B (Q4_K_M)** | — | 32.5 | — | — | — | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
+| · | **LFM3-1.7B (Q4_K_M)** | — | 20.0 | — | — | — | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: Ling-3.0-tiny (Q4_K_M) (176/200 lines).
+Being judged: LFM3-VL-2B (Q4_K_M) (142/200 lines).
 
 ## By category
 
@@ -98,7 +100,9 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 20% | 35% | 55% | 60% | 55% | 55% | 70% | 40% | 55% | 60% |
 | gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 15% | 45% | 55% | 60% | 60% | 60% | 70% | 35% | 70% | 75% |
+| Ling-3.0-tiny (Q4_K_M) | 10% | 30% | 30% | 60% | 50% | 40% | 55% | 30% | 50% | 70% |
 | Qwen3.5-2B (Q4_K_M) | 5% | 15% | 40% | 60% | 30% | 40% | 55% | 30% | 55% | 60% |
+| LFM3-1.7B (Q4_K_M) | 5% | 45% | 10% | 30% | 15% | 30% | 40% | 5% | 45% | 35% |
 
 ## Output compliance
 
@@ -147,6 +151,8 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 2 | 0 | 1 | 0 |
 | gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 1 | 0 | 0 | 2 |
+| Ling-3.0-tiny (Q4_K_M) | 0 | 1 | 0 | 2 |
 | Qwen3.5-2B (Q4_K_M) | 0 | 0 | 0 | 1 |
+| LFM3-1.7B (Q4_K_M) | 4 | 6 | 3 | 0 |
 
 Standard: 200 eval lines judged by GPT-6.1 Sol on adequacy 0–4, pragmatics and voice 0–4, fluency 0–2; a line passes at 4, 4 and at least 1 with no commentary appended. Hard and Adult: each line has named checks, and it passes when every check passes (uncertain is not a pass); a Hard line also fails if the reply carries leaked prompt headers, the Japanese echoed back or extra dialogue turns. A line the model failed to produce fails (scores 0 out of 10). Speed is the median time to finish a line with 6 lines of history on an RTX 3090.
