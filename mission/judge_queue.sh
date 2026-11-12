@@ -157,13 +157,16 @@ HARD_PILOT=(screen/02_Gemma_4_31B_IT screen/65_Hy-MT2-1.8B screen/C03_Claude-Son
             screen_quants/QAT-Q4_0/08_Gemma_4_12B_IT screen_quants/QAT-i1-Q2_K/08_Gemma_4_12B_IT
             screen_quants/QAT-i1-IQ3_M/08_Gemma_4_12B_IT   # 12B unified-vision Deck candidates
             screen_quants/QAT-mobile-vllm/42_Gemma_4_E2B_IT   # Google mobile QAT E2B, vs QAT Q4_0
+            screen/C02_Claude-Haiku-5.5   # cloud reference; Standard 89.0, Hard was never queued (user 2026-11-12)
 )  # keep this ')' alone on its line: mission/ero_judge_queue.sh extracts the array up to '^)'
 # Hard v0.5 pilot slice (opt-in 'hard05'; mission/studies/hard05_spread.py): the v0.4 pilot spread plus E2B and 12B
 HARD05_PILOT=(screen/C04_Gemini-3.8-Flash screen/C03_Claude-Sonnet-5.5 screen/02_Gemma_4_31B_IT screen/05_Gemma_4_26B-A4B_IT
               screen/01_Qwen3.8-27B screen/08_Gemma_4_12B_IT screen/41_Gemma_4_E4B_IT screen/42_Gemma_4_E2B_IT screen/65_Hy-MT2-1.8B
 )
-# 0 until the pilot is reviewed: the rest of the hard slice (and the dev lines after it) stays unjudged
-HARD_FULL=0
+# 1 (user, 2026-11-12: "there's no reason to leave models permanently unjudged if scheduling allows"): every QUEUE model
+# that has hard outputs gets the hard slice. Main key: after all standard arms. Second account: after Adult, before its
+# spare Standard. Then the dev lines.
+HARD_FULL=1
 
 hard_one() {  # dir [extra judge_slice args]; returns non-zero when this run must stop
   local dir=$1 base tag resp out sl=${SLICE:-hard}; shift  # SLICE=hard05 for the v0.5 pilot
