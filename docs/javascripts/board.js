@@ -14,10 +14,13 @@
       return ((vb || 0) - (va || 0)) || (value(b, 'standard') - value(a, 'standard'));
     });
     var anchor = board.querySelector(':scope > .ob-queued');
+    // collapsed view ranks only each model's best build; "Show all builds" ranks every build
+    var all = board.classList.contains('ob-all');
     var n = 0;
     rows.forEach(function (r) {
       board.insertBefore(r, anchor);
-      r.querySelector('.ob-rank').textContent = value(r, key) === null ? '·' : String(++n);
+      var ranked = value(r, key) !== null && (all || !r.classList.contains('ob-alt'));
+      r.querySelector('.ob-rank').textContent = ranked ? String(++n) : '·';
     });
     board.dataset.sort = key;
     board.querySelectorAll('.ob-sort').forEach(function (b) {
@@ -27,5 +30,12 @@
   document.addEventListener('click', function (e) {
     var btn = e.target.closest && e.target.closest('.ob-board .ob-sort');
     if (btn) sortBoard(btn.closest('.ob-board'), btn.dataset.key);
+  });
+  document.addEventListener('change', function (e) {
+    var box = e.target.closest && e.target.closest('.ob-board .ob-all-builds');
+    if (!box) return;
+    var board = box.closest('.ob-board');
+    board.classList.toggle('ob-all', box.checked);
+    sortBoard(board, board.dataset.sort);
   });
 })();

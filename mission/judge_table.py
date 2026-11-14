@@ -230,6 +230,7 @@ def main() -> int:
             tags = [tags[1]]
         base = LABELS.get(name) or s.get('model') or name.split('_', 1)[-1].replace('_', ' ')
         row['label'] = base + (f" ({', '.join(tags)})" if tags else '')
+        row['base'], row['build'] = base, ', '.join(tags)
         row['note'] = FOOTNOTES.get(name)
         row['standard'] = standard_pass(COMPOSITE.get(name, {}).get('lines_eval', name))
         row['hard'] = slice_result('hard', COMPOSITE.get(name, {}).get('hard', name))
@@ -244,25 +245,47 @@ def main() -> int:
     sort_key = 'overview' if any(r['overview'] is not None for r in done) else 'standard'
     done.sort(key=lambda r: (sort_value(r, sort_key) is None, -(sort_value(r, sort_key) or 0), -r['standard']['pct'], r['label']))
     queued.sort(key=lambda r: -(r.get('lines_eval') or (0, 0))[1])
+    roll_up(done, sort_key)
     md = lambda s: s.replace('*', '\\*')
     gb = lambda r: f"{r['vram'] / 1024:.1f}" if r['vram'] else '—'
     pct = lambda x: f"{x:.1f}" if x is not None else '—'
     out = [f'# Ranking ({VERSION})', '',
            f'Sorted by **{SORT_NAMES[sort_key]}**. Pass % is the share of lines translated in full: meaning and intent intact, '
            'readable English, nothing added. Overview is the plain mean of Standard and Hard. Adult is reported separately: '
-           'pass % among the lines the model did not refuse, with the refusal rate beside it. A dash means not judged yet.', '',
+           'pass % among the lines the model did not refuse, with the refusal rate beside it. A dash means not judged yet. '
+           'One row per model: where several quants or variants were tested, the row shows the best-scoring build, and '
+           '[All builds](#all-builds) lists the rest.', '',
            '| # | Model | Overview % | Standard % | Hard % | Adult % (not refused) | Adult refused % '
            '| Standard /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |',
            '|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|']
     n = 0
     for r in done:
+        if not r['exemplar']:
+            continue
         n += sort_value(r, sort_key) is not None
         a = r['adult'] or {}
-        out.append(f"| {n if sort_value(r, sort_key) is not None else '·'} | **{md(r['label'])}** | {pct(r['overview'])} "
+        k = len(r['family'])
+        name = f"**{md(r['family_label'])}** ({md(r['build'])}{'; ' if r['build'] and k > 1 else ''}{f'best of {k} builds' if k > 1 else ''})" \
+            if r['build'] or k > 1 else f"**{md(r['label'])}**"
+        out.append(f"| {n if sort_value(r, sort_key) is not None else '·'} | {name} | {pct(r['overview'])} "
                    f"| {pct(r['standard']['pct'])} | {pct((r['hard'] or {}).get('pct'))} | {pct(a.get('pct'))} "
                    f"| {pct(a.get('refused_pct'))} | {r['lines_eval'][0]:.2f} | {r['scenes_full'][0]:.2f} | {r['lines_eval_low']} "
                    f"| {f'{r["lat"]:.2f}' if r['lat'] else '—'} | {gb(r)} | {r['slips']} |")
     out += [''] + [f"\\* {r['note']}" for r in done if r['note']] if any(r['note'] for r in done) else []
+    multi = [r for r in done if r['exemplar'] and len(r['family']) > 1]
+    if multi:
+        out += ['', '## All builds', '',
+                f'Every build of the models above with more than one, best first. Gap is {SORT_NAMES[sort_key]} points behind the '
+                'best build; *within noise* means the gap is smaller than the 95% sampling margin, so the builds are not '
+                'distinguishable on this test.', '',
+                '| Model | Build | Overview % | Gap | Standard % | Hard % | Adult % (not refused) | Seconds per line | VRAM GB |',
+                '|---|---|---:|---|---:|---:|---:|---:|---:|']
+        for ex in multi:
+            for r in ex['family']:
+                out.append(f"| {md(ex['family_label']) if r['exemplar'] else ''} | {md(r['build'] or 'default')} | {pct(r['overview'])} "
+                           f"| {'best' if r['exemplar'] else build_gap(r)} | {pct(r['standard']['pct'])} "
+                           f"| {pct((r['hard'] or {}).get('pct'))} | {pct((r['adult'] or {}).get('pct'))} "
+                           f"| {f'{r["lat"]:.2f}' if r['lat'] else '—'} | {gb(r)} |")
     if queued:
         out += ['', 'Being judged: ' + ', '.join(
             f"{r['label']} ({(r.get('lines_eval') or (0, 0, 200))[1]}/200 lines)" for r in queued) + '.']
@@ -270,7 +293,7 @@ def main() -> int:
         out += ['', '## By category', '', 'Share of the 20 eval lines in each category translated well (9 or 10 out of 10). '
                 'With 20 lines per cell, differences under about 20 points are noise.', '',
                 '| Model | ' + ' | '.join(label for _, label in CATS) + ' |', '|---|' + '---:|' * len(CATS)]
-        for r in done:
+        for r in (r for r in done if r['exemplar']):
             out.append(f"| {md(r['label'])} | " + ' | '.join(f"{100 * g / n:.0f}%" for c, _ in CATS for g, n in [r['cats'][c]]) + ' |')
     if done:
         out += ['', '## Output compliance', '',
@@ -279,7 +302,7 @@ def main() -> int:
                 '*commentary* = an alternative, note or literal gloss appended to the translation; *format* = speaker labels '
                 'rewritten as `Name:` or markdown emphasis.', '',
                 '| Model | Zero: no output | Zero: untranslated | Commentary | Format |', '|---|---:|---:|---:|---:|']
-        for r in done:
+        for r in (r for r in done if r['exemplar']):
             z = r['lines_eval_zero'] + r['scenes_full_zero']
             f = r['lines_eval_flags'] + r['scenes_full_flags']
             out.append(f"| {md(r['label'])} | {z['inference_failure'] + z['not_run']} | {z['exact_echo']} | {f['commentary']} | {f['format']} |")
@@ -305,6 +328,49 @@ def main() -> int:
     (RES / 'judge/BOARD.html').write_text(board(done, queued, sort_key), encoding='utf8')
     print('\n'.join(out) + '\n\n' + head)
     return 0
+
+
+def family(name: str) -> str:
+    """Quants, engines and prompt variants of one model share the run name before '+'.
+
+    A '+' entry with its own LABELS name (e.g. the 72e/96e expert prunes) is a different model, so its own family.
+    """
+    return name if name in LABELS else name.partition('+')[0]
+
+
+def overview_var(r: dict) -> float | None:
+    """Sampling variance of Overview (mean of Standard and Hard pass %), in points²."""
+    v = [p * (100 - p) / n for res in (r['standard'], r['hard']) if res and res.get('pct') is not None
+         for p, n in [(res['pct'], res['n'])]]
+    return sum(v) / 4 if len(v) == 2 else None
+
+
+def roll_up(done: list[dict], sort_key: str) -> None:
+    """Quant roll-up (user, 2026-11-14): one board row per family, its best-scoring build as the exemplar.
+
+    Same-size flavours (QAT-Q4_0, Q4_K_M, UD-Q4_K_M) have no a-priori order, so best-scoring is the fair pick.
+    `done` is already sorted best first, so the first build seen of each family is its exemplar. Every other build
+    records its gap from the exemplar and whether that gap is within noise (95%, unpaired, so conservative).
+    """
+    best: dict[str, dict] = {}
+    for r in done:
+        fam = family(r['name'])
+        ex = best.setdefault(fam, r)
+        r['exemplar'] = ex is r
+        r['family_label'] = ex['base']
+        a, b = sort_value(r, sort_key), sort_value(ex, sort_key)
+        r['delta'] = None if r['exemplar'] or a is None or b is None else round(a - b, 1)
+        va, vb = overview_var(r), overview_var(ex)
+        r['noise'] = (r['delta'] is not None and sort_key == 'overview' and va is not None and vb is not None
+                      and abs(r['delta']) < 1.96 * (va + vb) ** 0.5)
+    for r in done:
+        r['family'] = [x for x in done if family(x['name']) == family(r['name'])]
+
+
+def build_gap(r: dict) -> str:
+    if r['delta'] is None:
+        return 'not ranked yet'
+    return f"{r['delta']:+.1f}" + (' (within noise)' if r['noise'] else '')
 
 
 def fits(mib: int | None) -> str:
@@ -368,7 +434,16 @@ def board(done: list[dict], queued: list[dict], sort_key: str) -> str:
     rows, n = [], 0
     for r in done:
         v = sort_value(r, sort_key)
-        n += v is not None
+        n += v is not None and r['exemplar']
+        k = len(r['family'])
+        builds = ''
+        if k > 1:
+            items = ''.join(f'<li><b>{e(x["build"] or "default")}</b> {e("best" if x["exemplar"] else build_gap(x))}</li>'
+                            for x in r['family'])
+            builds = f'<span class="ob-builds">{k} builds tested, gap behind the best:<ul>{items}</ul></span>'
+        tag = (f'<span class="ob-build">{e(r["build"])}</span>' if r['build'] else '') + \
+              (f'<span class="ob-nbuilds">best of {k}</span>' if r['exemplar'] and k > 1 else '')
+        name = e(r['family_label'] if r['build'] else r['label'])
         qual = ' · '.join(x for x in (f"{r['lat']:.2f} s/line" if r['lat'] else '', fits(r['vram'])) if x)
         vram = f"{r['vram'] / 1024:.1f} GB VRAM loaded" if r['vram'] else ''
         note = f'<span>* {e(r["note"])}</span>' if r['note'] else ''
@@ -377,9 +452,10 @@ def board(done: list[dict], queued: list[dict], sort_key: str) -> str:
                       f'sexualised <b>{a["over_sex"]}</b> of {a["over_sex_of"]} that should not be</span>') if a.get('pct') is not None else ''
         ov = f'{r["overview"]:.0f}%' if r['overview'] is not None else '—'
         rows.append(
-            f'<details class="ob-row" data-overview="{data(r["overview"])}" data-standard="{data(r["standard"]["pct"])}" '
-            f'data-hard="{data(h.get("pct"))}" data-adult="{data(a.get("pct"))}">'
-            f'<summary><span class="ob-rank">{n if v is not None else "·"}</span><span class="ob-name">{e(r["label"])}</span>'
+            f'<details class="ob-row{"" if r["exemplar"] else " ob-alt"}" data-overview="{data(r["overview"])}" '
+            f'data-standard="{data(r["standard"]["pct"])}" data-hard="{data(h.get("pct"))}" data-adult="{data(a.get("pct"))}">'
+            f'<summary><span class="ob-rank">{n if v is not None and r["exemplar"] else "·"}</span>'
+            f'<span class="ob-name">{name}{tag}</span>'
             f'<span class="ob-overview" title="Overview: mean of Standard and Hard">{ov}</span>'
             + cell(r['standard'], 'standard', 'Standard') + cell(r['hard'], 'hard', 'Hard') + cell(r['adult'], 'adult', 'Adult')
             + f'<span class="ob-qual">{e(qual)}</span></summary>'
@@ -387,7 +463,7 @@ def board(done: list[dict], queued: list[dict], sort_key: str) -> str:
             f'<b>{r["scenes_full"][0]:.2f}</b>/10 on 31 full scenes</span>'
             f'<span><b>{r["lines_eval_low"]}</b> of 200 standard lines scored 5 or less</span>'
             f'<span>Most common slips: {e(r["slips"] or "none")}</span>'
-            f'{adult_more}<span>{e(vram)}</span>{note}{cat_bars(r.get("cats"))}</div></details>')
+            f'{adult_more}<span>{e(vram)}</span>{note}{builds}{cat_bars(r.get("cats"))}</div></details>')
     for r in queued:
         got = (r.get('lines_eval') or (0, 0, 200))[1]
         rows.append(f'<div class="ob-row ob-queued"><span class="ob-rank">·</span><span class="ob-name">{e(r["label"])}</span>'
@@ -400,8 +476,12 @@ def board(done: list[dict], queued: list[dict], sort_key: str) -> str:
             + btn('hard', 'Sort by Hard: Pass % on the unreleased hard slice')
             + btn('adult', 'Sort by Adult: Pass % among lines not refused; refusal rate shown beside it')
             + '<span class="ob-qual">Speed · fits</span></div>')
+    alts = sum(not r['exemplar'] for r in done)
+    toggle = ('<div class="ob-tools"><label class="ob-toggle"><input type="checkbox" class="ob-all-builds"> Show all builds '
+              f'<span>({alts} more quants and variants; each model otherwise shows its best-scoring build)</span></label></div>'
+              if alts else '')
     return (f'<div class="ob-board" data-sort="{sort_key}" role="list" aria-label="Ranking by {SORT_NAMES[sort_key]} Pass %">'
-            + head + ''.join(rows) + '</div>\n')
+            + toggle + head + ''.join(rows) + '</div>\n')
 
 
 if __name__ == '__main__':

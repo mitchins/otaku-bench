@@ -1,59 +1,72 @@
 # Ranking (Preview)
 
-Sorted by **Overview**. Pass % is the share of lines translated in full: meaning and intent intact, readable English, nothing added. Overview is the plain mean of Standard and Hard. Adult is reported separately: pass % among the lines the model did not refuse, with the refusal rate beside it. A dash means not judged yet.
+Sorted by **Overview**. Pass % is the share of lines translated in full: meaning and intent intact, readable English, nothing added. Overview is the plain mean of Standard and Hard. Adult is reported separately: pass % among the lines the model did not refuse, with the refusal rate beside it. A dash means not judged yet. One row per model: where several quants or variants were tested, the row shows the best-scoring build, and [All builds](#all-builds) lists the rest.
 
 | # | Model | Overview % | Standard % | Hard % | Adult % (not refused) | Adult refused % | Standard /10 | Full scenes /10 | Bad lines (≤5) | Seconds per line | VRAM GB | Most common slips |
 |---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
 | 1 | **Gemini 3.8 Flash (cloud)** | 89.3 | 93.0 | 85.6 | 90.3 | 0.0 | 9.86 | 9.77 | 1 | — | — | voice, ambiguity, idioms |
 | 2 | **Claude Sonnet 5.5 (cloud)** | 87.7 | 91.5 | 83.8 | 86.4 | 9.5 | 9.84 | 9.84 | 0 | — | — | ambiguity, additions, voice |
-| 3 | **Gemma 4 31B IT (QAT-Q4_0)** | 86.6 | 90.0 | 83.2 | 79.2 | 0.0 | 9.78 | 9.55 | 2 | 0.91 | 18.2 | implication, wordplay, additions |
-| 4 | **Gemma 4 31B IT (Q5_K_M)** | 86.2 | 91.0 | 81.4 | 79.2 | 0.0 | 9.85 | 9.29 | 0 | 1.21 | 22.9 | voice, ambiguity, terms |
-| 5 | **Claude Haiku 5.5 (cloud)** | 86.1 | 89.0 | 83.2 | 83.3 | 0.0 | 9.77 | 9.26 | 0 | — | — | idioms, ambiguity, additions |
-| 6 | **Gemma 4 31B IT (Q4_K_M)** | 85.9 | 91.0 | 80.8 | 81.9 | 0.0 | 9.82 | 9.23 | 1 | 1.09 | 20.0 | voice, implication, ambiguity |
-| 7 | **Gemma 4 26B-A4B IT (UD-Q4_K_M)** | 84.0 | 86.5 | 81.4 | 75.0 | 0.0 | 9.73 | 9.55 | 1 | 0.28 | 16.6 | voice, who did what, idioms |
-| 8 | **Gemma 4 26B-A4B IT (QAT-Q4_0)** | 83.7 | 86.0 | 81.4 | 69.4 | 0.0 | 9.70 | 9.45 | 2 | 0.26 | 14.2 | idioms, ambiguity, who did what |
-| 9 | **Qwen3.8-27B (UD-Q6_K_L)** | 81.0 | 83.5 | 78.4 | 75.0 | 0.0 | 9.62 | 9.19 | 2 | 1.33 | 22.0 | voice, idioms, omissions |
-| 10 | **Gemma 4 12B IT (QAT-Q4_0)** | 81.0 | 83.0 | 79.0 | 70.8 | 0.0 | 9.62 | 9.52 | 3 | 0.38 | 7.4 | idioms, voice, omissions |
-| 11 | **Qwen3.8-27B (UD-Q4_K_M)** | 80.6 | 81.0 | 80.2 | 75.0 | 0.0 | 9.57 | 9.29 | 3 | 1.17 | 15.1 | voice, idioms, implication |
-| 12 | **Gemma 4 12B IT (QAT-i1-IQ3_M)** | 79.5 | 80.5 | 78.4 | 72.2 | 0.0 | 9.52 | 9.26 | 4 | 0.42 | 6.3 | voice, idioms, terms |
-| 13 | **Qwen3.6-35B-A3B (Q4_K_M)** | 74.3 | 75.0 | 73.7 | 75.0 | 0.0 | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
-| 14 | **Gemma 4 E4B IT (UD-Q4_K_XL)** | 72.2 | 75.5 | 68.9 | 68.1 | 0.0 | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
-| 15 | **Gemma 4 E4B IT (QAT-Q4_0)** | 70.8 | 74.5 | 67.1 | 68.1 | 0.0 | 9.28 | 9.10 | 7 | 0.16 | 3.1 | idioms, voice, additions |
-| 16 | **Sugoi-14B-Ultra (Q4_K_M)** | 67.1 | 66.5 | 67.7 | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
-| 17 | **Gemma 4 12B IT (QAT-i1-Q2_K)** | 66.3 | 62.5 | 70.1 | 63.9 | 0.0 | 8.77 | 8.61 | 16 | 0.38 | 5.4 | idioms, voice, implication |
-| 18 | **Gemma 4 E2B IT (QAT-Q4_0)** | 59.5 | 61.5 | 57.5 | 65.3 | 0.0 | 8.71 | 8.39 | 15 | 0.11 | 1.8 | idioms, voice, ambiguity |
-| 19 | **Gemma 4 E2B IT (QAT-UD-Q4_K_XL)** | 55.1 | 60.5 | 49.7 | 51.4 | 0.0 | 8.68 | 8.52 | 16 | 0.10 | 1.6 | idioms, voice, ambiguity |
-| 20 | **LFM2.5-24B-A2B (Q4_K_M, empty-think)** | 47.8 | 46.5 | 49.1 | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
-| 21 | **Gemma 4 E4B IT (QAT-UD-Q2_K_XL)** | 47.2 | 43.5 | 50.9 | 52.8 | 0.0 | 7.83 | 8.16 | 38 | 0.25 | 2.7 | idioms, omissions, voice |
-| 22 | **Flint 40B-A2.5B (IQ4_XS, empty-think)** | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
-| 23 | **Hy-MT2-1.8B (Q4_K_M)** | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
-| 24 | **Gemma 4 E2B IT (QAT-UD-Q2_K_XL)** | 14.9 | 13.0 | 16.8 | 15.3 | 0.0 | 5.56 | 3.48 | 95 | 0.68 | 0.8 | omissions, voice, idioms |
-| · | **Gemma 4 12B IT (UD-Q4_K_XL)** | — | 85.5 | — | 75.0 | 0.0 | 9.65 | 9.45 | 2 | 0.42 | 7.8 | idioms, voice, omissions |
-| · | **Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0)** | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
+| 3 | **Gemma 4 31B IT** (QAT-Q4_0; best of 3 builds) | 86.6 | 90.0 | 83.2 | 79.2 | 0.0 | 9.78 | 9.55 | 2 | 0.91 | 18.2 | implication, wordplay, additions |
+| 4 | **Claude Haiku 5.5 (cloud)** | 86.1 | 89.0 | 83.2 | 83.3 | 0.0 | 9.77 | 9.26 | 0 | — | — | idioms, ambiguity, additions |
+| 5 | **Gemma 4 26B-A4B IT** (UD-Q4_K_M; best of 2 builds) | 84.0 | 86.5 | 81.4 | 75.0 | 0.0 | 9.73 | 9.55 | 1 | 0.28 | 16.6 | voice, who did what, idioms |
+| 6 | **Qwen3.8-27B** (UD-Q6_K_L; best of 2 builds) | 81.0 | 83.5 | 78.4 | 75.0 | 0.0 | 9.62 | 9.19 | 2 | 1.33 | 22.0 | voice, idioms, omissions |
+| 7 | **Gemma 4 12B IT** (QAT-Q4_0; best of 4 builds) | 81.0 | 83.0 | 79.0 | 70.8 | 0.0 | 9.62 | 9.52 | 3 | 0.38 | 7.4 | idioms, voice, omissions |
+| 8 | **Qwen3.6-35B-A3B** (Q4_K_M) | 74.3 | 75.0 | 73.7 | 75.0 | 0.0 | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
+| 9 | **Gemma 4 E4B IT** (UD-Q4_K_XL; best of 3 builds) | 72.2 | 75.5 | 68.9 | 68.1 | 0.0 | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
+| 10 | **Sugoi-14B-Ultra** (Q4_K_M) | 67.1 | 66.5 | 67.7 | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
+| 11 | **Gemma 4 E2B IT** (QAT-Q4_0; best of 4 builds) | 59.5 | 61.5 | 57.5 | 65.3 | 0.0 | 8.71 | 8.39 | 15 | 0.11 | 1.8 | idioms, voice, ambiguity |
+| 12 | **LFM2.5-24B-A2B** (Q4_K_M, empty-think) | 47.8 | 46.5 | 49.1 | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| 13 | **Flint 40B-A2.5B** (IQ4_XS, empty-think) | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 14 | **Hy-MT2-1.8B** (Q4_K_M) | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| · | **Gemma 4 26B-A4B heretic JP-pruned 120e** (Q4_0) | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
 | · | **Gemini 3.5 Flash-Lite (cloud)\*** | — | 84.5 | — | 77.8 | 0.0 | 9.72 | 9.48 | 0 | — | — | additions, ambiguity, idioms |
-| · | **Hy-MT2-30B-A3B (Q4_K_M)** | — | 76.5 | — | 72.2 | 0.0 | 9.52 | 9.29 | 2 | 0.17 | 17.4 | voice, ambiguity, idioms |
-| · | **Ornith-1.5-35B-A3B (Q4_K_M)** | — | 76.0 | — | 73.6 | 0.0 | 9.40 | 9.29 | 6 | 0.41 | 20.2 | idioms, additions, voice |
-| · | **Ternary-Bonsai-2-27B (PQ2_0)** | — | 72.0 | — | 58.3 | 0.0 | 9.18 | 8.87 | 8 | 0.98 | 7.1 | idioms, terms, voice |
-| · | **TranslateGemma 27B IT (Q4_K_M)** | — | 71.0 | — | 44.4 | 0.0 | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
-| · | **TranslateGemma 12B IT (Q4_K_M)** | — | 67.5 | — | 47.2 | 0.0 | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
-| · | **Gemma 4 26B-A4B heretic JP-pruned 72e (Q4_0)** | — | 66.5 | — | 59.7 | 0.0 | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
-| · | **Hy-MT2-7B (Q4_K_M)** | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
-| · | **Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS)** | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
-| · | **Shisa-v2.1-qwen3-8B (Q4_K_M)** | — | 65.0 | — | — | — | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
-| · | **Qwen3.5-4B (Q4_K_M)** | — | 60.0 | — | — | — | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
-| · | **Gemma 4 E2B IT (UD-Q4_K_XL)** | — | 59.0 | — | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
-| · | **Qwen3-4B-Instruct-2507 (Q4_K_M)** | — | 50.5 | — | — | — | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
-| · | **Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M)** | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
-| · | **gpt-oss-20b (Q4_K_M, effort-low)** | — | 47.0 | — | — | — | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
-| · | **Ling-3.0-tiny (Q4_K_M)** | — | 34.5 | — | — | — | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
-| · | **Qwen3.5-2B (Q4_K_M)** | — | 32.5 | — | — | — | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
-| · | **LFM2.5-2.6B (Q4_K_M, empty-think)** | — | 26.5 | — | — | — | 6.76 | 2.65 | 67 | 0.14 | 2.0 | idioms, voice, additions |
-| · | **LFM2.5-VL-3B (Q4_K_M)** | — | 24.5 | — | — | — | 6.71 | 6.19 | 70 | 0.15 | 2.0 | idioms, voice, omissions |
-| · | **LFM3-Omni-2B (Q4_K_M, respond-in-text)** | — | 23.5 | — | — | — | 6.45 | 6.32 | 76 | 0.08 | 1.4 | idioms, voice, who did what |
-| · | **LFM3-VL-2B (Q4_K_M)** | — | 21.5 | — | — | — | 6.22 | 5.32 | 82 | 0.08 | 1.4 | idioms, voice, who did what |
-| · | **LFM3-1.7B (Q4_K_M)** | — | 20.0 | — | — | — | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
+| · | **Hy-MT2-30B-A3B** (Q4_K_M) | — | 76.5 | — | 72.2 | 0.0 | 9.52 | 9.29 | 2 | 0.17 | 17.4 | voice, ambiguity, idioms |
+| · | **Ornith-1.5-35B-A3B** (Q4_K_M) | — | 76.0 | — | 73.6 | 0.0 | 9.40 | 9.29 | 6 | 0.41 | 20.2 | idioms, additions, voice |
+| · | **Ternary-Bonsai-2-27B** (PQ2_0) | — | 72.0 | — | 58.3 | 0.0 | 9.18 | 8.87 | 8 | 0.98 | 7.1 | idioms, terms, voice |
+| · | **TranslateGemma 27B IT** (Q4_K_M) | — | 71.0 | — | 44.4 | 0.0 | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
+| · | **TranslateGemma 12B IT** (Q4_K_M) | — | 67.5 | — | 47.2 | 0.0 | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
+| · | **Gemma 4 26B-A4B heretic JP-pruned 72e** (Q4_0) | — | 66.5 | — | 59.7 | 0.0 | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
+| · | **Hy-MT2-7B** (Q4_K_M) | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
+| · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
+| · | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | — | 65.0 | — | — | — | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
+| · | **Qwen3.5-4B** (Q4_K_M) | — | 60.0 | — | — | — | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
+| · | **Qwen3-4B-Instruct-2507** (Q4_K_M) | — | 50.5 | — | — | — | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
+| · | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
+| · | **gpt-oss-20b** (Q4_K_M, effort-low) | — | 47.0 | — | — | — | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
+| · | **Ling-3.0-tiny** (Q4_K_M) | — | 34.5 | — | — | — | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
+| · | **Qwen3.5-2B** (Q4_K_M) | — | 32.5 | — | — | — | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
+| · | **LFM2.5-2.6B** (Q4_K_M, empty-think) | — | 26.5 | — | — | — | 6.76 | 2.65 | 67 | 0.14 | 2.0 | idioms, voice, additions |
+| · | **LFM2.5-VL-3B** (Q4_K_M) | — | 24.5 | — | — | — | 6.71 | 6.19 | 70 | 0.15 | 2.0 | idioms, voice, omissions |
+| · | **LFM3-Omni-2B** (Q4_K_M, respond-in-text) | — | 23.5 | — | — | — | 6.45 | 6.32 | 76 | 0.08 | 1.4 | idioms, voice, who did what |
+| · | **LFM3-VL-2B** (Q4_K_M) | — | 21.5 | — | — | — | 6.22 | 5.32 | 82 | 0.08 | 1.4 | idioms, voice, who did what |
+| · | **LFM3-1.7B** (Q4_K_M) | — | 20.0 | — | — | — | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
+
+## All builds
+
+Every build of the models above with more than one, best first. Gap is Overview points behind the best build; *within noise* means the gap is smaller than the 95% sampling margin, so the builds are not distinguishable on this test.
+
+| Model | Build | Overview % | Gap | Standard % | Hard % | Adult % (not refused) | Seconds per line | VRAM GB |
+|---|---|---:|---|---:|---:|---:|---:|---:|
+| Gemma 4 31B IT | QAT-Q4_0 | 86.6 | best | 90.0 | 83.2 | 79.2 | 0.91 | 18.2 |
+|  | Q5_K_M | 86.2 | -0.4 (within noise) | 91.0 | 81.4 | 79.2 | 1.21 | 22.9 |
+|  | Q4_K_M | 85.9 | -0.7 (within noise) | 91.0 | 80.8 | 81.9 | 1.09 | 20.0 |
+| Gemma 4 26B-A4B IT | UD-Q4_K_M | 84.0 | best | 86.5 | 81.4 | 75.0 | 0.28 | 16.6 |
+|  | QAT-Q4_0 | 83.7 | -0.3 (within noise) | 86.0 | 81.4 | 69.4 | 0.26 | 14.2 |
+| Qwen3.8-27B | UD-Q6_K_L | 81.0 | best | 83.5 | 78.4 | 75.0 | 1.33 | 22.0 |
+|  | UD-Q4_K_M | 80.6 | -0.4 (within noise) | 81.0 | 80.2 | 75.0 | 1.17 | 15.1 |
+| Gemma 4 12B IT | QAT-Q4_0 | 81.0 | best | 83.0 | 79.0 | 70.8 | 0.38 | 7.4 |
+|  | QAT-i1-IQ3_M | 79.5 | -1.5 (within noise) | 80.5 | 78.4 | 72.2 | 0.42 | 6.3 |
+|  | QAT-i1-Q2_K | 66.3 | -14.7 | 62.5 | 70.1 | 63.9 | 0.38 | 5.4 |
+|  | UD-Q4_K_XL | — | not ranked yet | 85.5 | — | 75.0 | 0.42 | 7.8 |
+| Gemma 4 E4B IT | UD-Q4_K_XL | 72.2 | best | 75.5 | 68.9 | 68.1 | 0.17 | 3.5 |
+|  | QAT-Q4_0 | 70.8 | -1.4 (within noise) | 74.5 | 67.1 | 68.1 | 0.16 | 3.1 |
+|  | QAT-UD-Q2_K_XL | 47.2 | -25.0 | 43.5 | 50.9 | 52.8 | 0.25 | 2.7 |
+| Gemma 4 E2B IT | QAT-Q4_0 | 59.5 | best | 61.5 | 57.5 | 65.3 | 0.11 | 1.8 |
+|  | QAT-UD-Q4_K_XL | 55.1 | -4.4 (within noise) | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
+|  | QAT-UD-Q2_K_XL | 14.9 | -44.6 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
+|  | UD-Q4_K_XL | — | not ranked yet | 59.0 | — | 61.1 | 0.11 | 1.9 |
 
 Being judged: LFM2.5-1.2B-JP-202606 (Q4_K_M) (173/200 lines).
 
@@ -66,28 +79,17 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Gemini 3.8 Flash (cloud) | 85% | 90% | 100% | 95% | 100% | 100% | 90% | 100% | 100% | 100% |
 | Claude Sonnet 5.5 (cloud) | 95% | 85% | 95% | 100% | 100% | 95% | 90% | 95% | 100% | 100% |
 | Gemma 4 31B IT (QAT-Q4_0) | 80% | 90% | 95% | 100% | 100% | 95% | 100% | 100% | 90% | 95% |
-| Gemma 4 31B IT (Q5_K_M) | 80% | 95% | 100% | 100% | 100% | 95% | 100% | 100% | 95% | 95% |
 | Claude Haiku 5.5 (cloud) | 90% | 95% | 95% | 95% | 100% | 85% | 90% | 90% | 100% | 90% |
-| Gemma 4 31B IT (Q4_K_M) | 85% | 100% | 95% | 100% | 100% | 95% | 100% | 90% | 95% | 100% |
 | Gemma 4 26B-A4B IT (UD-Q4_K_M) | 75% | 75% | 95% | 100% | 100% | 100% | 95% | 95% | 100% | 90% |
-| Gemma 4 26B-A4B IT (QAT-Q4_0) | 80% | 85% | 95% | 95% | 100% | 95% | 95% | 95% | 90% | 90% |
 | Qwen3.8-27B (UD-Q6_K_L) | 65% | 80% | 85% | 95% | 100% | 85% | 95% | 75% | 95% | 100% |
 | Gemma 4 12B IT (QAT-Q4_0) | 90% | 80% | 95% | 95% | 95% | 95% | 95% | 75% | 95% | 95% |
-| Qwen3.8-27B (UD-Q4_K_M) | 60% | 80% | 85% | 95% | 100% | 85% | 95% | 75% | 95% | 100% |
-| Gemma 4 12B IT (QAT-i1-IQ3_M) | 75% | 85% | 90% | 100% | 100% | 95% | 95% | 65% | 85% | 90% |
 | Qwen3.6-35B-A3B (Q4_K_M) | 60% | 70% | 80% | 95% | 95% | 90% | 90% | 80% | 80% | 95% |
 | Gemma 4 E4B IT (UD-Q4_K_XL) | 60% | 70% | 75% | 90% | 90% | 85% | 85% | 80% | 90% | 90% |
-| Gemma 4 E4B IT (QAT-Q4_0) | 65% | 65% | 70% | 90% | 85% | 85% | 85% | 65% | 90% | 90% |
 | Sugoi-14B-Ultra (Q4_K_M) | 55% | 65% | 65% | 90% | 85% | 80% | 75% | 85% | 70% | 85% |
-| Gemma 4 12B IT (QAT-i1-Q2_K) | 25% | 55% | 50% | 85% | 80% | 85% | 80% | 60% | 70% | 80% |
 | Gemma 4 E2B IT (QAT-Q4_0) | 25% | 50% | 65% | 85% | 70% | 75% | 70% | 65% | 95% | 80% |
-| Gemma 4 E2B IT (QAT-UD-Q4_K_XL) | 20% | 55% | 70% | 85% | 75% | 75% | 65% | 65% | 90% | 70% |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 15% | 45% | 55% | 60% | 60% | 60% | 70% | 35% | 70% | 75% |
-| Gemma 4 E4B IT (QAT-UD-Q2_K_XL) | 5% | 35% | 45% | 60% | 60% | 60% | 75% | 35% | 75% | 60% |
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 20% | 35% | 55% | 60% | 55% | 55% | 70% | 40% | 55% | 60% |
 | Hy-MT2-1.8B (Q4_K_M) | 15% | 35% | 55% | 60% | 50% | 65% | 70% | 40% | 60% | 70% |
-| Gemma 4 E2B IT (QAT-UD-Q2_K_XL) | 0% | 10% | 0% | 30% | 15% | 25% | 15% | 15% | 25% | 25% |
-| Gemma 4 12B IT (UD-Q4_K_XL) | 90% | 75% | 90% | 100% | 100% | 100% | 95% | 80% | 90% | 95% |
 | Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0) | 75% | 80% | 100% | 95% | 100% | 90% | 95% | 90% | 85% | 95% |
 | Gemini 3.5 Flash-Lite (cloud)\* | 90% | 70% | 100% | 90% | 100% | 100% | 100% | 95% | 90% | 95% |
 | Hy-MT2-30B-A3B (Q4_K_M) | 85% | 65% | 80% | 95% | 100% | 85% | 95% | 95% | 90% | 90% |
@@ -100,7 +102,6 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
 | Qwen3.5-4B (Q4_K_M) | 20% | 65% | 55% | 70% | 80% | 70% | 85% | 70% | 85% | 60% |
-| Gemma 4 E2B IT (UD-Q4_K_XL) | 25% | 70% | 55% | 90% | 80% | 75% | 60% | 60% | 80% | 65% |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 20% | 50% | 55% | 65% | 60% | 55% | 70% | 70% | 75% | 70% |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
 | gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
@@ -121,28 +122,17 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Gemini 3.8 Flash (cloud) | 0 | 0 | 0 | 2 |
 | Claude Sonnet 5.5 (cloud) | 0 | 0 | 0 | 4 |
 | Gemma 4 31B IT (QAT-Q4_0) | 0 | 0 | 0 | 0 |
-| Gemma 4 31B IT (Q5_K_M) | 0 | 0 | 0 | 0 |
 | Claude Haiku 5.5 (cloud) | 0 | 0 | 0 | 1 |
-| Gemma 4 31B IT (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B IT (UD-Q4_K_M) | 0 | 0 | 0 | 1 |
-| Gemma 4 26B-A4B IT (QAT-Q4_0) | 0 | 0 | 0 | 2 |
 | Qwen3.8-27B (UD-Q6_K_L) | 0 | 0 | 0 | 0 |
 | Gemma 4 12B IT (QAT-Q4_0) | 0 | 0 | 0 | 0 |
-| Qwen3.8-27B (UD-Q4_K_M) | 0 | 0 | 0 | 0 |
-| Gemma 4 12B IT (QAT-i1-IQ3_M) | 0 | 0 | 0 | 0 |
 | Qwen3.6-35B-A3B (Q4_K_M) | 0 | 0 | 0 | 2 |
 | Gemma 4 E4B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
-| Gemma 4 E4B IT (QAT-Q4_0) | 0 | 0 | 0 | 0 |
 | Sugoi-14B-Ultra (Q4_K_M) | 0 | 0 | 1 | 0 |
-| Gemma 4 12B IT (QAT-i1-Q2_K) | 0 | 0 | 0 | 0 |
 | Gemma 4 E2B IT (QAT-Q4_0) | 0 | 0 | 0 | 0 |
-| Gemma 4 E2B IT (QAT-UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 1 | 0 | 0 | 2 |
-| Gemma 4 E4B IT (QAT-UD-Q2_K_XL) | 0 | 0 | 0 | 0 |
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 2 | 0 | 1 | 0 |
 | Hy-MT2-1.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
-| Gemma 4 E2B IT (QAT-UD-Q2_K_XL) | 0 | 4 | 1 | 4 |
-| Gemma 4 12B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0) | 0 | 0 | 0 | 2 |
 | Gemini 3.5 Flash-Lite (cloud)\* | 0 | 0 | 1 | 5 |
 | Hy-MT2-30B-A3B (Q4_K_M) | 0 | 0 | 0 | 0 |
@@ -155,7 +145,6 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 0 | 0 | 0 | 33 |
 | Qwen3.5-4B (Q4_K_M) | 0 | 0 | 0 | 0 |
-| Gemma 4 E2B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 0 | 0 | 0 | 6 |
 | gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |

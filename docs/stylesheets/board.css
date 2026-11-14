@@ -132,3 +132,17 @@
 /* wide tables (the 10-category breakdown): tighter cells so they fit the content column */
 .md-typeset table:not([class]):has(th:nth-child(10)) { font-size: .62rem; }
 .md-typeset table:not([class]):has(th:nth-child(10)) :is(th, td) { padding: .6em .5em; min-width: 0; }
+
+/* quant roll-up: each model shows its best-scoring build; the rest appear with "Show all builds" */
+.ob-board:not(.ob-all) > .ob-alt { display: none; }
+.ob-tools { display: flex; justify-content: flex-end; padding: 0 .3em .5em; }
+.ob-toggle { color: var(--ob-muted); font-size: .8em; cursor: pointer; }
+.ob-toggle input { vertical-align: middle; margin: 0 .3em 0 0; accent-color: var(--ob-bar); }
+.ob-toggle span { opacity: .85; }
+.ob-build, .ob-nbuilds { display: inline-block; margin-left: .45em; font-size: .78em; font-weight: 400; color: var(--ob-muted); }
+.ob-nbuilds { padding: 0 .4em; border: 1px solid var(--ob-rule); border-radius: 3px; }
+.ob-board.ob-all > .ob-alt .ob-name { font-weight: 500; }
+.ob-builds { flex-basis: 100%; }
+.md-typeset .ob-builds ul { margin: .2em 0 0 1.2em; padding: 0; }
+.md-typeset .ob-builds li { margin: 0; }
+@media (max-width: 40em) { .ob-tools { justify-content: flex-start; } .ob-toggle span { display: none; } }
