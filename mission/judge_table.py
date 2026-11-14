@@ -80,10 +80,11 @@ def standard_pass(name: str) -> dict | None:
     blind = {r['id']: r for r in load(blind_path)}
     d = response_dir(name)
     s = mp.summarize(name, load(JUDGE / f'{name}.lines_eval.jsonl'), load(d / 'lines_bare.jsonl') if d else [],
-                     gold, blind, hashlib.sha256(blind_path.read_bytes()).hexdigest())
+                     gold, blind, hashlib.sha256(blind_path.read_bytes()).hexdigest(), include_cases=True)
     if s['status'] != 'COMPLETE':
         return None
-    return {'pct': s['screen_ready_pct'], 'ci': s['screen_ready_95_ci'], 'n': s['total']}
+    items = {i: float(c['pass']) for i, c in s['_private_cases'].items()}  # per line, for paired build comparisons
+    return {'pct': s['screen_ready_pct'], 'ci': s['screen_ready_95_ci'], 'n': s['total'], 'items': items}
 
 
 def slice_result(slice_: str, name: str) -> dict | None:
@@ -109,7 +110,7 @@ def slice_result(slice_: str, name: str) -> dict | None:
     out = {'done': len(judged), 'total': len(gold), 'pct': None}
     if len(judged) < len(gold):
         return out
-    passes, raw, refused, judge_refused, over_sex = [], [], 0, 0, 0
+    passes, raw, refused, judge_refused, over_sex, items = [], [], 0, 0, 0, {}
     contract = {}  # hard: screen-output contract failures (tools/mechanical.py), id -> reason; the raw verdicts are kept
     for i, x in judged.items():
         if x['outcome'] == 'judge_refusal':
@@ -128,8 +129,9 @@ def slice_result(slice_: str, name: str) -> dict | None:
             contract[i] = why
             ok = False
         passes.append(float(ok))
+        items[i] = float(ok)
     out.update(pct=round(100 * sum(passes) / len(passes), 1) if passes else None, ci=mp.percentile_ci(passes),
-               n=len(passes), judge_refused=judge_refused)
+               n=len(passes), judge_refused=judge_refused, items=items)
     if slice_ in ('hard', 'hard05'):
         out.update(raw_pct=round(100 * sum(raw) / len(raw), 1) if raw else None, contract=dict(Counter(contract.values())))
         audit = RES / 'judge/mechanical' / f'{name}.{slice_}_contract.jsonl'
@@ -276,8 +278,8 @@ def main() -> int:
     if multi:
         out += ['', '## All builds', '',
                 f'Every build of the models above with more than one, best first. Gap is {SORT_NAMES[sort_key]} points behind the '
-                'best build; *within noise* means the gap is smaller than the 95% sampling margin, so the builds are not '
-                'distinguishable on this test.', '',
+                'best build, ± its 95% margin from comparing the two builds line by line on the same lines; *within noise* '
+                'means the gap is inside that margin, so this test cannot tell the builds apart.', '',
                 '| Model | Build | Overview % | Gap | Standard % | Hard % | Adult % (not refused) | Seconds per line | VRAM GB |',
                 '|---|---|---:|---|---:|---:|---:|---:|---:|']
         for ex in multi:
@@ -338,11 +340,23 @@ def family(name: str) -> str:
     return name if name in LABELS else name.partition('+')[0]
 
 
-def overview_var(r: dict) -> float | None:
-    """Sampling variance of Overview (mean of Standard and Hard pass %), in points²."""
-    v = [p * (100 - p) / n for res in (r['standard'], r['hard']) if res and res.get('pct') is not None
-         for p, n in [(res['pct'], res['n'])]]
-    return sum(v) / 4 if len(v) == 2 else None
+def paired_se(r: dict, ex: dict) -> float | None:
+    """Standard error (points) of the Overview gap between two builds, paired line by line.
+
+    Both builds translate the same lines, so per-line differences cancel the shared difficulty; an unpaired test
+    (treating them as independent samples) overstates the noise roughly twofold here.
+    """
+    var = 0.0
+    for key in OVERVIEW_SLICES:
+        a, b = (r.get(key) or {}).get('items'), (ex.get(key) or {}).get('items')
+        if not a or not b:
+            return None
+        d = [100 * (a[i] - b[i]) for i in a.keys() & b.keys()]
+        if len(d) < 2:
+            return None
+        m = sum(d) / len(d)
+        var += sum((x - m) ** 2 for x in d) / (len(d) - 1) / len(d) / 4  # Overview = (Standard + Hard) / 2
+    return var ** 0.5
 
 
 def roll_up(done: list[dict], sort_key: str) -> None:
@@ -350,7 +364,7 @@ def roll_up(done: list[dict], sort_key: str) -> None:
 
     Same-size flavours (QAT-Q4_0, Q4_K_M, UD-Q4_K_M) have no a-priori order, so best-scoring is the fair pick.
     `done` is already sorted best first, so the first build seen of each family is its exemplar. Every other build
-    records its gap from the exemplar and whether that gap is within noise (95%, unpaired, so conservative).
+    records its gap from the exemplar and whether that gap is within noise (95%, paired by line).
     """
     best: dict[str, dict] = {}
     for r in done:
@@ -360,9 +374,9 @@ def roll_up(done: list[dict], sort_key: str) -> None:
         r['family_label'] = ex['base']
         a, b = sort_value(r, sort_key), sort_value(ex, sort_key)
         r['delta'] = None if r['exemplar'] or a is None or b is None else round(a - b, 1)
-        va, vb = overview_var(r), overview_var(ex)
-        r['noise'] = (r['delta'] is not None and sort_key == 'overview' and va is not None and vb is not None
-                      and abs(r['delta']) < 1.96 * (va + vb) ** 0.5)
+        se = paired_se(r, ex) if r['delta'] is not None and sort_key == 'overview' else None
+        r['margin'] = round(1.96 * se, 1) if se is not None else None
+        r['noise'] = se is not None and abs(r['delta']) < r['margin']
     for r in done:
         r['family'] = [x for x in done if family(x['name']) == family(r['name'])]
 
@@ -370,7 +384,9 @@ def roll_up(done: list[dict], sort_key: str) -> None:
 def build_gap(r: dict) -> str:
     if r['delta'] is None:
         return 'not ranked yet'
-    return f"{r['delta']:+.1f}" + (' (within noise)' if r['noise'] else '')
+    if r.get('margin') is None:
+        return f"{r['delta']:+.1f}"
+    return f"{r['delta']:+.1f} ±{r['margin']:.1f}" + (' (within noise)' if r['noise'] else '')
 
 
 def fits(mib: int | None) -> str:

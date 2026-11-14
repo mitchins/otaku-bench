@@ -45,27 +45,27 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 
 ## All builds
 
-Every build of the models above with more than one, best first. Gap is Overview points behind the best build; *within noise* means the gap is smaller than the 95% sampling margin, so the builds are not distinguishable on this test.
+Every build of the models above with more than one, best first. Gap is Overview points behind the best build, ± its 95% margin from comparing the two builds line by line on the same lines; *within noise* means the gap is inside that margin, so this test cannot tell the builds apart.
 
 | Model | Build | Overview % | Gap | Standard % | Hard % | Adult % (not refused) | Seconds per line | VRAM GB |
 |---|---|---:|---|---:|---:|---:|---:|---:|
 | Gemma 4 31B IT | QAT-Q4_0 | 86.6 | best | 90.0 | 83.2 | 79.2 | 0.91 | 18.2 |
-|  | Q5_K_M | 86.2 | -0.4 (within noise) | 91.0 | 81.4 | 79.2 | 1.21 | 22.9 |
-|  | Q4_K_M | 85.9 | -0.7 (within noise) | 91.0 | 80.8 | 81.9 | 1.09 | 20.0 |
+|  | Q5_K_M | 86.2 | -0.4 ±2.1 (within noise) | 91.0 | 81.4 | 79.2 | 1.21 | 22.9 |
+|  | Q4_K_M | 85.9 | -0.7 ±2.3 (within noise) | 91.0 | 80.8 | 81.9 | 1.09 | 20.0 |
 | Gemma 4 26B-A4B IT | UD-Q4_K_M | 84.0 | best | 86.5 | 81.4 | 75.0 | 0.28 | 16.6 |
-|  | QAT-Q4_0 | 83.7 | -0.3 (within noise) | 86.0 | 81.4 | 69.4 | 0.26 | 14.2 |
+|  | QAT-Q4_0 | 83.7 | -0.3 ±3.0 (within noise) | 86.0 | 81.4 | 69.4 | 0.26 | 14.2 |
 | Qwen3.8-27B | UD-Q6_K_L | 81.0 | best | 83.5 | 78.4 | 75.0 | 1.33 | 22.0 |
-|  | UD-Q4_K_M | 80.6 | -0.4 (within noise) | 81.0 | 80.2 | 75.0 | 1.17 | 15.1 |
+|  | UD-Q4_K_M | 80.6 | -0.4 ±2.1 (within noise) | 81.0 | 80.2 | 75.0 | 1.17 | 15.1 |
 | Gemma 4 12B IT | QAT-Q4_0 | 81.0 | best | 83.0 | 79.0 | 70.8 | 0.38 | 7.4 |
-|  | QAT-i1-IQ3_M | 79.5 | -1.5 (within noise) | 80.5 | 78.4 | 72.2 | 0.42 | 6.3 |
-|  | QAT-i1-Q2_K | 66.3 | -14.7 | 62.5 | 70.1 | 63.9 | 0.38 | 5.4 |
+|  | QAT-i1-IQ3_M | 79.5 | -1.5 ±3.1 (within noise) | 80.5 | 78.4 | 72.2 | 0.42 | 6.3 |
+|  | QAT-i1-Q2_K | 66.3 | -14.7 ±4.4 | 62.5 | 70.1 | 63.9 | 0.38 | 5.4 |
 |  | UD-Q4_K_XL | — | not ranked yet | 85.5 | — | 75.0 | 0.42 | 7.8 |
 | Gemma 4 E4B IT | UD-Q4_K_XL | 72.2 | best | 75.5 | 68.9 | 68.1 | 0.17 | 3.5 |
-|  | QAT-Q4_0 | 70.8 | -1.4 (within noise) | 74.5 | 67.1 | 68.1 | 0.16 | 3.1 |
-|  | QAT-UD-Q2_K_XL | 47.2 | -25.0 | 43.5 | 50.9 | 52.8 | 0.25 | 2.7 |
+|  | QAT-Q4_0 | 70.8 | -1.4 ±3.4 (within noise) | 74.5 | 67.1 | 68.1 | 0.16 | 3.1 |
+|  | QAT-UD-Q2_K_XL | 47.2 | -25.0 ±5.1 | 43.5 | 50.9 | 52.8 | 0.25 | 2.7 |
 | Gemma 4 E2B IT | QAT-Q4_0 | 59.5 | best | 61.5 | 57.5 | 65.3 | 0.11 | 1.8 |
-|  | QAT-UD-Q4_K_XL | 55.1 | -4.4 (within noise) | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
-|  | QAT-UD-Q2_K_XL | 14.9 | -44.6 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
+|  | QAT-UD-Q4_K_XL | 55.1 | -4.4 ±3.8 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
+|  | QAT-UD-Q2_K_XL | 14.9 | -44.6 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 |  | UD-Q4_K_XL | — | not ranked yet | 59.0 | — | 61.1 | 0.11 | 1.9 |
 
 Being judged: LFM2.5-1.2B-JP-202606 (Q4_K_M) (173/200 lines).
