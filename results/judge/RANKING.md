@@ -48,13 +48,14 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Ling-3.0-tiny (Q4_K_M)** | — | 34.5 | — | — | — | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
 | · | **Qwen3.5-2B (Q4_K_M)** | — | 32.5 | — | — | — | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
 | · | **LFM2.5-2.6B (Q4_K_M, empty-think)** | — | 26.5 | — | — | — | 6.76 | 2.65 | 67 | 0.14 | 2.0 | idioms, voice, additions |
+| · | **LFM2.5-VL-3B (Q4_K_M)** | — | 24.5 | — | — | — | 6.71 | 6.19 | 70 | 0.15 | 2.0 | idioms, voice, omissions |
 | · | **LFM3-Omni-2B (Q4_K_M, respond-in-text)** | — | 23.5 | — | — | — | 6.45 | 6.32 | 76 | 0.08 | 1.4 | idioms, voice, who did what |
 | · | **LFM3-VL-2B (Q4_K_M)** | — | 21.5 | — | — | — | 6.22 | 5.32 | 82 | 0.08 | 1.4 | idioms, voice, who did what |
 | · | **LFM3-1.7B (Q4_K_M)** | — | 20.0 | — | — | — | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
-Being judged: LFM2.5-VL-3B (Q4_K_M) (0/200 lines).
+Being judged: LFM2.5-1.2B-JP-202606 (Q4_K_M) (173/200 lines).
 
 ## By category
 
@@ -106,6 +107,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Ling-3.0-tiny (Q4_K_M) | 10% | 30% | 30% | 60% | 50% | 40% | 55% | 30% | 50% | 70% |
 | Qwen3.5-2B (Q4_K_M) | 5% | 15% | 40% | 60% | 30% | 40% | 55% | 30% | 55% | 60% |
 | LFM2.5-2.6B (Q4_K_M, empty-think) | 5% | 30% | 20% | 45% | 55% | 25% | 40% | 15% | 55% | 30% |
+| LFM2.5-VL-3B (Q4_K_M) | 15% | 35% | 25% | 30% | 10% | 50% | 40% | 10% | 55% | 35% |
 | LFM3-Omni-2B (Q4_K_M, respond-in-text) | 0% | 10% | 10% | 40% | 35% | 25% | 45% | 15% | 55% | 30% |
 | LFM3-VL-2B (Q4_K_M) | 5% | 20% | 20% | 35% | 15% | 35% | 30% | 15% | 45% | 30% |
 | LFM3-1.7B (Q4_K_M) | 5% | 45% | 10% | 30% | 15% | 30% | 40% | 5% | 45% | 35% |
@@ -160,6 +162,7 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Ling-3.0-tiny (Q4_K_M) | 0 | 1 | 0 | 2 |
 | Qwen3.5-2B (Q4_K_M) | 0 | 0 | 0 | 1 |
 | LFM2.5-2.6B (Q4_K_M, empty-think) | 4 | 19 | 0 | 1 |
+| LFM2.5-VL-3B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | LFM3-Omni-2B (Q4_K_M, respond-in-text) | 0 | 3 | 0 | 0 |
 | LFM3-VL-2B (Q4_K_M) | 0 | 0 | 0 | 8 |
 | LFM3-1.7B (Q4_K_M) | 4 | 6 | 3 | 0 |
