@@ -29,6 +29,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Hy-MT2-7B** (Q4_K_M) | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
 | · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | · | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | — | 65.0 | — | — | — | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
+| · | **NVIDIA-Nemotron-Nano-9B-v2-Japanese** (Q4_K_M) | — | 60.0 | — | — | — | 8.75 | 8.65 | 12 | 0.74 | 6.3 | idioms, voice, who did what |
 | · | **Qwen3.5-4B** (Q4_K_M) | — | 60.0 | — | — | — | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
 | · | **Qwen3-4B-Instruct-2507** (Q4_K_M) | — | 50.5 | — | — | — | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
 | · | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
@@ -41,6 +42,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **LFM2.5-1.2B-JP-202606** (Q4_K_M) | — | 23.0 | — | — | — | 6.58 | 5.97 | 77 | 0.17 | 1.1 | idioms, voice, who did what |
 | · | **LFM3-VL-2B** (Q4_K_M) | — | 21.5 | — | — | — | 6.22 | 5.32 | 82 | 0.08 | 1.4 | idioms, voice, who did what |
 | · | **LFM3-1.7B** (Q4_K_M) | — | 20.0 | — | — | — | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
+| · | **LFM2.5-1.2B Instruct** (Q4_K_M) | — | 18.0 | — | — | — | 5.88 | 5.52 | 100 | 0.04 | 1.1 | idioms, voice, who did what |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
@@ -69,7 +71,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: LFM2.5-1.2B Instruct (Q4_K_M) (0/200 lines).
+Being judged: Qwen3.6-27B (Q4_K_M) (0/200 lines).
 
 ## By category
 
@@ -102,6 +104,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Hy-MT2-7B (Q4_K_M) | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
+| NVIDIA-Nemotron-Nano-9B-v2-Japanese (Q4_K_M) | 25% | 50% | 65% | 70% | 90% | 80% | 65% | 75% | 75% | 80% |
 | Qwen3.5-4B (Q4_K_M) | 20% | 65% | 55% | 70% | 80% | 70% | 85% | 70% | 85% | 60% |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 20% | 50% | 55% | 65% | 60% | 55% | 70% | 70% | 75% | 70% |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
@@ -114,6 +117,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | LFM2.5-1.2B-JP-202606 (Q4_K_M) | 5% | 20% | 25% | 50% | 35% | 25% | 60% | 10% | 50% | 35% |
 | LFM3-VL-2B (Q4_K_M) | 5% | 20% | 20% | 35% | 15% | 35% | 30% | 15% | 45% | 30% |
 | LFM3-1.7B (Q4_K_M) | 5% | 45% | 10% | 30% | 15% | 30% | 40% | 5% | 45% | 35% |
+| LFM2.5-1.2B Instruct (Q4_K_M) | 5% | 0% | 10% | 25% | 20% | 20% | 35% | 5% | 40% | 45% |
 
 ## Output compliance
 
@@ -146,6 +150,7 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Hy-MT2-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 0 | 0 | 0 | 33 |
+| NVIDIA-Nemotron-Nano-9B-v2-Japanese (Q4_K_M) | 0 | 0 | 0 | 11 |
 | Qwen3.5-4B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 0 | 0 | 0 | 6 |
@@ -158,5 +163,6 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | LFM2.5-1.2B-JP-202606 (Q4_K_M) | 0 | 0 | 0 | 6 |
 | LFM3-VL-2B (Q4_K_M) | 0 | 0 | 0 | 8 |
 | LFM3-1.7B (Q4_K_M) | 4 | 6 | 3 | 0 |
+| LFM2.5-1.2B Instruct (Q4_K_M) | 0 | 0 | 0 | 0 |
 
 Standard: 200 eval lines judged by GPT-6.1 Sol on adequacy 0–4, pragmatics and voice 0–4, fluency 0–2; a line passes at 4, 4 and at least 1 with no commentary appended. Hard and Adult: each line has named checks, and it passes when every check passes (uncertain is not a pass); a Hard line also fails if the reply carries leaked prompt headers, the Japanese echoed back or extra dialogue turns. A line the model failed to produce fails (scores 0 out of 10). Speed is the median time to finish a line with 6 lines of history on an RTX 3090.
