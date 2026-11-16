@@ -24,7 +24,9 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | 18 | **Flint 40B-A2.5B** (IQ4_XS, empty-think) | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
 | 19 | **Hy-MT2-1.8B** (Q4_K_M) | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
 | · | **Gemma 4 26B-A4B heretic JP-pruned 120e** (Q4_0) | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
+| · | **Qwen3.6-27B** (Q4_K_M) | — | 77.5 | — | — | — | 9.46 | 9.32 | 7 | 1.20 | 16.4 | voice, idioms, additions |
 | · | **Ternary-Bonsai-2-27B** (PQ2_0) | — | 72.0 | — | 58.3 | 0.0 | 9.18 | 8.87 | 8 | 0.98 | 7.1 | idioms, terms, voice |
+| · | **Qwen3-Swallow-32B-RL-v0.2** (Q4_K_M) | — | 68.0 | — | — | — | 9.10 | 9.06 | 11 | 0.69 | 19.0 | idioms, voice, ambiguity |
 | · | **Gemma 4 26B-A4B heretic JP-pruned 72e** (Q4_0) | — | 66.5 | — | 59.7 | 0.0 | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
 | · | **Hy-MT2-7B** (Q4_K_M) | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
 | · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
@@ -71,7 +73,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: Qwen3.6-27B (Q4_K_M) (126/200 lines).
+Being judged: Sugoi-32B-Ultra (Q4_K_M) (187/200 lines).
 
 ## By category
 
@@ -99,7 +101,9 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 20% | 35% | 55% | 60% | 55% | 55% | 70% | 40% | 55% | 60% |
 | Hy-MT2-1.8B (Q4_K_M) | 15% | 35% | 55% | 60% | 50% | 65% | 70% | 40% | 60% | 70% |
 | Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0) | 75% | 80% | 100% | 95% | 100% | 90% | 95% | 90% | 85% | 95% |
+| Qwen3.6-27B (Q4_K_M) | 70% | 90% | 70% | 90% | 95% | 85% | 85% | 85% | 95% | 95% |
 | Ternary-Bonsai-2-27B (PQ2_0) | 50% | 80% | 80% | 85% | 80% | 90% | 85% | 65% | 85% | 80% |
+| Qwen3-Swallow-32B-RL-v0.2 (Q4_K_M) | 50% | 70% | 70% | 85% | 85% | 85% | 80% | 55% | 85% | 85% |
 | Gemma 4 26B-A4B heretic JP-pruned 72e (Q4_0) | 60% | 65% | 50% | 80% | 85% | 80% | 80% | 80% | 80% | 80% |
 | Hy-MT2-7B (Q4_K_M) | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
@@ -145,7 +149,9 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 2 | 0 | 1 | 0 |
 | Hy-MT2-1.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B heretic JP-pruned 120e (Q4_0) | 0 | 0 | 0 | 2 |
+| Qwen3.6-27B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Ternary-Bonsai-2-27B (PQ2_0) | 0 | 0 | 0 | 1 |
+| Qwen3-Swallow-32B-RL-v0.2 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B heretic JP-pruned 72e (Q4_0) | 0 | 0 | 0 | 1 |
 | Hy-MT2-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
