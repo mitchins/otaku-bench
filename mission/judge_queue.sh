@@ -46,6 +46,7 @@ QUEUE=(
   # then their largest quant that fits 24 GB, to see whether the extra memory buys quality
   screen_quants/UD-Q6_K_L/01_Qwen3.8-27B
   screen_quants/Q5_K_M/02_Gemma_4_31B_IT
+  screen_quants/Q4_K_L/02_Gemma_4_31B_IT   # community request (Reddit, 2026-11-16): Q4_K_M with Q8_0 embed/output; rolls up under the 31B
   # 24B MoE at 0.16 s/line; single-block empty-think prefill (corrected run)
   screen_variants/empty-think/36_LFM2.5-24B-A2B
   # hardware-rule admission: 40B MoE, fits 24 GB at IQ4_XS; needs the empty-think prefill (always thinks otherwise)
