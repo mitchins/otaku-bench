@@ -35,10 +35,12 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Hy-MT2-7B** (Q4_K_M) | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
 | · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | · | **CAT-Translate-7B** (Q4_K_M) | — | 65.5 | — | — | — | 9.00 | 8.87 | 9 | 0.14 | 4.8 | idioms, voice, who did what |
+| · | **Qwen2.5-14B-Instruct** (Q4_K_M) | — | 65.5 | — | — | — | 9.02 | 8.81 | 9 | 0.31 | 8.8 | idioms, voice, omissions |
 | · | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | — | 65.0 | — | 50.0 | 0.0 | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
 | · | **HY-MT1.5-7B** (Q4_K_M) | — | 60.0 | — | — | — | 8.95 | 8.74 | 7 | 0.19 | 5.0 | voice, idioms, terms |
 | · | **NVIDIA-Nemotron-Nano-9B-v2-Japanese** (Q4_K_M) | — | 60.0 | — | — | — | 8.75 | 8.65 | 12 | 0.74 | 6.3 | idioms, voice, who did what |
 | · | **Qwen3.5-4B** (Q4_K_M) | — | 60.0 | — | 54.2 | 0.0 | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
+| · | **Ministral 3 8B Instruct** (UD-Q4_K_XL) | — | 54.5 | — | — | — | 8.53 | 8.23 | 18 | 0.22 | 5.3 | additions, voice, idioms |
 | · | **Qwen3-8B** (Q4_K_M) | — | 52.0 | — | — | — | 8.27 | 5.23 | 25 | 0.17 | 5.0 | idioms, voice, modality |
 | · | **Qwen3-4B-Instruct-2507** (Q4_K_M) | — | 50.5 | — | 55.6 | 0.0 | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
 | · | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
@@ -82,7 +84,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: Phi-4 14B (Q4_K_M) (111/200 lines), Ministral 3 8B Instruct (UD-Q4_K_XL) (84/200 lines), Qwen2.5-14B-Instruct (Q4_K_M) (82/200 lines), TinySwallow-1.5B-Instruct (Q5_K_M) (51/200 lines), TranslateGemma 4B IT (Q4_K_M) (51/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines), HY-MT1.5-1.8B (Q4_K_M) (39/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Shisa-v2.1-llama3.2-3B (Q4_K_M) (23/200 lines), Shisa-v2.1-lfm2-1.2B (Q4_K_M) (0/200 lines).
+Being judged: Phi-4 14B (Q4_K_M) (187/200 lines), TinySwallow-1.5B-Instruct (Q5_K_M) (51/200 lines), TranslateGemma 4B IT (Q4_K_M) (51/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines), HY-MT1.5-1.8B (Q4_K_M) (39/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Shisa-v2.1-llama3.2-3B (Q4_K_M) (23/200 lines), Shisa-v2.1-lfm2-1.2B (Q4_K_M) (0/200 lines).
 
 ## By category
 
@@ -121,10 +123,12 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Hy-MT2-7B (Q4_K_M) | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
 | CAT-Translate-7B (Q4_K_M) | 50% | 70% | 65% | 80% | 80% | 90% | 75% | 60% | 80% | 75% |
+| Qwen2.5-14B-Instruct (Q4_K_M) | 60% | 65% | 65% | 70% | 80% | 85% | 85% | 60% | 85% | 85% |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
 | HY-MT1.5-7B (Q4_K_M) | 35% | 50% | 70% | 80% | 80% | 95% | 85% | 35% | 80% | 90% |
 | NVIDIA-Nemotron-Nano-9B-v2-Japanese (Q4_K_M) | 25% | 50% | 65% | 70% | 90% | 80% | 65% | 75% | 75% | 80% |
 | Qwen3.5-4B (Q4_K_M) | 20% | 65% | 55% | 70% | 80% | 70% | 85% | 70% | 85% | 60% |
+| Ministral 3 8B Instruct (UD-Q4_K_XL) | 40% | 40% | 55% | 70% | 60% | 70% | 75% | 70% | 70% | 60% |
 | Qwen3-8B (Q4_K_M) | 30% | 35% | 55% | 85% | 60% | 65% | 50% | 50% | 50% | 95% |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 20% | 50% | 55% | 65% | 60% | 55% | 70% | 70% | 75% | 70% |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
@@ -177,10 +181,12 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Hy-MT2-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
 | CAT-Translate-7B (Q4_K_M) | 0 | 0 | 0 | 1 |
+| Qwen2.5-14B-Instruct (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Shisa-v2.1-qwen3-8B (Q4_K_M) | 0 | 0 | 0 | 33 |
 | HY-MT1.5-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | NVIDIA-Nemotron-Nano-9B-v2-Japanese (Q4_K_M) | 0 | 0 | 0 | 11 |
 | Qwen3.5-4B (Q4_K_M) | 0 | 0 | 0 | 0 |
+| Ministral 3 8B Instruct (UD-Q4_K_XL) | 0 | 0 | 1 | 93 |
 | Qwen3-8B (Q4_K_M) | 0 | 12 | 0 | 0 |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 0 | 0 | 0 | 6 |
