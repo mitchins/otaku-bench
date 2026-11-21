@@ -46,6 +46,8 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Qwen3-4B-Instruct-2507** (Q4_K_M) | — | 50.5 | — | 55.6 | 0.0 | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
 | · | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
 | · | **gpt-oss-20b** (Q4_K_M, effort-low) | — | 47.0 | — | 53.5 | 1.6 | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
+| · | **TranslateGemma 4B IT** (Q4_K_M) | — | 46.5 | — | — | — | 8.23 | 7.90 | 24 | 0.12 | 2.9 | voice, idioms, omissions |
+| · | **HY-MT1.5-1.8B** (Q4_K_M) | — | 42.0 | — | — | — | 8.01 | 7.42 | 33 | 0.09 | 1.5 | voice, idioms, additions |
 | · | **Ling-3.0-tiny** (Q4_K_M) | — | 34.5 | — | 38.9 | 0.0 | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
 | · | **Qwen3.5-2B** (Q4_K_M) | — | 32.5 | — | 40.3 | 0.0 | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
 | · | **LFM2.5-2.6B** (Q4_K_M, empty-think) | — | 26.5 | — | 36.1 | 0.0 | 6.76 | 2.65 | 67 | 0.14 | 2.0 | idioms, voice, additions |
@@ -85,7 +87,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: TinySwallow-1.5B-Instruct (Q5_K_M) (51/200 lines), TranslateGemma 4B IT (Q4_K_M) (51/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines), HY-MT1.5-1.8B (Q4_K_M) (39/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Shisa-v2.1-llama3.2-3B (Q4_K_M) (23/200 lines), Shisa-v2.1-lfm2-1.2B (Q4_K_M) (0/200 lines).
+Being judged: TinySwallow-1.5B-Instruct (Q5_K_M) (51/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Shisa-v2.1-llama3.2-3B (Q4_K_M) (23/200 lines), Shisa-v2.1-lfm2-1.2B (Q4_K_M) (0/200 lines).
 
 ## By category
 
@@ -135,6 +137,8 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 20% | 50% | 55% | 65% | 60% | 55% | 70% | 70% | 75% | 70% |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
 | gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
+| TranslateGemma 4B IT (Q4_K_M) | 20% | 15% | 50% | 70% | 60% | 75% | 70% | 40% | 65% | 80% |
+| HY-MT1.5-1.8B (Q4_K_M) | 35% | 45% | 45% | 60% | 50% | 35% | 75% | 25% | 55% | 80% |
 | Ling-3.0-tiny (Q4_K_M) | 10% | 30% | 30% | 60% | 50% | 40% | 55% | 30% | 50% | 70% |
 | Qwen3.5-2B (Q4_K_M) | 5% | 15% | 40% | 60% | 30% | 40% | 55% | 30% | 55% | 60% |
 | LFM2.5-2.6B (Q4_K_M, empty-think) | 5% | 30% | 20% | 45% | 55% | 25% | 40% | 15% | 55% | 30% |
@@ -194,6 +198,8 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 0 | 0 | 0 | 6 |
 | gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |
+| TranslateGemma 4B IT (Q4_K_M) | 0 | 0 | 0 | 1 |
+| HY-MT1.5-1.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Ling-3.0-tiny (Q4_K_M) | 0 | 1 | 0 | 2 |
 | Qwen3.5-2B (Q4_K_M) | 0 | 0 | 0 | 1 |
 | LFM2.5-2.6B (Q4_K_M, empty-think) | 4 | 19 | 0 | 1 |
