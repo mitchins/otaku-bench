@@ -26,7 +26,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Gemma 4 26B-A4B heretic JP-pruned 120e** (Q4_0) | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
 | · | **Qwen3.6-27B** (Q4_K_M) | — | 77.5 | — | 76.4 | 0.0 | 9.46 | 9.32 | 7 | 1.20 | 16.4 | voice, idioms, additions |
 | · | **VNTL-Llama3-8B-v2** (Q5_K_M) | — | 74.5 | — | 68.1 | 0.0 | 9.36 | 8.87 | 5 | 0.16 | 5.7 | idioms, voice, omissions |
-| · | **Phi-4 14B** (Q4_K_M) | — | 73.5 | — | — | — | 9.18 | 8.94 | 8 | 0.38 | 9.0 | voice, idioms, omissions |
+| · | **Phi-4 14B** (Q4_K_M) | — | 73.5 | — | 63.9 | 0.0 | 9.18 | 8.94 | 8 | 0.38 | 9.0 | voice, idioms, omissions |
 | · | **Ternary-Bonsai-2-27B** (PQ2_0) | — | 72.0 | — | 58.3 | 0.0 | 9.18 | 8.87 | 8 | 0.98 | 7.1 | idioms, terms, voice |
 | · | **Sugoi-32B-Ultra** (Q4_K_M) | — | 71.5 | — | 73.6 | 0.0 | 9.27 | 9.03 | 7 | 0.65 | 19.1 | idioms, voice, additions |
 | · | **GLM-4.7-Flash** (Q4_K_M) | — | 70.0 | — | 65.3 | 0.0 | 9.05 | 8.90 | 9 | 0.18 | 17.5 | idioms, voice, ambiguity |
@@ -36,7 +36,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Hy-MT2-7B** (Q4_K_M) | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
 | · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | · | **CAT-Translate-7B** (Q4_K_M) | — | 65.5 | — | 65.3 | 0.0 | 9.00 | 8.87 | 9 | 0.14 | 4.8 | idioms, voice, who did what |
-| · | **Qwen2.5-14B-Instruct** (Q4_K_M) | — | 65.5 | — | — | — | 9.02 | 8.81 | 9 | 0.31 | 8.8 | idioms, voice, omissions |
+| · | **Qwen2.5-14B-Instruct** (Q4_K_M) | — | 65.5 | — | 66.7 | 0.0 | 9.02 | 8.81 | 9 | 0.31 | 8.8 | idioms, voice, omissions |
 | · | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | — | 65.0 | — | 50.0 | 0.0 | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
 | · | **HY-MT1.5-7B** (Q4_K_M) | — | 60.0 | — | 41.7 | 0.0 | 8.95 | 8.74 | 7 | 0.19 | 5.0 | voice, idioms, terms |
 | · | **NVIDIA-Nemotron-Nano-9B-v2-Japanese** (Q4_K_M) | — | 60.0 | — | 27.8 | 0.0 | 8.75 | 8.65 | 12 | 0.74 | 6.3 | idioms, voice, who did what |
@@ -46,12 +46,12 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Qwen3-4B-Instruct-2507** (Q4_K_M) | — | 50.5 | — | 55.6 | 0.0 | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
 | · | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | — | 49.0 | — | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
 | · | **gpt-oss-20b** (Q4_K_M, effort-low) | — | 47.0 | — | 53.5 | 1.6 | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
-| · | **TranslateGemma 4B IT** (Q4_K_M) | — | 46.5 | — | — | — | 8.23 | 7.90 | 24 | 0.12 | 2.9 | voice, idioms, omissions |
-| · | **Shisa-v2.1-llama3.2-3B** (Q4_K_M) | — | 44.5 | — | — | — | 8.01 | 8.19 | 30 | 0.09 | 2.5 | idioms, additions, voice |
-| · | **HY-MT1.5-1.8B** (Q4_K_M) | — | 42.0 | — | — | — | 8.01 | 7.42 | 33 | 0.09 | 1.5 | voice, idioms, additions |
+| · | **TranslateGemma 4B IT** (Q4_K_M) | — | 46.5 | — | 40.3 | 0.0 | 8.23 | 7.90 | 24 | 0.12 | 2.9 | voice, idioms, omissions |
+| · | **Shisa-v2.1-llama3.2-3B** (Q4_K_M) | — | 44.5 | — | 40.3 | 0.0 | 8.01 | 8.19 | 30 | 0.09 | 2.5 | idioms, additions, voice |
+| · | **HY-MT1.5-1.8B** (Q4_K_M) | — | 42.0 | — | 23.6 | 0.0 | 8.01 | 7.42 | 33 | 0.09 | 1.5 | voice, idioms, additions |
 | · | **Ling-3.0-tiny** (Q4_K_M) | — | 34.5 | — | 38.9 | 0.0 | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
 | · | **Qwen3.5-2B** (Q4_K_M) | — | 32.5 | — | 40.3 | 0.0 | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
-| · | **TinySwallow-1.5B-Instruct** (Q5_K_M) | — | 32.0 | — | — | — | 7.34 | 4.45 | 48 | 0.06 | 1.5 | voice, omissions, idioms |
+| · | **TinySwallow-1.5B-Instruct** (Q5_K_M) | — | 32.0 | — | 22.2 | 0.0 | 7.34 | 4.45 | 48 | 0.06 | 1.5 | voice, omissions, idioms |
 | · | **LFM2.5-2.6B** (Q4_K_M, empty-think) | — | 26.5 | — | 36.1 | 0.0 | 6.76 | 2.65 | 67 | 0.14 | 2.0 | idioms, voice, additions |
 | · | **LFM2.5-VL-3B** (Q4_K_M) | — | 24.5 | — | 29.2 | 0.0 | 6.71 | 6.19 | 70 | 0.15 | 2.0 | idioms, voice, omissions |
 | · | **LFM3-Omni-2B** (Q4_K_M, respond-in-text) | — | 23.5 | — | 36.1 | 0.0 | 6.45 | 6.32 | 76 | 0.08 | 1.4 | idioms, voice, who did what |
@@ -89,7 +89,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Shisa-v2.1-lfm2-1.2B (Q4_K_M) (0/200 lines).
+Being judged: CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Shisa-v2.1-lfm2-1.2B (Q4_K_M) (0/200 lines), Inkling 2 Mini (UD-Q4_K_XL, empty-think) (0/200 lines).
 
 ## By category
 
