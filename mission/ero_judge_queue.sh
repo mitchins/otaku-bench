@@ -25,6 +25,7 @@ QUEUE=(
   66_Ornith-1.5-35B-A3B 68_Gemma_4_26B-A4B_heretic_JP-pruned_120e 64_Hy-MT2-30B-A3B 63_Hy-MT2-7B
   32_TranslateGemma_27B_IT 33_TranslateGemma_12B_IT 21_Sugoi-14B-Ultra 42_Gemma_4_E2B_IT 41_Gemma_4_E4B_IT
   65_Hy-MT2-1.8B 67_Hy-MT2-1.8B-JP-Manga-v5 empty-think/36_LFM2.5-24B-A2B empty-think/51_Flint_40B-A2.5B 69_Ternary-Bonsai-2-27B 70_Nemotron_3.5_Bolt_74B-A9B_24GB
+  empty-think/71_Inkling_2_Mini   # Thinking Machines, 2026-11-20 release
   short-system/C01_Gemini-3.5-Flash-Lite   # cloud reference: ero turns via OpenRouter (same model, default payload), not the direct Google key;
                                            # vendor-recommended short system prompt, as on its scenes and hard slice
   C02_Claude-Haiku-5.5   # cloud reference via OpenRouter, shared prompt, thinking off
