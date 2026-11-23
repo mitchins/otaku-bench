@@ -38,7 +38,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **CAT-Translate-7B** (Q4_K_M) | — | 65.5 | — | 65.3 | 0.0 | 9.00 | 8.87 | 9 | 0.14 | 4.8 | idioms, voice, who did what |
 | · | **Qwen2.5-14B-Instruct** (Q4_K_M) | — | 65.5 | — | 66.7 | 0.0 | 9.02 | 8.81 | 9 | 0.31 | 8.8 | idioms, voice, omissions |
 | · | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | — | 65.0 | — | 50.0 | 0.0 | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
-| · | **Inkling 2 Mini** (UD-Q4_K_XL, empty-think) | — | 63.5 | — | — | — | 8.78 | 9.13 | 15 | 0.66 | 16.8 | idioms, voice, who did what |
+| · | **Inkling 2 Mini** (UD-Q4_K_XL, empty-think) | — | 63.5 | — | 58.3 | 0.0 | 8.78 | 9.13 | 15 | 0.66 | 16.8 | idioms, voice, who did what |
 | · | **HY-MT1.5-7B** (Q4_K_M) | — | 60.0 | — | 41.7 | 0.0 | 8.95 | 8.74 | 7 | 0.19 | 5.0 | voice, idioms, terms |
 | · | **NVIDIA-Nemotron-Nano-9B-v2-Japanese** (Q4_K_M) | — | 60.0 | — | 27.8 | 0.0 | 8.75 | 8.65 | 12 | 0.74 | 6.3 | idioms, voice, who did what |
 | · | **Qwen3.5-4B** (Q4_K_M) | — | 60.0 | — | 54.2 | 0.0 | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
@@ -61,7 +61,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **LFM3-1.7B** (Q4_K_M) | — | 20.0 | — | 34.7 | 0.0 | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
 | · | **LFM2.5-1.2B Instruct** (Q4_K_M) | — | 18.0 | — | 25.0 | 0.0 | 5.88 | 5.52 | 100 | 0.04 | 1.1 | idioms, voice, who did what |
 | · | **Shisa-v2.1-unphi4-14B** (Q4_K_M) | — | 6.5 | — | 65.3 | 0.0 | 8.63 | 8.06 | 7 | 0.97 | 8.9 | additions, formatting, idioms |
-| · | **Shisa-v2.1-lfm2-1.2B** (Q4_K_M) | — | 0.5 | — | — | — | 6.39 | 6.06 | 64 | 0.07 | 1.1 | additions, formatting, voice |
+| · | **Shisa-v2.1-lfm2-1.2B** (Q4_K_M) | — | 0.5 | — | 19.7 | 1.6 | 6.39 | 6.06 | 64 | 0.07 | 1.1 | additions, formatting, voice |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
 
@@ -91,7 +91,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines).
+Being judged: CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Qwen3.5-0.8B (Q4_K_M) (32/200 lines).
 
 ## By category
 
