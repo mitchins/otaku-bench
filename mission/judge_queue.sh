@@ -112,6 +112,8 @@ QUEUE=(
   screen/46_Qwen3-4B-Instruct-2507
   screen/31_Qwen3.5-4B
   screen/44_Qwen3.5-2B
+  screen/72_Qwen3.5-0.8B   # sub-1B Qwen floor (user, 2026-11-23); clean, 0.11 s/line
+  screen/73_Qwen3-0.6B     # sub-1B Qwen floor (user, 2026-11-23); 232/250 lines start lowercase, 7 leak prompt/reasoning text
   # screen/52_Qwen3-1.7B   # dropped from paid judging: 4 failed + 22 untranslated; kept as diagnostic evidence
   screen/53_Ling-3.0-tiny   # low-active MoE comparison point for LFM/Flint; eyeball says same league or worse
   # current-gen LFM sweep (2.5 + 3), newest first; last on purpose: confirms the family is weak at this task. Not paid-judged: 350M (returns the Japanese on 200/200),

@@ -41,7 +41,7 @@ QUEUE=(
   QAT-mobile-vllm/42_Gemma_4_E2B_IT   # Google mobile QAT E2B (vLLM, quality only)
   Q4_K_L/02_Gemma_4_31B_IT   # community request (Reddit, 2026-11-16)
   # standard-only runs given slice translations 2026-11-16 (user: "let's get all outstanding scores done"), main queue order
-  effort-low/39_gpt-oss-20b 15_Shisa-v2.1-qwen3-8B 46_Qwen3-4B-Instruct-2507 31_Qwen3.5-4B 44_Qwen3.5-2B 53_Ling-3.0-tiny
+  effort-low/39_gpt-oss-20b 15_Shisa-v2.1-qwen3-8B 46_Qwen3-4B-Instruct-2507 31_Qwen3.5-4B 44_Qwen3.5-2B 72_Qwen3.5-0.8B 73_Qwen3-0.6B 53_Ling-3.0-tiny
   60_LFM3-1.7B 61_LFM3-VL-2B respond-in-text/62_LFM3-Omni-2B empty-think/57_LFM2.5-2.6B 59_LFM2.5-VL-3B
   19_LFM2.5-1.2B-JP-202606 45_LFM2.5-1.2B_Instruct 13_NVIDIA-Nemotron-Nano-9B-v2-Japanese 04_Qwen3.6-27B
   11_Qwen3-Swallow-32B-RL-v0.2 22_Sugoi-32B-Ultra 37_GLM-4.7-Flash 20_VNTL-Llama3-8B-v2 14_Shisa-v2.1-unphi4-14B
