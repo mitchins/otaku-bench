@@ -62,6 +62,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **LFM2.5-1.2B Instruct** (Q4_K_M) | — | 18.0 | — | 25.0 | 0.0 | 5.88 | 5.52 | 100 | 0.04 | 1.1 | idioms, voice, who did what |
 | · | **Qwen3.5-0.8B** (Q4_K_M) | — | 12.5 | — | 26.4 | 0.0 | 5.68 | 3.06 | 103 | 0.10 | 0.9 | idioms, omissions, voice |
 | · | **Shisa-v2.1-unphi4-14B** (Q4_K_M) | — | 6.5 | — | 65.3 | 0.0 | 8.63 | 8.06 | 7 | 0.97 | 8.9 | additions, formatting, idioms |
+| · | **Qwen3-0.6B** (Q4_K_M) | — | 2.5 | — | 2.8 | 0.0 | 2.98 | 2.90 | 172 | 0.05 | 0.9 | omissions, voice, idioms |
 | · | **Shisa-v2.1-lfm2-1.2B** (Q4_K_M) | — | 0.5 | — | 19.7 | 1.6 | 6.39 | 6.06 | 64 | 0.07 | 1.1 | additions, formatting, voice |
 
 \* Gemini: full scenes use only the first sentence of the system prompt; with the full prompt it returns some scenes untranslated.
@@ -92,7 +93,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: Qwen3-0.6B (Q4_K_M) (189/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines).
+Being judged: CAT-Translate-1.4B (Q4_K_M) (53/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines).
 
 ## By category
 
@@ -158,6 +159,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | LFM2.5-1.2B Instruct (Q4_K_M) | 5% | 0% | 10% | 25% | 20% | 20% | 35% | 5% | 40% | 45% |
 | Qwen3.5-0.8B (Q4_K_M) | 0% | 20% | 5% | 30% | 5% | 15% | 25% | 10% | 40% | 25% |
 | Shisa-v2.1-unphi4-14B (Q4_K_M) | 40% | 50% | 65% | 90% | 90% | 65% | 65% | 60% | 70% | 70% |
+| Qwen3-0.6B (Q4_K_M) | 0% | 0% | 0% | 10% | 0% | 5% | 0% | 0% | 5% | 10% |
 | Shisa-v2.1-lfm2-1.2B (Q4_K_M) | 10% | 10% | 10% | 20% | 15% | 15% | 25% | 15% | 25% | 20% |
 
 ## Output compliance
@@ -224,6 +226,7 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | LFM2.5-1.2B Instruct (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Qwen3.5-0.8B (Q4_K_M) | 0 | 10 | 0 | 0 |
 | Shisa-v2.1-unphi4-14B (Q4_K_M) | 0 | 0 | 172 | 228 |
+| Qwen3-0.6B (Q4_K_M) | 2 | 5 | 0 | 0 |
 | Shisa-v2.1-lfm2-1.2B (Q4_K_M) | 0 | 0 | 5 | 56 |
 
 Standard: 200 eval lines judged by GPT-6.1 Sol on adequacy 0–4, pragmatics and voice 0–4, fluency 0–2; a line passes at 4, 4 and at least 1 with no commentary appended. Hard and Adult: each line has named checks, and it passes when every check passes (uncertain is not a pass); a Hard line also fails if the reply carries leaked prompt headers, the Japanese echoed back or extra dialogue turns. A line the model failed to produce fails (scores 0 out of 10). Speed is the median time to finish a line with 6 lines of history on an RTX 3090.
