@@ -60,6 +60,7 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **LFM3-VL-2B** (Q4_K_M) | — | 21.5 | — | 34.7 | 0.0 | 6.22 | 5.32 | 82 | 0.08 | 1.4 | idioms, voice, who did what |
 | · | **LFM3-1.7B** (Q4_K_M) | — | 20.0 | — | 34.7 | 0.0 | 5.95 | 4.84 | 98 | 0.08 | 1.4 | idioms, voice, who did what |
 | · | **LFM2.5-1.2B Instruct** (Q4_K_M) | — | 18.0 | — | 25.0 | 0.0 | 5.88 | 5.52 | 100 | 0.04 | 1.1 | idioms, voice, who did what |
+| · | **Qwen3.5-0.8B** (Q4_K_M) | — | 12.5 | — | 26.4 | 0.0 | 5.68 | 3.06 | 103 | 0.10 | 0.9 | idioms, omissions, voice |
 | · | **Shisa-v2.1-unphi4-14B** (Q4_K_M) | — | 6.5 | — | 65.3 | 0.0 | 8.63 | 8.06 | 7 | 0.97 | 8.9 | additions, formatting, idioms |
 | · | **Shisa-v2.1-lfm2-1.2B** (Q4_K_M) | — | 0.5 | — | 19.7 | 1.6 | 6.39 | 6.06 | 64 | 0.07 | 1.1 | additions, formatting, voice |
 
@@ -91,7 +92,7 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
 
-Being judged: CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines), Qwen3.5-0.8B (Q4_K_M) (32/200 lines).
+Being judged: Qwen3-0.6B (Q4_K_M) (189/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines), CAT-Translate-1.4B (Q4_K_M) (33/200 lines).
 
 ## By category
 
@@ -155,6 +156,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | LFM3-VL-2B (Q4_K_M) | 5% | 20% | 20% | 35% | 15% | 35% | 30% | 15% | 45% | 30% |
 | LFM3-1.7B (Q4_K_M) | 5% | 45% | 10% | 30% | 15% | 30% | 40% | 5% | 45% | 35% |
 | LFM2.5-1.2B Instruct (Q4_K_M) | 5% | 0% | 10% | 25% | 20% | 20% | 35% | 5% | 40% | 45% |
+| Qwen3.5-0.8B (Q4_K_M) | 0% | 20% | 5% | 30% | 5% | 15% | 25% | 10% | 40% | 25% |
 | Shisa-v2.1-unphi4-14B (Q4_K_M) | 40% | 50% | 65% | 90% | 90% | 65% | 65% | 60% | 70% | 70% |
 | Shisa-v2.1-lfm2-1.2B (Q4_K_M) | 10% | 10% | 10% | 20% | 15% | 15% | 25% | 15% | 25% | 20% |
 
@@ -220,6 +222,7 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | LFM3-VL-2B (Q4_K_M) | 0 | 0 | 0 | 8 |
 | LFM3-1.7B (Q4_K_M) | 4 | 6 | 3 | 0 |
 | LFM2.5-1.2B Instruct (Q4_K_M) | 0 | 0 | 0 | 0 |
+| Qwen3.5-0.8B (Q4_K_M) | 0 | 10 | 0 | 0 |
 | Shisa-v2.1-unphi4-14B (Q4_K_M) | 0 | 0 | 172 | 228 |
 | Shisa-v2.1-lfm2-1.2B (Q4_K_M) | 0 | 0 | 5 | 56 |
 
