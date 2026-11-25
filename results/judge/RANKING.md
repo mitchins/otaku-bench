@@ -49,10 +49,12 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **gpt-oss-20b** (Q4_K_M, effort-low) | — | 47.0 | — | 53.5 | 1.6 | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
 | · | **TranslateGemma 4B IT** (Q4_K_M) | — | 46.5 | — | 40.3 | 0.0 | 8.23 | 7.90 | 24 | 0.12 | 2.9 | voice, idioms, omissions |
 | · | **Shisa-v2.1-llama3.2-3B** (Q4_K_M) | — | 44.5 | — | 40.3 | 0.0 | 8.01 | 8.19 | 30 | 0.09 | 2.5 | idioms, additions, voice |
+| · | **CAT-Translate-0.8B** (Q4_K_M) | — | 42.0 | — | 53.5 | 1.6 | 7.71 | 4.90 | 38 | 0.04 | 0.9 | omissions, idioms, voice |
 | · | **HY-MT1.5-1.8B** (Q4_K_M) | — | 42.0 | — | 23.6 | 0.0 | 8.01 | 7.42 | 33 | 0.09 | 1.5 | voice, idioms, additions |
 | · | **Ling-3.0-tiny** (Q4_K_M) | — | 34.5 | — | 38.9 | 0.0 | 7.42 | 6.52 | 52 | 0.16 | 4.9 | idioms, voice, modality |
 | · | **Qwen3.5-2B** (Q4_K_M) | — | 32.5 | — | 40.3 | 0.0 | 7.24 | 6.77 | 51 | 0.13 | 1.6 | idioms, voice, who did what |
 | · | **TinySwallow-1.5B-Instruct** (Q5_K_M) | — | 32.0 | — | 22.2 | 0.0 | 7.34 | 4.45 | 48 | 0.06 | 1.5 | voice, omissions, idioms |
+| · | **CAT-Translate-1.4B** (Q4_K_M) | — | 28.5 | — | 48.6 | 0.0 | 7.13 | 5.77 | 51 | 0.05 | 1.3 | idioms, voice, omissions |
 | · | **LFM2.5-2.6B** (Q4_K_M, empty-think) | — | 26.5 | — | 36.1 | 0.0 | 6.76 | 2.65 | 67 | 0.14 | 2.0 | idioms, voice, additions |
 | · | **LFM2.5-VL-3B** (Q4_K_M) | — | 24.5 | — | 29.2 | 0.0 | 6.71 | 6.19 | 70 | 0.15 | 2.0 | idioms, voice, omissions |
 | · | **LFM3-Omni-2B** (Q4_K_M, respond-in-text) | — | 23.5 | — | 36.1 | 0.0 | 6.45 | 6.32 | 76 | 0.08 | 1.4 | idioms, voice, who did what |
@@ -74,9 +76,9 @@ Every build of the models above with more than one, best first. Gap is Overview 
 | Model | Build | Overview % | Gap | Standard % | Hard % | Adult % (not refused) | Seconds per line | VRAM GB |
 |---|---|---:|---|---:|---:|---:|---:|---:|
 | Gemma 4 31B IT | QAT-Q4_0 | 86.6 | best | 90.0 | 83.2 | 79.2 | 0.91 | 18.2 |
+|  | Q4_K_L | 86.2 | -0.4 ±2.4 (within noise) | 91.0 | 81.4 | 81.9 | 1.07 | 20.4 |
 |  | Q5_K_M | 86.2 | -0.4 ±2.1 (within noise) | 91.0 | 81.4 | 79.2 | 1.21 | 22.9 |
 |  | Q4_K_M | 85.9 | -0.7 ±2.3 (within noise) | 91.0 | 80.8 | 81.9 | 1.09 | 20.0 |
-|  | Q4_K_L | — | not ranked yet | 91.0 | — | 81.9 | 1.07 | 20.4 |
 | Gemma 4 26B-A4B IT | UD-Q4_K_M | 84.0 | best | 86.5 | 81.4 | 75.0 | 0.28 | 16.6 |
 |  | QAT-Q4_0 | 83.7 | -0.3 ±3.0 (within noise) | 86.0 | 81.4 | 69.4 | 0.26 | 14.2 |
 | Gemma 4 12B IT | UD-Q4_K_XL | 81.7 | best | 85.5 | 77.8 | 75.0 | 0.42 | 7.8 |
@@ -92,8 +94,6 @@ Every build of the models above with more than one, best first. Gap is Overview 
 |  | QAT-Q4_0 | 59.5 | -1.1 ±3.8 (within noise) | 61.5 | 57.5 | 65.3 | 0.11 | 1.8 |
 |  | QAT-UD-Q4_K_XL | 55.1 | -5.5 ±4.5 | 60.5 | 49.7 | 51.4 | 0.10 | 1.6 |
 |  | QAT-UD-Q2_K_XL | 14.9 | -45.7 ±5.4 | 13.0 | 16.8 | 15.3 | 0.68 | 0.8 |
-
-Being judged: CAT-Translate-1.4B (Q4_K_M) (53/200 lines), CAT-Translate-0.8B (Q4_K_M) (49/200 lines).
 
 ## By category
 
@@ -146,10 +146,12 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
 | TranslateGemma 4B IT (Q4_K_M) | 20% | 15% | 50% | 70% | 60% | 75% | 70% | 40% | 65% | 80% |
 | Shisa-v2.1-llama3.2-3B (Q4_K_M) | 25% | 20% | 35% | 50% | 55% | 70% | 75% | 60% | 65% | 70% |
+| CAT-Translate-0.8B (Q4_K_M) | 5% | 40% | 40% | 60% | 40% | 50% | 75% | 35% | 70% | 50% |
 | HY-MT1.5-1.8B (Q4_K_M) | 35% | 45% | 45% | 60% | 50% | 35% | 75% | 25% | 55% | 80% |
 | Ling-3.0-tiny (Q4_K_M) | 10% | 30% | 30% | 60% | 50% | 40% | 55% | 30% | 50% | 70% |
 | Qwen3.5-2B (Q4_K_M) | 5% | 15% | 40% | 60% | 30% | 40% | 55% | 30% | 55% | 60% |
 | TinySwallow-1.5B-Instruct (Q5_K_M) | 10% | 25% | 50% | 35% | 30% | 45% | 55% | 25% | 50% | 65% |
+| CAT-Translate-1.4B (Q4_K_M) | 10% | 25% | 25% | 60% | 40% | 40% | 55% | 25% | 35% | 35% |
 | LFM2.5-2.6B (Q4_K_M, empty-think) | 5% | 30% | 20% | 45% | 55% | 25% | 40% | 15% | 55% | 30% |
 | LFM2.5-VL-3B (Q4_K_M) | 15% | 35% | 25% | 30% | 10% | 50% | 40% | 10% | 55% | 35% |
 | LFM3-Omni-2B (Q4_K_M, respond-in-text) | 0% | 10% | 10% | 40% | 35% | 25% | 45% | 15% | 55% | 30% |
@@ -213,10 +215,12 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |
 | TranslateGemma 4B IT (Q4_K_M) | 0 | 0 | 0 | 1 |
 | Shisa-v2.1-llama3.2-3B (Q4_K_M) | 0 | 0 | 9 | 26 |
+| CAT-Translate-0.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | HY-MT1.5-1.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Ling-3.0-tiny (Q4_K_M) | 0 | 1 | 0 | 2 |
 | Qwen3.5-2B (Q4_K_M) | 0 | 0 | 0 | 1 |
 | TinySwallow-1.5B-Instruct (Q5_K_M) | 0 | 4 | 0 | 2 |
+| CAT-Translate-1.4B (Q4_K_M) | 0 | 1 | 0 | 0 |
 | LFM2.5-2.6B (Q4_K_M, empty-think) | 4 | 19 | 0 | 1 |
 | LFM2.5-VL-3B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | LFM3-Omni-2B (Q4_K_M, respond-in-text) | 0 | 3 | 0 | 0 |
