@@ -16,13 +16,14 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | 10 | **Qwen3.6-35B-A3B** (Q4_K_M) | 74.3 | 75.0 | 73.7 | 75.0 | 0.0 | 9.37 | 9.35 | 6 | 0.42 | 20.2 | voice, idioms, omissions |
 | 11 | **Ornith-1.5-35B-A3B** (Q4_K_M) | 74.2 | 76.0 | 72.5 | 73.6 | 0.0 | 9.40 | 9.29 | 6 | 0.41 | 20.2 | idioms, additions, voice |
 | 12 | **Gemma 4 E4B IT** (UD-Q4_K_XL; best of 3 builds) | 72.2 | 75.5 | 68.9 | 68.1 | 0.0 | 9.30 | 9.13 | 7 | 0.17 | 3.5 | idioms, voice, who did what |
-| 13 | **Sugoi-14B-Ultra** (Q4_K_M) | 67.1 | 66.5 | 67.7 | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
-| 14 | **TranslateGemma 27B IT** (Q4_K_M) | 65.5 | 71.0 | 59.9 | 44.4 | 0.0 | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
-| 15 | **TranslateGemma 12B IT** (Q4_K_M) | 64.6 | 67.5 | 61.7 | 47.2 | 0.0 | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
-| 16 | **Gemma 4 E2B IT** (UD-Q4_K_XL; best of 4 builds) | 60.6 | 59.0 | 62.3 | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
-| 17 | **LFM2.5-24B-A2B** (Q4_K_M, empty-think) | 47.8 | 46.5 | 49.1 | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
-| 18 | **Flint 40B-A2.5B** (IQ4_XS, empty-think) | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
-| 19 | **Hy-MT2-1.8B** (Q4_K_M) | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| 13 | **Hy-MT2-7B** (Q4_K_M) | 67.7 | 66.5 | 68.9 | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
+| 14 | **Sugoi-14B-Ultra** (Q4_K_M) | 67.1 | 66.5 | 67.7 | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
+| 15 | **TranslateGemma 27B IT** (Q4_K_M) | 65.5 | 71.0 | 59.9 | 44.4 | 0.0 | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
+| 16 | **TranslateGemma 12B IT** (Q4_K_M) | 64.6 | 67.5 | 61.7 | 47.2 | 0.0 | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
+| 17 | **Gemma 4 E2B IT** (UD-Q4_K_XL; best of 4 builds) | 60.6 | 59.0 | 62.3 | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
+| 18 | **LFM2.5-24B-A2B** (Q4_K_M, empty-think) | 47.8 | 46.5 | 49.1 | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| 19 | **Flint 40B-A2.5B** (IQ4_XS, empty-think) | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 20 | **Hy-MT2-1.8B** (Q4_K_M) | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
 | · | **Gemma 4 26B-A4B heretic JP-pruned 120e** (Q4_0) | — | 85.5 | — | 68.1 | 0.0 | 9.64 | 9.16 | 3 | 0.27 | 13.3 | who did what, idioms, ambiguity |
 | · | **Qwen3.6-27B** (Q4_K_M) | — | 77.5 | — | 76.4 | 0.0 | 9.46 | 9.32 | 7 | 1.20 | 16.4 | voice, idioms, additions |
 | · | **VNTL-Llama3-8B-v2** (Q5_K_M) | — | 74.5 | — | 68.1 | 0.0 | 9.36 | 8.87 | 5 | 0.16 | 5.7 | idioms, voice, omissions |
@@ -33,7 +34,6 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **Qwen3-Swallow-32B-RL-v0.2** (Q4_K_M) | — | 68.0 | — | 62.5 | 0.0 | 9.10 | 9.06 | 11 | 0.69 | 19.0 | idioms, voice, ambiguity |
 | · | **Qwen3.5-9B** (Q4_K_M) | — | 67.5 | — | 47.2 | 0.0 | 8.84 | 9.06 | 19 | 0.37 | 5.5 | idioms, voice, who did what |
 | · | **Gemma 4 26B-A4B heretic JP-pruned 72e** (Q4_0) | — | 66.5 | — | 59.7 | 0.0 | 8.97 | 7.94 | 10 | 0.26 | 8.8 | voice, idioms, additions |
-| · | **Hy-MT2-7B** (Q4_K_M) | — | 66.5 | — | 68.1 | 0.0 | 9.21 | 8.74 | 5 | 0.16 | 5.0 | idioms, voice, terms |
 | · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | · | **CAT-Translate-7B** (Q4_K_M) | — | 65.5 | — | 65.3 | 0.0 | 9.00 | 8.87 | 9 | 0.14 | 4.8 | idioms, voice, who did what |
 | · | **Qwen2.5-14B-Instruct** (Q4_K_M) | — | 65.5 | — | 66.7 | 0.0 | 9.02 | 8.81 | 9 | 0.31 | 8.8 | idioms, voice, omissions |
@@ -113,6 +113,7 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Qwen3.6-35B-A3B (Q4_K_M) | 60% | 70% | 80% | 95% | 95% | 90% | 90% | 80% | 80% | 95% |
 | Ornith-1.5-35B-A3B (Q4_K_M) | 65% | 65% | 85% | 100% | 85% | 95% | 75% | 85% | 90% | 100% |
 | Gemma 4 E4B IT (UD-Q4_K_XL) | 60% | 70% | 75% | 90% | 90% | 85% | 85% | 80% | 90% | 90% |
+| Hy-MT2-7B (Q4_K_M) | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
 | Sugoi-14B-Ultra (Q4_K_M) | 55% | 65% | 65% | 90% | 85% | 80% | 75% | 85% | 70% | 85% |
 | TranslateGemma 27B IT (Q4_K_M) | 65% | 65% | 75% | 90% | 85% | 85% | 80% | 85% | 85% | 90% |
 | TranslateGemma 12B IT (Q4_K_M) | 55% | 60% | 60% | 100% | 80% | 75% | 80% | 70% | 95% | 85% |
@@ -130,7 +131,6 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Qwen3-Swallow-32B-RL-v0.2 (Q4_K_M) | 50% | 70% | 70% | 85% | 85% | 85% | 80% | 55% | 85% | 85% |
 | Qwen3.5-9B (Q4_K_M) | 50% | 65% | 55% | 80% | 90% | 75% | 75% | 60% | 85% | 85% |
 | Gemma 4 26B-A4B heretic JP-pruned 72e (Q4_0) | 60% | 65% | 50% | 80% | 85% | 80% | 80% | 80% | 80% | 80% |
-| Hy-MT2-7B (Q4_K_M) | 55% | 70% | 85% | 85% | 95% | 85% | 85% | 70% | 85% | 95% |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
 | CAT-Translate-7B (Q4_K_M) | 50% | 70% | 65% | 80% | 80% | 90% | 75% | 60% | 80% | 75% |
 | Qwen2.5-14B-Instruct (Q4_K_M) | 60% | 65% | 65% | 70% | 80% | 85% | 85% | 60% | 85% | 85% |
@@ -182,6 +182,7 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Qwen3.6-35B-A3B (Q4_K_M) | 0 | 0 | 0 | 2 |
 | Ornith-1.5-35B-A3B (Q4_K_M) | 0 | 0 | 0 | 9 |
 | Gemma 4 E4B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
+| Hy-MT2-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Sugoi-14B-Ultra (Q4_K_M) | 0 | 0 | 1 | 0 |
 | TranslateGemma 27B IT (Q4_K_M) | 0 | 0 | 0 | 0 |
 | TranslateGemma 12B IT (Q4_K_M) | 0 | 0 | 0 | 1 |
@@ -199,7 +200,6 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Qwen3-Swallow-32B-RL-v0.2 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Qwen3.5-9B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Gemma 4 26B-A4B heretic JP-pruned 72e (Q4_0) | 0 | 0 | 0 | 1 |
-| Hy-MT2-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
 | CAT-Translate-7B (Q4_K_M) | 0 | 0 | 0 | 1 |
 | Qwen2.5-14B-Instruct (Q4_K_M) | 0 | 0 | 0 | 0 |
