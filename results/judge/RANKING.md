@@ -23,11 +23,15 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | 17 | **Sugoi-14B-Ultra** (Q4_K_M) | 67.1 | 66.5 | 67.7 | 70.8 | 0.0 | 9.05 | 8.90 | 9 | 0.30 | 8.8 | voice, idioms, additions |
 | 18 | **TranslateGemma 27B IT** (Q4_K_M) | 65.5 | 71.0 | 59.9 | 44.4 | 0.0 | 9.33 | 9.39 | 3 | 0.57 | 16.7 | voice, idioms, omissions |
 | 19 | **TranslateGemma 12B IT** (Q4_K_M) | 64.6 | 67.5 | 61.7 | 47.2 | 0.0 | 9.20 | 8.87 | 6 | 0.30 | 7.8 | voice, idioms, additions |
-| 20 | **Gemma 4 E2B IT** (UD-Q4_K_XL; best of 4 builds) | 60.6 | 59.0 | 62.3 | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
-| 21 | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | 50.2 | 49.0 | 51.5 | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
-| 22 | **LFM2.5-24B-A2B** (Q4_K_M, empty-think) | 47.8 | 46.5 | 49.1 | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
-| 23 | **Flint 40B-A2.5B** (IQ4_XS, empty-think) | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
-| 24 | **Hy-MT2-1.8B** (Q4_K_M) | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
+| 20 | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | 61.9 | 65.0 | 58.7 | 50.0 | 0.0 | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
+| 21 | **Gemma 4 E2B IT** (UD-Q4_K_XL; best of 4 builds) | 60.6 | 59.0 | 62.3 | 61.1 | 0.0 | 8.70 | 8.77 | 18 | 0.11 | 1.9 | idioms, voice, modality |
+| 22 | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | 60.2 | 66.5 | 53.9 | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
+| 23 | **Inkling 2 Mini** (UD-Q4_K_XL, empty-think) | 60.2 | 63.5 | 56.9 | 58.3 | 0.0 | 8.78 | 9.13 | 15 | 0.66 | 16.8 | idioms, voice, who did what |
+| 24 | **gpt-oss-20b** (Q4_K_M, effort-low) | 52.2 | 47.0 | 57.5 | 53.5 | 1.6 | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
+| 25 | **Hy-MT2-1.8B-JP-Manga-v5** (Q4_K_M) | 50.2 | 49.0 | 51.5 | 59.7 | 0.0 | 8.22 | 7.26 | 28 | 0.06 | 1.5 | idioms, additions, voice |
+| 26 | **LFM2.5-24B-A2B** (Q4_K_M, empty-think) | 47.8 | 46.5 | 49.1 | 45.8 | 0.0 | 8.06 | 7.45 | 28 | 0.16 | 14.7 | idioms, voice, who did what |
+| 27 | **Flint 40B-A2.5B** (IQ4_XS, empty-think) | 42.6 | 47.0 | 38.3 | 40.3 | 0.0 | 7.88 | 7.61 | 37 | 0.27 | 21.1 | idioms, who did what, voice |
+| 28 | **Hy-MT2-1.8B** (Q4_K_M) | 40.1 | 39.0 | 41.3 | 43.1 | 0.0 | 7.99 | 7.35 | 33 | 0.07 | 1.5 | voice, idioms, who did what |
 | · | **Qwen3.6-27B** (Q4_K_M) | — | 77.5 | — | 76.4 | 0.0 | 9.46 | 9.32 | 7 | 1.20 | 16.4 | voice, idioms, additions |
 | · | **VNTL-Llama3-8B-v2** (Q5_K_M) | — | 74.5 | — | 68.1 | 0.0 | 9.36 | 8.87 | 5 | 0.16 | 5.7 | idioms, voice, omissions |
 | · | **Phi-4 14B** (Q4_K_M) | — | 73.5 | — | 63.9 | 0.0 | 9.18 | 8.94 | 8 | 0.38 | 9.0 | voice, idioms, omissions |
@@ -35,18 +39,14 @@ Sorted by **Overview**. Pass % is the share of lines translated in full: meaning
 | · | **GLM-4.7-Flash** (Q4_K_M) | — | 70.0 | — | 65.3 | 0.0 | 9.05 | 8.90 | 9 | 0.18 | 17.5 | idioms, voice, ambiguity |
 | · | **Qwen3-Swallow-32B-RL-v0.2** (Q4_K_M) | — | 68.0 | — | 62.5 | 0.0 | 9.10 | 9.06 | 11 | 0.69 | 19.0 | idioms, voice, ambiguity |
 | · | **Qwen3.5-9B** (Q4_K_M) | — | 67.5 | — | 47.2 | 0.0 | 8.84 | 9.06 | 19 | 0.37 | 5.5 | idioms, voice, who did what |
-| · | **Nemotron 3.5 Bolt 74B-A9B 24GB** (IQ2_XXS) | — | 66.5 | — | 52.8 | 0.0 | 9.00 | 9.16 | 10 | 0.94 | 20.6 | idioms, voice, modality |
 | · | **CAT-Translate-7B** (Q4_K_M) | — | 65.5 | — | 65.3 | 0.0 | 9.00 | 8.87 | 9 | 0.14 | 4.8 | idioms, voice, who did what |
 | · | **Qwen2.5-14B-Instruct** (Q4_K_M) | — | 65.5 | — | 66.7 | 0.0 | 9.02 | 8.81 | 9 | 0.31 | 8.8 | idioms, voice, omissions |
-| · | **Shisa-v2.1-qwen3-8B** (Q4_K_M) | — | 65.0 | — | 50.0 | 0.0 | 9.04 | 8.16 | 12 | 0.17 | 5.0 | additions, idioms, omissions |
-| · | **Inkling 2 Mini** (UD-Q4_K_XL, empty-think) | — | 63.5 | — | 58.3 | 0.0 | 8.78 | 9.13 | 15 | 0.66 | 16.8 | idioms, voice, who did what |
 | · | **HY-MT1.5-7B** (Q4_K_M) | — | 60.0 | — | 41.7 | 0.0 | 8.95 | 8.74 | 7 | 0.19 | 5.0 | voice, idioms, terms |
 | · | **NVIDIA-Nemotron-Nano-9B-v2-Japanese** (Q4_K_M) | — | 60.0 | — | 27.8 | 0.0 | 8.75 | 8.65 | 12 | 0.74 | 6.3 | idioms, voice, who did what |
 | · | **Qwen3.5-4B** (Q4_K_M) | — | 60.0 | — | 54.2 | 0.0 | 8.62 | 8.39 | 22 | 0.33 | 3.2 | idioms, voice, omissions |
 | · | **Ministral 3 8B Instruct** (UD-Q4_K_XL) | — | 54.5 | — | 41.7 | 0.0 | 8.53 | 8.23 | 18 | 0.22 | 5.3 | additions, voice, idioms |
 | · | **Qwen3-8B** (Q4_K_M) | — | 52.0 | — | 4.2 | 0.0 | 8.27 | 5.23 | 25 | 0.17 | 5.0 | idioms, voice, modality |
 | · | **Qwen3-4B-Instruct-2507** (Q4_K_M) | — | 50.5 | — | 55.6 | 0.0 | 8.26 | 7.90 | 28 | 0.12 | 3.0 | idioms, voice, who did what |
-| · | **gpt-oss-20b** (Q4_K_M, effort-low) | — | 47.0 | — | 53.5 | 1.6 | 7.81 | 8.26 | 38 | 0.49 | 11.0 | idioms, voice, terms |
 | · | **TranslateGemma 4B IT** (Q4_K_M) | — | 46.5 | — | 40.3 | 0.0 | 8.23 | 7.90 | 24 | 0.12 | 2.9 | voice, idioms, omissions |
 | · | **Shisa-v2.1-llama3.2-3B** (Q4_K_M) | — | 44.5 | — | 40.3 | 0.0 | 8.01 | 8.19 | 30 | 0.09 | 2.5 | idioms, additions, voice |
 | · | **CAT-Translate-0.8B** (Q4_K_M) | — | 42.0 | — | 53.5 | 1.6 | 7.71 | 4.90 | 38 | 0.04 | 0.9 | omissions, idioms, voice |
@@ -120,7 +120,11 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | Sugoi-14B-Ultra (Q4_K_M) | 55% | 65% | 65% | 90% | 85% | 80% | 75% | 85% | 70% | 85% |
 | TranslateGemma 27B IT (Q4_K_M) | 65% | 65% | 75% | 90% | 85% | 85% | 80% | 85% | 85% | 90% |
 | TranslateGemma 12B IT (Q4_K_M) | 55% | 60% | 60% | 100% | 80% | 75% | 80% | 70% | 95% | 85% |
+| Shisa-v2.1-qwen3-8B (Q4_K_M) | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
 | Gemma 4 E2B IT (UD-Q4_K_XL) | 25% | 70% | 55% | 90% | 80% | 75% | 60% | 60% | 80% | 65% |
+| Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
+| Inkling 2 Mini (UD-Q4_K_XL, empty-think) | 30% | 45% | 70% | 80% | 90% | 70% | 75% | 55% | 75% | 90% |
+| gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 25% | 50% | 60% | 55% | 60% | 55% | 95% | 40% | 55% | 75% |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 15% | 45% | 55% | 60% | 60% | 60% | 70% | 35% | 70% | 75% |
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 20% | 35% | 55% | 60% | 55% | 55% | 70% | 40% | 55% | 60% |
@@ -132,18 +136,14 @@ Share of the 20 eval lines in each category translated well (9 or 10 out of 10).
 | GLM-4.7-Flash (Q4_K_M) | 50% | 65% | 80% | 90% | 75% | 85% | 95% | 60% | 80% | 85% |
 | Qwen3-Swallow-32B-RL-v0.2 (Q4_K_M) | 50% | 70% | 70% | 85% | 85% | 85% | 80% | 55% | 85% | 85% |
 | Qwen3.5-9B (Q4_K_M) | 50% | 65% | 55% | 80% | 90% | 75% | 75% | 60% | 85% | 85% |
-| Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 40% | 60% | 50% | 85% | 85% | 80% | 90% | 75% | 75% | 85% |
 | CAT-Translate-7B (Q4_K_M) | 50% | 70% | 65% | 80% | 80% | 90% | 75% | 60% | 80% | 75% |
 | Qwen2.5-14B-Instruct (Q4_K_M) | 60% | 65% | 65% | 70% | 80% | 85% | 85% | 60% | 85% | 85% |
-| Shisa-v2.1-qwen3-8B (Q4_K_M) | 45% | 45% | 75% | 95% | 85% | 75% | 95% | 55% | 80% | 90% |
-| Inkling 2 Mini (UD-Q4_K_XL, empty-think) | 30% | 45% | 70% | 80% | 90% | 70% | 75% | 55% | 75% | 90% |
 | HY-MT1.5-7B (Q4_K_M) | 35% | 50% | 70% | 80% | 80% | 95% | 85% | 35% | 80% | 90% |
 | NVIDIA-Nemotron-Nano-9B-v2-Japanese (Q4_K_M) | 25% | 50% | 65% | 70% | 90% | 80% | 65% | 75% | 75% | 80% |
 | Qwen3.5-4B (Q4_K_M) | 20% | 65% | 55% | 70% | 80% | 70% | 85% | 70% | 85% | 60% |
 | Ministral 3 8B Instruct (UD-Q4_K_XL) | 40% | 40% | 55% | 70% | 60% | 70% | 75% | 70% | 70% | 60% |
 | Qwen3-8B (Q4_K_M) | 30% | 35% | 55% | 85% | 60% | 65% | 50% | 50% | 50% | 95% |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 20% | 50% | 55% | 65% | 60% | 55% | 70% | 70% | 75% | 70% |
-| gpt-oss-20b (Q4_K_M, effort-low) | 20% | 50% | 30% | 50% | 65% | 55% | 80% | 35% | 80% | 60% |
 | TranslateGemma 4B IT (Q4_K_M) | 20% | 15% | 50% | 70% | 60% | 75% | 70% | 40% | 65% | 80% |
 | Shisa-v2.1-llama3.2-3B (Q4_K_M) | 25% | 20% | 35% | 50% | 55% | 70% | 75% | 60% | 65% | 70% |
 | CAT-Translate-0.8B (Q4_K_M) | 5% | 40% | 40% | 60% | 40% | 50% | 75% | 35% | 70% | 50% |
@@ -189,7 +189,11 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | Sugoi-14B-Ultra (Q4_K_M) | 0 | 0 | 1 | 0 |
 | TranslateGemma 27B IT (Q4_K_M) | 0 | 0 | 0 | 0 |
 | TranslateGemma 12B IT (Q4_K_M) | 0 | 0 | 0 | 1 |
+| Shisa-v2.1-qwen3-8B (Q4_K_M) | 0 | 0 | 0 | 33 |
 | Gemma 4 E2B IT (UD-Q4_K_XL) | 0 | 0 | 0 | 0 |
+| Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
+| Inkling 2 Mini (UD-Q4_K_XL, empty-think) | 0 | 1 | 0 | 0 |
+| gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |
 | Hy-MT2-1.8B-JP-Manga-v5 (Q4_K_M) | 0 | 0 | 0 | 6 |
 | LFM2.5-24B-A2B (Q4_K_M, empty-think) | 1 | 0 | 0 | 2 |
 | Flint 40B-A2.5B (IQ4_XS, empty-think) | 2 | 0 | 1 | 0 |
@@ -201,18 +205,14 @@ Decided mechanically, identically for every model. **Automatic zeros** are alrea
 | GLM-4.7-Flash (Q4_K_M) | 0 | 0 | 0 | 3 |
 | Qwen3-Swallow-32B-RL-v0.2 (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Qwen3.5-9B (Q4_K_M) | 0 | 0 | 0 | 0 |
-| Nemotron 3.5 Bolt 74B-A9B 24GB (IQ2_XXS) | 0 | 0 | 0 | 0 |
 | CAT-Translate-7B (Q4_K_M) | 0 | 0 | 0 | 1 |
 | Qwen2.5-14B-Instruct (Q4_K_M) | 0 | 0 | 0 | 0 |
-| Shisa-v2.1-qwen3-8B (Q4_K_M) | 0 | 0 | 0 | 33 |
-| Inkling 2 Mini (UD-Q4_K_XL, empty-think) | 0 | 1 | 0 | 0 |
 | HY-MT1.5-7B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | NVIDIA-Nemotron-Nano-9B-v2-Japanese (Q4_K_M) | 0 | 0 | 0 | 11 |
 | Qwen3.5-4B (Q4_K_M) | 0 | 0 | 0 | 0 |
 | Ministral 3 8B Instruct (UD-Q4_K_XL) | 0 | 0 | 1 | 93 |
 | Qwen3-8B (Q4_K_M) | 0 | 12 | 0 | 0 |
 | Qwen3-4B-Instruct-2507 (Q4_K_M) | 0 | 0 | 0 | 0 |
-| gpt-oss-20b (Q4_K_M, effort-low) | 1 | 0 | 0 | 2 |
 | TranslateGemma 4B IT (Q4_K_M) | 0 | 0 | 0 | 1 |
 | Shisa-v2.1-llama3.2-3B (Q4_K_M) | 0 | 0 | 9 | 26 |
 | CAT-Translate-0.8B (Q4_K_M) | 0 | 0 | 0 | 0 |
